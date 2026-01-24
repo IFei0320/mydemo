@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {% load static %}
+    <title>Mega Able bootstrap admin template</title>
+         <!-- Meta -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+      <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
+        <!-- Favicon icon -->
+
+     <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+    <!-- Google font-->
+     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <!-- Required Fremwork -->
+     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap/css/bootstrap.min.css' %}">
+    <!-- waves.css -->
+     <link rel="stylesheet" href="{% static 'assets/pages/waves/css/waves.min.css' %}" type="text/css" media="all">
+    <!-- themify-icons line icon -->
+     <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/themify-icons/themify-icons.css' %}">
+    <!-- ico font -->
+     <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/icofont/css/icofont.css' %}">
+    <!-- Font Awesome -->
+     <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/font-awesome/css/font-awesome.min.css' %}">
+    <!-- Style.css -->
+     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+
+  </head>
+
+  <section class="login-block">
+        <!-- Container-fluid starts -->
+        <div class="container-fluid"  style="background-image: url({% static 'assets/images/login.jpg' %}); min-height: 100vh; background-size: cover;">>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form class="md-float-material form-material"  id="registerForm"    >
+
+                        <div class="auth-box card">
+                            <div class="card-block">
+                                <div class="row m-b-20">
+                                    <div class="col-md-12">
+                                        <h3 class="text-center txt-primary">注册</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group form-primary">
+                                    <input type="text" name="username" class="form-control" required="">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">用户名</label>
+                                </div>
+                                <div class="form-group form-primary">
+                                    <input type="email" name="email" class="form-control" required="">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">邮箱</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-primary">
+                                            <input type="password" name="password" class="form-control" required="">
+                                            <span class="form-bar"></span>
+                                            <label class="float-label">密码</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group form_primary">
+                                            <input type="password" name="confirm_password" class="form-control" required="">
+                                            <span class="form-bar"></span>
+                                            <label class="float-label">确认密码</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-25 text-left">
+                                    <div class="col-md-12">
+                                        <div class="checkbox-fade fade-in-primary">
+                                            <label>
+{#                                                <input type="checkbox" value="1"  id="agree_terms"  >#}
+                                                <input type="checkbox" value="1" id="agree_terms" >
+                                                <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                               <span class="text-inverse">我已阅读条款和条件</span>
+
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row m-t-30">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">注册</button>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <p class="text-inverse text-left m-b-0">已有账号</p>
+                                        <p class="text-inverse text-left"><a href="{% url 'user:login' %}">
+<b>回去登录</b></a></p>
+                                    </div>
+                                     <div class="col-md-2">
+                                           <img src="{% static 'assets/images/auth/Logo-small-bottom.png' %}" alt="small-logo.png">
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- end of col-sm-12 -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of container-fluid -->
+    </section>
+
+<!-- Required Jquery -->
+ <script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/jquery-ui/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/popper.js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- waves js -->
+    <script src="{% static 'assets/pages/waves/js/waves.min.js' %}"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="{% static 'assets/js/jquery-slimscroll/jquery.slimscroll.js' %}"></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="{% static 'assets/js/SmoothScroll.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <!-- i18next.min.js -->
+    <!-- 注意: 这些 bower_components 文件也需要放在 STATICFILES_DIRS 指定的目录下才能被 Django 找到 -->
+    <script type="text/javascript" src="{% static 'bower_components/i18next/js/i18next.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bower_components/i18next-xhr-backend/js/i18nextXHRBackend.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bower_components/i18next-browser-languagedetector/js/i18nextBrowserLanguageDetector.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bower_components/jquery-i18next/js/jquery-i18next.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'assets/js/common-pages.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+    $('#registerForm').on('submit', function(e) {
+        e.preventDefault();
+
+        var formData = $(this).serialize();
+        var password = $('input[name="password"]').val();
+        var confirm_password = $('input[name="confirm_password"]').val();
+
+        if (password !== confirm_password) {
+            alert('两次输入的密码不一致');
+            return false;
+        }
+
+        if (!$('#agree_terms').is(':checked')) {
+            alert('请阅读并同意条款和条件！');
+            return false;
+        }
+
+        $.ajax({
+           url: "{% url 'user:register' %}",
+            type: "post",
+            dataType: 'json',
+            data: formData,
+            success: function(response) {
+               if (response.code === 200) {
+                   alert(response.msg);
+                   window.location.href = "{% url 'user:login' %}";
+               } else {
+                   alert(response.msg);
+               }
+
+            },
+            error: function(xhr, status, error) {
+                alert('注册失败，请稍后重试！');
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+</body>
+
+</html>
+
+{##}
+{#if(response.code === 200) {#}
+{#                    alert(response.msg);#}
+{#                    window.location.href = "{% url 'user:login' %}";#}
+
+
+
