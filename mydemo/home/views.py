@@ -55,3 +55,5 @@ def index(request):
     }
     print(f"DEBUG: Context passed to template = {content}")  # 添加这行打印
     return render(request, 'index.html', content)  # 确保 context 是 content
+
+
