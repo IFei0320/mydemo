@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from numpy.core.multiarray import item
 
@@ -56,6 +57,36 @@ def index(request):
     print(f"DEBUG: Context passed to template = {content}")  # 添加这行打印
     return render(request, 'index.html', content)  # 确保 context 是 content
 
+
+# ... existing code ...
 def travel_list(request):
+    province = TravelInfo.objects.exclude(province__isnull=True).values_list('province', flat=True).distinct()
     travels = TravelInfo.objects.all()
-    return render(request, 'travel_list.html', {'travels': travels})
+    search_name = request.GET.get('search_name', '')
+    selected_province = request.GET.get('province', '')
+    if search_name:
+        travels = travels.filter(Q(name__icontains=search_name))
+
+    if selected_province:
+        travels = travels.filter(province=selected_province)
+
+    travels = travels.order_by('-popularity_score')
+
+    paginator = Paginator(travels, 10)
+
+    page_number = request.GET.get('page')
+
+    page_obj = paginator.get_page(page_number)
+
+    content={
+        'page_obj': page_obj,
+        'province': province,
+
+        'search_name': search_name,
+        'selected_province': selected_province,
+
+
+    }
+
+
+    return render(request, 'travel_list.html', content)

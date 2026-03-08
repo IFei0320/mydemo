@@ -1,0 +1,665 @@
+{#{%  extends "base.html" %}#}
+{#{% block content %}#}
+{#    {% load static %}#}
+{#                        <!-- Page-header start -->#}
+{#                        <div class="page-header">#}
+{#                            <div class="page-block">#}
+{#                                <div class="row align-items-center">#}
+{#                                    <div class="col-md-8">#}
+{#                                        <div class="page-header-title">#}
+{#                                            <h5 class="m-b-10">景点热度信息</h5>#}
+{#                                            <p class="m-b-0">景点热度可视化</p>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="col-md-4">#}
+{#                                        <ul class="breadcrumb-title">#}
+{#                                            <li class="breadcrumb-item">#}
+{#                                                <a href="{% url 'home:index' %}"> <i class="fa fa-home"></i> </a>#}
+{#                                            </li>#}
+{#                                            <li class="breadcrumb-item"><a href="#!">数据分析可视化</a>#}
+{#                                            </li>#}
+{#                                            <li class="breadcrumb-item"><a href="#!">景点评分信息</a>#}
+{#                                            </li>#}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <!-- Page-header end -->#}
+{#                        <div class="pcoded-inner-content">#}
+{#                            <!-- Main-body start -->#}
+{#                            <div class="main-body">#}
+{#                                <div class="page-wrapper">#}
+{#                                    <div class="page-body">#}
+{#                                        <div class="row">#}
+{#                                            <!-- SITE VISIT CHART start -->#}
+{#                                            <div class="col-md-12 col-lg-6">#}
+{#                                                <div class="card">#}
+{#                                                    <div class="card-header">#}
+{#                                                        <h5   >景区评论数排行</h5>#}
+{##}
+{#                                                    </div>#}
+{#                                                    <div class="card-block">#}
+{#                                                        <div   id="part2" style="width: 100%; height: 600px;"></div>#}
+{#                                                    </div>#}
+{##}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <!-- SITE VISIT CHART Ends -->#}
+{#                                            <!-- Bar Chart start -->#}
+{#                                            <div class="col-md-12 col-lg-6">#}
+{#                                                <div class="card">#}
+{#                                                    <div class="card-header">#}
+{#                                                        <div  class="d-flex justify-content-between align-center"  >#}
+{#                                                            <h5   class="card-header-text" >各省份景点平均评分</h5>#}
+{#                                                        <div class="dropdown-filter">#}
+{#                                                              <select class="form-select form-select-sm" id="provinceFilter" style="width: 150px;"  >#}
+{##}
+{#                                                             {%  for city in select_list %}#}
+{#                                                             <option value="{{ city }}">{{ city }}</option>#}
+{#                                                             {% endfor %}#}
+{##}
+{#                                                         </select>#}
+{#                                                            </div>#}
+{##}
+{#                                                    </div>#}
+{#                                                    <div class="card-block  accordion-block  ">#}
+{#                                                        <div class="accordion-box"  id="part4"  style="width: 100%;height: 600px;"  ></div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{##}
+{#                                            <!-- Bar Chart Ends -->#}
+{##}
+{#                                            <!-- Donut chart Ends -->#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div id="styleSelector">#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#<!-- ... existing code ... -->#}
+{#    <script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>#}
+{#    <script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>#}
+{##}
+{#<!-- ... existing code ... -->#}
+{##}
+{##}
+{#   <script>#}
+{##}
+{##}
+{#   var chartDom = document.getElementById('part2');#}
+{#var myChart = echarts.init(chartDom);#}
+{#var option;#}
+{##}
+{#option = {#}
+{##}
+{#  tooltip: {#}
+{#    trigger: 'item',#}
+{#    formatter: '{a} <br/>{b} : {c}%'#}
+{#  },#}
+{#  toolbox: {#}
+{#    feature: {#}
+{#      dataView: { readOnly: false },#}
+{#      restore: {},#}
+{#      saveAsImage: {}#}
+{#    }#}
+{#  },#}
+{#  legend: {#}
+{#    data: {{ name_list|safe }}#}
+{#  },#}
+{#  series: [#}
+{#    {#}
+{#      name: '评论数',#}
+{#      type: 'funnel',#}
+{#      left: '10%',#}
+{#      top: 60,#}
+{#      bottom: 60,#}
+{#      width: '80%',#}
+{#      min: 0,#}
+{#      max: 3000000,#}
+{#      minSize: '0%',#}
+{#      maxSize: '100%',#}
+{#      sort: 'descending',#}
+{#      gap: 2,#}
+{#      label: {#}
+{#        show: true,#}
+{#        position: 'inside'#}
+{#      },#}
+{#      labelLine: {#}
+{#        length: 10,#}
+{#        lineStyle: {#}
+{#          width: 1,#}
+{#          type: 'solid'#}
+{#        }#}
+{#      },#}
+{#      itemStyle: {#}
+{#        borderColor: '#fff',#}
+{#        borderWidth: 1#}
+{#      },#}
+{#      emphasis: {#}
+{#        label: {#}
+{#          fontSize: 20#}
+{#        }#}
+{#      },#}
+{#      data: {{ data_list|safe }}#}
+{#    }#}
+{#  ]#}
+{#};#}
+{##}
+{#option && myChart.setOption(option);#}
+{##}
+{##}
+{#   </script>#}
+{#<script>#}
+{##}
+{# $(document).ready(function () {#}
+{#     var chartDom = document.getElementById('part4');#}
+{#var myChart = echarts.init(chartDom);#}
+{##}
+{#     loadChartData()#}
+{#     $('#provinceFilter').change(function () {#}
+{#        loadChartData();#}
+{#    });#}
+{##}
+{#     function loadChartData() {#}
+{#        var selectedCity = $('#provinceFilter').val();#}
+{#        $.ajax({#}
+{#        url: '{% url 'ksh:get_cityData' %}',#}
+{#        type: 'GET',#}
+{#        data: {"city": selectedCity},#}
+{#        dataType: 'json',#}
+{#        success: function (response) {#}
+{#        updateChart(response.data)#}
+{#        }, error: function (xhr, status, error) {#}
+{#            alert("Error: " + error)#}
+{##}
+{#        }#}
+{#    })#}
+{#}#}
+{#     function updateChart(data) {#}
+{#      option = {#}
+{##}
+{#  tooltip: {#}
+{#    trigger: 'axis',#}
+{#    axisPointer: {#}
+{#      type: 'shadow'#}
+{#    }#}
+{#  },#}
+{#  legend: {},#}
+{#  xAxis: {#}
+{#    type: 'value',#}
+{#    boundaryGap: [0, 0.01]#}
+{#  },#}
+{#  yAxis: {#}
+{#    type: 'category',#}
+{#    data:  data.names ,#}
+{#  },#}
+{#  series: [#}
+{#    {#}
+{#      name: '热度评分',#}
+{#      type: 'bar',#}
+{#      data:data.values#}
+{#    },#}
+{##}
+{#  ]#}
+{#};#}
+{#      option && myChart.setOption(option);#}
+{#}#}
+{##}
+{#});#}
+{##}
+{##}
+{##}
+{#</script>#}
+{#{% endblock %}#}
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<!-- Page-header start -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">
+                        <i class="fas fa-fire-alt text-warning mr-2"></i>景点热度信息
+                    </h5>
+                    <p class="m-b-0 text-muted">
+                        <i class="fas fa-chart-line mr-1"></i>景点热度可视化分析
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home:index' %}" class="text-primary">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!" class="text-secondary">数据分析可视化</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!" class="text-dark font-weight-bold">景点评分信息</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-header end -->
+
+<div class="pcoded-inner-content">
+    <!-- Main-body start -->
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+
+                    <!-- SITE VISIT CHART start -->
+                    <div class="col-md-12 col-lg-6 mb-4">
+                        <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                            <div class="card-header bg-gradient-primary text-white py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-circle bg-white text-primary mr-3" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <h5 class="m-0 font-weight-bold">景区评论数排行</h5>
+                                    <span class="badge badge-light ml-auto px-3 py-2 text-primary">实时数据</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div id="part2" style="width: 100%; height: 600px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
+                            </div>
+                            <div class="card-footer bg-light border-top-0 text-center py-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle mr-1"></i>数据更新时间：刚刚
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SITE VISIT CHART Ends -->
+
+                    <!-- Bar Chart start -->
+                    <div class="col-md-12 col-lg-6 mb-4">
+                        <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                            <div class="card-header bg-gradient-success text-white py-3">
+                                <div class="d-flex justify-content-between align-items-center w-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-circle bg-white text-success mr-3" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <h5 class="m-0 font-weight-bold">各省份景点平均评分</h5>
+                                    </div>
+                                    <div class="dropdown-filter">
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-white border-0 text-success">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </span>
+                                            </div>
+                                            <select class="form-control form-control-sm border-0 shadow-sm" id="provinceFilter" style="width: 150px; cursor: pointer;">
+                                                {% for city in select_list %}
+                                                <option value="{{ city }}">{{ city }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div id="part4" style="width: 100%; height: 600px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
+                            </div>
+                            <div class="card-footer bg-light border-top-0 text-center py-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-mouse-pointer mr-1"></i>选择城市查看详细数据
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bar Chart Ends -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="styleSelector"></div>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+
+<script>
+    // Chart 1: Funnel Chart - 景区评论数排行
+    var chartDom = document.getElementById('part2');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+        backgroundColor: 'transparent',
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c}%',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#eee',
+            borderWidth: 1,
+            textStyle: {
+                color: '#333'
+            },
+            extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px;'
+        },
+        toolbox: {
+            feature: {
+                dataView: {
+                    readOnly: false,
+                    title: '数据视图',
+                    lang: ['数据视图', '关闭', '刷新']
+                },
+                restore: {
+                    title: '还原'
+                },
+                saveAsImage: {
+                    title: '保存为图片',
+                    pixelRatio: 2
+                }
+            },
+            iconStyle: {
+                borderColor: '#666'
+            },
+            right: 20,
+            top: 20
+        },
+        legend: {
+            data: {{ name_list|safe }},
+            bottom: 20,
+            textStyle: {
+                fontSize: 12,
+                color: '#666'
+            },
+            itemGap: 20
+        },
+        series: [
+            {
+                name: '评论数',
+                type: 'funnel',
+                left: '10%',
+                top: 80,
+                bottom: 80,
+                width: '80%',
+                min: 0,
+                max: 3000000,
+                minSize: '0%',
+                maxSize: '100%',
+                sort: 'descending',
+                gap: 3,
+                label: {
+                    show: true,
+                    position: 'inside',
+                    formatter: '{b}\n{c}',
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    color: '#fff',
+                    textShadowColor: 'rgba(0,0,0,0.3)',
+                    textShadowBlur: 3
+                },
+                labelLine: {
+                    length: 10,
+                    lineStyle: {
+                        width: 1,
+                        type: 'solid'
+                    }
+                },
+                itemStyle: {
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 5,
+                    shadowColor: 'rgba(0, 0, 0, 0.2)'
+                },
+                emphasis: {
+                    label: {
+                        fontSize: 18
+                    },
+                    itemStyle: {
+                        shadowBlur: 20,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)'
+                    }
+                },
+                data: {{ data_list|safe }},
+                color: [
+                    '#5470c6', '#91cc75', '#fac858', '#ee6666',
+                    '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'
+                ]
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+
+    // Responsive resize
+    window.addEventListener('resize', function() {
+        myChart.resize();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var chartDom = document.getElementById('part4');
+        var myChart = echarts.init(chartDom);
+
+        loadChartData();
+
+        $('#provinceFilter').change(function () {
+            loadChartData();
+        });
+
+        function loadChartData() {
+            var selectedCity = $('#provinceFilter').val();
+
+            // Add loading effect
+            myChart.showLoading({
+                text: '数据加载中...',
+                color: '#28a745',
+                textColor: '#28a745',
+                maskColor: 'rgba(255, 255, 255, 0.8)',
+                zlevel: 0
+            });
+
+            $.ajax({
+                url: '{% url 'ksh:get_cityData' %}',
+                type: 'GET',
+                data: {"city": selectedCity},
+                dataType: 'json',
+                success: function (response) {
+                    myChart.hideLoading();
+                    updateChart(response.data);
+                },
+                error: function (xhr, status, error) {
+                    myChart.hideLoading();
+                    alert("Error: " + error);
+                }
+            });
+        }
+
+        function updateChart(data) {
+            option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        shadowStyle: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    borderColor: '#eee',
+                    borderWidth: 1,
+                    textStyle: {
+                        color: '#333'
+                    },
+                    extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px;'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: ['热度评分'],
+                    top: 20,
+                    textStyle: {
+                        fontSize: 14,
+                        color: '#666'
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#ddd'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#666'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#eee',
+                            type: 'dashed'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: data.names,
+                    axisLine: {
+                        lineStyle: {
+                            color: '#ddd'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#666',
+                        fontSize: 12
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                },
+                series: [
+                    {
+                        name: '热度评分',
+                        type: 'bar',
+                        data: data.values,
+                        barWidth: '60%',
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                { offset: 0, color: '#83bff6' },
+                                { offset: 0.5, color: '#188df0' },
+                                { offset: 1, color: '#188df0' }
+                            ]),
+                            borderRadius: [0, 4, 4, 0],
+                            shadowColor: 'rgba(0, 0, 0, 0.1)',
+                            shadowBlur: 5,
+                            shadowOffsetY: 2
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                    { offset: 0, color: '#2378f7' },
+                                    { offset: 0.7, color: '#2378f7' },
+                                    { offset: 1, color: '#83bff6' }
+                                ]),
+                                shadowColor: 'rgba(0, 0, 0, 0.2)',
+                                shadowBlur: 10
+                            }
+                        },
+                        animationDuration: 1000,
+                        animationEasing: 'elasticOut'
+                    }
+                ]
+            };
+            option && myChart.setOption(option, true);
+        }
+
+        // Responsive resize
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    });
+</script>
+
+<style>
+    /* Custom Styles */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .icon-circle {
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover .icon-circle {
+        transform: rotate(360deg);
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+
+    .form-select, .form-control {
+        transition: all 0.3s ease;
+    }
+
+    .form-select:focus, .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .breadcrumb-item a {
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb-item a:hover {
+        text-decoration: none;
+        opacity: 0.8;
+    }
+
+    .page-header {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* Loading animation enhancement */
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    .badge {
+        animation: pulse 2s infinite;
+    }
+</style>
+
+{% endblock %}

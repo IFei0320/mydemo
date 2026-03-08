@@ -51,12 +51,23 @@
                                                 <form method="get" class="search-filter-container">
                                                     <div class="search-box">
                                                         <i class="ti-search"></i>
-                                                        <input type="text" class="form-control search-name" placeholder="Search..."
-{#                                                               value="{{ search_name }}"#}
-                                                        >
+                                                           <input type="text"
+                                                                  class="form-control "
+                                                                  name="search_name"
+                                                                  placeholder="搜索景点名称..."
+                                                                    value="{{ search_name }}"
+                                                           >
+
                                                     </div>
                                                     <select class="form-select" name="province">
-                                                        <option value="">请选择省</option>
+                                                        <option value="">所有省份</option>
+                                                        {% for province in provinces %}
+                                                            <option value="{{ province }}"
+                                                                    {% if province == search_province %}
+                                                                    selected
+                                                                    {% endif %}
+                                                            >{{ province }}</option>
+                                                        {% endfor %}
                                                     </select>
                                                                                      <div class="filter-btn-group">
                                         <button type="submit" class="btn btn-out-dotted waves-effect waves-light btn-primary btn-square">
@@ -66,84 +77,134 @@
                                             <i class="ti-reload"></i>重置
                                         </a>
                                     </div>
+
+
                                                 </form>
+                                                <div class="card-block  table-border-style">
+
                                                 <div class="table-responsive">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
-                                                                <th>First Name</th>
-                                                                <th>Last Name</th>
-                                                                <th>Username</th>
+                                                                <th>景点名称</th>
+                                                                <th>图片</th>
+                                                                <th>所在地区</th>
+                                                                <th>城市</th>
+                                                                <th>标签</th>
+                                                                <th>实际票价</th>
+                                                                <th>省份</th>
+
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr class="table-active">
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
+                                                          {% for item in page_obj %}
+                                                            <tr >
+                                                                <th scope="row">{{ forloop.counter }}</th>
+                                                                <td>{{ item.name }}</td>
+                                                                <td>
+                                                                    <img src="{{ item.image_url }}"
+                                                                         alt=""
+                                                                        style="max-width: 200px; max-height: 100px;">
+                                                                </td>
+                                                                <td>{{ item.area }}</td>
+                                                                <td>{{ item.city }}</td>
+                                                                <td>{{ item.tags }}</td>
+                                                                <td>{{ item.actual_price }}</td>
+                                                                <td>{{ item.province }}</td>
+
                                                             </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr class="table-success">
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">4</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="table-warning">
-                                                                <th scope="row">5</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">6</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="table-danger">
-                                                                <th scope="row">7</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">8</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="table-info">
-                                                                <th scope="row">9</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
+                                                        {% endfor %}
+
                                                     </table>
                                                 </div>
+
+
+                                                <div class="pagination justify-content-center">
+                                <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?page=1{% if search_name %}&search_name={{ search_name }}{% endif %}{% if selected_province %}&province={{ selected_province }}{% endif %}">
+                                                &laquo; 首页
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=
+
+
+
+
+                                                    {{ page_obj.previous_page_number }}{% if search_name %}&search_name={{ search_name }}{% endif %}{% if selected_province %}&province={{ selected_province }}{% endif %}">
+                                                上一页
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for num in page_obj.paginator.page_range %}
+                                        {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="?page=
+
+
+
+
+                                                        {{ num }}{% if search_name %}&search_name={{ search_name }}{% endif %}{% if selected_province %}&province={{ selected_province }}{% endif %}">
+                                                    {{ num }}
+                                                </a>
+                                            </li>
+                                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=
+
+
+
+
+                                                        {{ num }}{% if search_name %}&search_name={{ search_name }}{% endif %}{% if selected_province %}&province={{ selected_province }}{% endif %}">
+                                                    {{ num }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if page_obj.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=
+
+
+
+
+                                                    {{ page_obj.next_page_number }}{% if search_name %}&search_name={{ search_name }}{% endif %}{% if selected_province %}&province={{ selected_province }}{% endif %}">
+                                                下一页
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=
+
+
+
+
+                                                    {{ page_obj.paginator.num_pages }}{% if search_name %}&search_name={{ search_name }}{% endif %}{% if selected_province %}&province={{ selected_province }}{% endif %}">
+                                                末页 &raquo;
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div class="text-center">
+                                当前显示第 {{ page_obj.start_index }} - {{ page_obj.end_index }}
+                                条，共 {{ page_obj.paginator.count }} 条记录
+                            </div>
+                                                    </div>
                                             </div>
                                         </div>
-                                        <!-- Contextual classes table ends -->
+
 
                                     </div>
-                                    <!-- Page-body end -->
+
                                 </div>
                             </div>
-                            <!-- Main-body end -->
+
 
                             <div id="styleSelector">
 
