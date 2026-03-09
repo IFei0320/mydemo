@@ -226,13 +226,7 @@ function toggleFullScreen() {
     }
 }
 
-$('body').append('' +
-    '<div class="fixed-button">' +
-        '<a href="http://www.mobanwang.com/mb/special/houtai/" target="_blank" class="btn btn-md btn-primary">' +
-            '<i class="fa fa-shopping-cart" aria-hidden="true"></i> ASS' +
-        '</a> ' +
-    '</div>' +
-'');
+
 var $window = $(window);
 var nav = $('.fixed-button');
 $window.scroll(function() {

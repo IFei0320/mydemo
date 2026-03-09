@@ -1,3 +1,4 @@
+import sql
 from django.http import JsonResponse
 
 from untils import util
@@ -60,3 +61,28 @@ def get_cityData(request):
     }
 
     return JsonResponse({"data": content})
+
+
+def part3(request):
+    sql3 = 'select * from part3'
+    res = util.query(sql3)
+
+    name_list = [i[1] for i in res]
+    value_list = [i[2] for i in res]
+
+    content = {
+        'name_list': name_list,
+        'value_list': value_list
+    }
+    return render(request, 'ksh/part3.html', content)
+
+
+def part4(request):
+    sql = 'select * from part4'
+
+    res = util.query(sql)
+    data_list = [{"name": i[1], "value": i[2]} for i in res]
+    content = {
+        'data_list': data_list
+    }
+    return render(request, 'ksh/part4.html', content)

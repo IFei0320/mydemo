@@ -1,0 +1,746 @@
+{#{%  extends "base.html" %}#}
+{#{% block content %}#}
+{#    {% load static %}#}
+{#                        <!-- Page-header start -->#}
+{#                        <div class="page-header">#}
+{#                            <div class="page-block">#}
+{#                                <div class="row align-items-center">#}
+{#                                    <div class="col-md-8">#}
+{#                                        <div class="page-header-title">#}
+{#                                            <h5 class="m-b-10">个人信息管理</h5>#}
+{#                                            <p class="m-b-0">个人信息管理</p>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="col-md-4">#}
+{#                                        <ul class="breadcrumb-title">#}
+{#                                            <li class="breadcrumb-item">#}
+{#                                                <a href="{% url 'home:index' %}"> <i class="fa fa-home"></i> </a>#}
+{#                                            </li>#}
+{#                                            <li class="breadcrumb-item"><a href="#!">个人中心</a>#}
+{#                                            </li>#}
+{#                                            <li class="breadcrumb-item"><a href="#!">景点评分信息</a>#}
+{#                                            </li>#}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <!-- Page-header end -->#}
+{#                        <div class="pcoded-inner-content">#}
+{#                            <!-- Main-body start -->#}
+{#                            <div class="main-body">#}
+{#                                <div class="page-wrapper">#}
+{#                                    <div class="page-body">#}
+{#                                      <div class="profile-container">#}
+{#    <!-- 消息提示 -->#}
+{#    {% if success %}#}
+{#    <div class="alert alert-success">#}
+{#        <i class="fa fa-check-circle"></i> {{ success }}#}
+{#    </div>#}
+{#    {% endif %}#}
+{##}
+{#    {% if error %}#}
+{#    <div class="alert alert-error">#}
+{#        <i class="fa fa-exclamation-circle"></i> {{ error }}#}
+{#    </div>#}
+{#    {% endif %}#}
+{##}
+{#    <!-- 头像上传区域 -->#}
+{#    <div class="avatar-section">#}
+{#        <h3 class="section-title">个人头像</h3>#}
+{#        <img id="avatarPreview"#}
+{#             src="{% if user.avatar %}{{ user.avatar }}{% else %}{% static 'assets/images/default-avatar.png' %}{% endif %}"#}
+{#             alt="头像预览"#}
+{#             class="avatar-preview">#}
+{#        <br>#}
+{#        <input type="file" id="avatarInput" class="avatar-input" accept="image/*">#}
+{#        <button type="button" class="avatar-upload-btn" onclick="document.getElementById('avatarInput').click()">#}
+{#            <i class="fa fa-camera"></i> 更换头像#}
+{#        </button>#}
+{#        <p class="file-hint">#}
+{#            支持 JPG、PNG、GIF 格式，大小不超过 2MB#}
+{#        </p>#}
+{#    </div>#}
+{##}
+{#    <!-- 个人信息表单 -->#}
+{#    <div class="form-section">#}
+{#        <h3 class="section-title">基本信息</h3>#}
+{#        <form method="post" id="profileForm">#}
+{#            {% csrf_token %}#}
+{#            <div class="form-group">#}
+{#                <label class="form-label">用户名</label>#}
+{#                <input type="text" class="form-control" name="username" value="{{ user.username }}" required>#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">#}
+{#                <label class="form-label">电子邮箱</label>#}
+{#                <input type="email" class="form-control" name="email" value="{{ user.uemail }}" required>#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">#}
+{#                <label class="form-label">手机号码</label>#}
+{#                <input type="tel" class="form-control" name="phone" value="{{ user.uhphone }}" required>#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">#}
+{#                <label class="form-label">地址</label>#}
+{#                <input type="text" class="form-control" name="address" value="{{ user.uaddress }}" required>#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">#}
+{#                <label class="form-label">邮编</label>#}
+{#                <input type="text" class="form-control" name="youbian" value="{{ user.uyoubian }}" required>#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">#}
+{#                <button type="submit" class="btn-primary">#}
+{#                    <i class="fa fa-save"></i>#}
+{#                    保存修改#}
+{#                </button>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#                                           #}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div id="styleSelector">#}
+{##}
+{#                            </div>#}
+{##}
+{#<script>#}
+{#$(document).ready(function () {#}
+{#    // 显示消息#}
+{#    function showMessage(message, type) {#}
+{#        // 创建消息元素#}
+{#        const messageDiv = $('<div class="alert"></div>')#}
+{#            .addClass(type === 'success' ? 'alert-success' : 'alert-error')#}
+{#            .html('<i class="fa fa-check-circle"></i> ' + message);#}
+{##}
+{#        // 插入到容器顶部#}
+{#        $('.profile-container').prepend(messageDiv);#}
+{##}
+{#        // 3秒后自动消失#}
+{#        setTimeout(() => {#}
+{#            messageDiv.fadeOut(() => messageDiv.remove());#}
+{#        }, 3000);#}
+{#    }#}
+{##}
+{#    // 头像上传处理#}
+{#    $('#avatarInput').on('change', function (e) {#}
+{#        const file = e.target.files[0];#}
+{#        if (!file) return;#}
+{##}
+{#        // 预览图片#}
+{#        const reader = new FileReader();#}
+{#        reader.onload = function (e) {#}
+{#            $('#avatarPreview').attr('src', e.target.result);#}
+{#        };#}
+{#        reader.readAsDataURL(file);#}
+{##}
+{#        // 上传文件#}
+{#        const formData = new FormData();#}
+{#        formData.append('avatar', file);#}
+{#        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');#}
+{##}
+{#        $.ajax({#}
+{#            url: '{% url "user:upload_avatar" %}',#}
+{#            type: 'POST',#}
+{#            data: formData,#}
+{#            processData: false,#}
+{#            contentType: false,#}
+{#            success: function (response) {#}
+{#                if (response.code === 200) {#}
+{#                    showMessage(response.msg, 'success');#}
+{#                    // 更新页面上的头像#}
+{#                    $('#avatarPreview').attr('src', response.avatar_url);#}
+{#                    // 更新导航栏头像（如果存在）#}
+{#                    const navAvatar = $('#main-menu-header img');#}
+{#                    if (navAvatar.length) {#}
+{#                        navAvatar.attr('src', response.avatar_url);#}
+{#                    }#}
+{#                } else {#}
+{#                    showMessage(response.msg, 'error');#}
+{#                }#}
+{#            },#}
+{#            error: function () {#}
+{#                showMessage('上传失败，请重试', 'error');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#});#}
+{#</script>#}
+{##}
+{##}
+{#{% endblock %}#}
+
+
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<!-- Page-header start -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">
+                        <i class="fas fa-user-circle text-primary mr-2"></i>个人信息管理
+                    </h5>
+                    <p class="m-b-0 text-muted">
+                        <i class="fas fa-id-card mr-1"></i>管理您的个人资料和账户信息
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home:index' %}" class="text-primary">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!" class="text-secondary">个人中心</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!" class="text-dark font-weight-bold">信息管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-header end -->
+
+<div class="pcoded-inner-content">
+    <!-- Main-body start -->
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+
+                        <!-- 消息提示容器 -->
+                        <div id="messageContainer">
+                            {% if success %}
+                            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle fa-lg mr-3"></i>
+                                    <div>
+                                        <strong>操作成功！</strong>
+                                        <p class="mb-0">{{ success }}</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endif %}
+
+                            {% if error %}
+                            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-circle fa-lg mr-3"></i>
+                                    <div>
+                                        <strong>操作失败！</strong>
+                                        <p class="mb-0">{{ error }}</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
+                            <div class="card-header bg-gradient-primary text-white py-4">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-circle bg-white text-primary mr-3" style="width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="m-0 font-weight-bold">个人资料设置</h5>
+                                            <small class="text-white-50">更新您的个人信息和头像</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-light text-primary px-3 py-2">
+                                        <i class="fas fa-shield-alt mr-1"></i>安全中心
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="row no-gutters">
+                                    <!-- 左侧：头像上传区域 -->
+                                    <div class="col-lg-4 bg-light border-right">
+                                        <div class="p-4 text-center">
+                                            <h6 class="font-weight-bold text-dark mb-4">
+                                                <i class="fas fa-camera text-primary mr-2"></i>头像设置
+                                            </h6>
+
+                                            <div class="avatar-wrapper mb-4">
+                                                <div class="avatar-preview-container position-relative mx-auto" style="width: 180px; height: 180px;">
+                                                    <img id="avatarPreview"
+                                                         src="{% if user.avatar %}{{ user.avatar }}{% else %}{% static 'assets/images/default-avatar.png' %}{% endif %}"
+                                                         alt="头像预览"
+                                                         class="rounded-circle shadow-lg w-100 h-100 object-fit-cover border-4 border-white"
+                                                         style="object-fit: cover; border: 4px solid white;">
+                                                    <div class="avatar-overlay rounded-circle d-flex align-items-center justify-content-center" onclick="document.getElementById('avatarInput').click()">
+                                                        <i class="fas fa-camera fa-2x text-white"></i>
+                                                    </div>
+                                                    <div class="avatar-status online"></div>
+                                                </div>
+                                            </div>
+
+                                            <input type="file" id="avatarInput" class="d-none" accept="image/*">
+
+                                            <button type="button" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm mb-3" onclick="document.getElementById('avatarInput').click()">
+                                                <i class="fas fa-cloud-upload-alt mr-2"></i>上传新头像
+                                            </button>
+
+                                            <p class="text-muted small mb-0">
+                                                <i class="fas fa-info-circle mr-1"></i>
+                                                支持 JPG、PNG、GIF 格式<br>
+                                                文件大小不超过 2MB
+                                            </p>
+
+                                            <div class="mt-4 pt-4 border-top">
+                                                <div class="text-left">
+                                                    <h6 class="font-weight-bold text-dark mb-3">账户信息</h6>
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span class="text-muted">注册时间</span>
+                                                        <span class="font-weight-bold">{{ user.date_joined|default:"--" }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span class="text-muted">用户ID</span>
+                                                        <span class="font-weight-bold">#{{ user.id }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-muted">账户状态</span>
+                                                        <span class="badge badge-success">正常</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 右侧：个人信息表单 -->
+                                    <div class="col-lg-8">
+                                        <div class="p-4 p-lg-5">
+                                            <h6 class="font-weight-bold text-dark mb-4 pb-2 border-bottom">
+                                                <i class="fas fa-edit text-success mr-2"></i>基本信息编辑
+                                            </h6>
+
+                                            <form method="post" id="profileForm" class="needs-validation" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label font-weight-bold text-dark">
+                                                                <i class="fas fa-user text-primary mr-2"></i>用户名
+                                                            </label>
+                                                            <div class="input-group shadow-sm rounded-lg overflow-hidden">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text bg-primary text-white border-0">
+                                                                        <i class="fas fa-id-badge"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text"
+                                                                       class="form-control border-0"
+                                                                       name="username"
+                                                                       value="{{ user.username }}"
+                                                                       required
+                                                                       placeholder="请输入用户名">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label font-weight-bold text-dark">
+                                                                <i class="fas fa-envelope text-info mr-2"></i>电子邮箱
+                                                            </label>
+                                                            <div class="input-group shadow-sm rounded-lg overflow-hidden">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text bg-info text-white border-0">
+                                                                        <i class="fas fa-at"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="email"
+                                                                       class="form-control border-0"
+                                                                       name="email"
+                                                                       value="{{ user.uemail }}"
+                                                                       required
+                                                                       placeholder="example@email.com">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label font-weight-bold text-dark">
+                                                                <i class="fas fa-phone text-success mr-2"></i>手机号码
+                                                            </label>
+                                                            <div class="input-group shadow-sm rounded-lg overflow-hidden">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text bg-success text-white border-0">
+                                                                        <i class="fas fa-mobile-alt"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="tel"
+                                                                       class="form-control border-0"
+                                                                       name="phone"
+                                                                       value="{{ user.uhphone }}"
+                                                                       required
+                                                                       placeholder="请输入手机号">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label font-weight-bold text-dark">
+                                                                <i class="fas fa-mail-bulk text-warning mr-2"></i>邮政编码
+                                                            </label>
+                                                            <div class="input-group shadow-sm rounded-lg overflow-hidden">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text bg-warning text-white border-0">
+                                                                        <i class="fas fa-hashtag"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text"
+                                                                       class="form-control border-0"
+                                                                       name="youbian"
+                                                                       value="{{ user.uyoubian }}"
+                                                                       required
+                                                                       placeholder="6位邮政编码">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label font-weight-bold text-dark">
+                                                                <i class="fas fa-map-marker-alt text-danger mr-2"></i>详细地址
+                                                            </label>
+                                                            <div class="input-group shadow-sm rounded-lg overflow-hidden">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text bg-danger text-white border-0">
+                                                                        <i class="fas fa-home"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text"
+                                                                       class="form-control border-0"
+                                                                       name="address"
+                                                                       value="{{ user.uaddress }}"
+                                                                       required
+                                                                       placeholder="请输入您的详细地址">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-4 pt-3 border-top">
+                                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" onclick="history.back()">
+                                                            <i class="fas fa-arrow-left mr-2"></i>返回
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">
+                                                            <i class="fas fa-save mr-2"></i>保存修改
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="styleSelector"></div>
+</div>
+
+<script>
+$(document).ready(function () {
+    // 显示消息（自动消失）
+    function showMessage(message, type) {
+        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const title = type === 'success' ? '操作成功！' : '操作失败！';
+
+        const messageDiv = $(`
+            <div class="alert ${alertClass} alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas ${icon} fa-lg mr-3"></i>
+                    <div>
+                        <strong>${title}</strong>
+                        <p class="mb-0">${message}</p>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `);
+
+        $('#messageContainer').html(messageDiv);
+
+        setTimeout(() => {
+            messageDiv.alert('close');
+        }, 5000);
+    }
+
+    // 头像上传处理
+    $('#avatarInput').on('change', function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 验证文件类型
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            showMessage('请上传 JPG、PNG 或 GIF 格式的图片', 'error');
+            return;
+        }
+
+        // 验证文件大小 (2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            showMessage('图片大小不能超过 2MB', 'error');
+            return;
+        }
+
+        // 预览图片
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#avatarPreview').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+
+        // 上传文件
+        const formData = new FormData();
+        formData.append('avatar', file);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+        // 显示加载状态
+        const uploadBtn = $('.avatar-upload-btn');
+        const originalText = uploadBtn.html();
+        uploadBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i>上传中...');
+
+        $.ajax({
+            url: '{% url "user:upload_avatar" %}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.code === 200) {
+                    showMessage(response.msg, 'success');
+                    $('#avatarPreview').attr('src', response.avatar_url);
+
+                    // 更新导航栏头像
+                    const navAvatar = $('.navbar-avatar, #main-menu-header img, .user-avatar');
+                    if (navAvatar.length) {
+                        navAvatar.attr('src', response.avatar_url);
+                    }
+                } else {
+                    showMessage(response.msg || '上传失败', 'error');
+                    // 恢复原头像
+                    $('#avatarPreview').attr('src', '{{ user.avatar|default:"/static/assets/images/default-avatar.png" }}');
+                }
+            },
+            error: function (xhr) {
+                let errorMsg = '上传失败，请重试';
+                if (xhr.responseJSON && xhr.responseJSON.msg) {
+                    errorMsg = xhr.responseJSON.msg;
+                }
+                showMessage(errorMsg, 'error');
+            },
+            complete: function () {
+                uploadBtn.prop('disabled', false).html(originalText);
+                // 清空input以便再次选择同一文件
+                $('#avatarInput').val('');
+            }
+        });
+    });
+
+    // 表单验证
+    $('#profileForm').on('submit', function(e) {
+        if (this.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+            showMessage('请填写所有必填项', 'error');
+        }
+        $(this).addClass('was-validated');
+    });
+});
+</script>
+
+<style>
+    /* 自定义样式 */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .rounded-xl {
+        border-radius: 20px;
+    }
+
+    .border-4 {
+        border-width: 4px !important;
+    }
+
+    .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover .icon-circle {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .avatar-wrapper {
+        position: relative;
+    }
+
+    .avatar-preview-container {
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .avatar-preview-container:hover {
+        transform: scale(1.05);
+    }
+
+    .avatar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .avatar-preview-container:hover .avatar-overlay {
+        opacity: 1;
+    }
+
+    .avatar-status {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        background: #28a745;
+        border: 3px solid white;
+        border-radius: 50%;
+    }
+
+    .avatar-status.online {
+        background: #28a745;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        border-color: #667eea;
+    }
+
+    .input-group-text {
+        width: 45px;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:disabled {
+        background: #ccc;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .page-header {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .breadcrumb-item a {
+        transition: all 0.3s ease;
+    }
+
+    .breadcrumb-item a:hover {
+        text-decoration: none;
+        opacity: 0.8;
+    }
+
+    .alert {
+        border: none;
+        border-radius: 12px;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-left: 5px solid #28a745;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border-left: 5px solid #dc3545;
+    }
+
+    .object-fit-cover {
+        object-fit: cover;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 991px) {
+        .border-right {
+            border-right: none !important;
+            border-bottom: 1px solid #dee2e6;
+        }
+    }
+
+    /* 动画效果 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert {
+        animation: fadeIn 0.3s ease;
+    }
+</style>
+
+{% endblock %}

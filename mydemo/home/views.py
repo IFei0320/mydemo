@@ -1,7 +1,10 @@
+import json
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.shortcuts import render
 from numpy.core.multiarray import item
 
+from ai.Get_Message import Get_DeepSeek
 from home.models import TravelInfo
 from django.db.models import Q, Sum
 from untils import util
@@ -90,3 +93,147 @@ def travel_list(request):
 
 
     return render(request, 'travel_list.html', content)
+
+
+# def get_ai_travelRoute(request):
+#     if request.method == 'POST':
+#         try:
+#             # 解析请求数据
+#             if hasattr(request, 'data'):
+#                 data = request.data
+#             else:
+#                 try:
+#                     data = json.loads(request.body.decode('utf-8'))
+#                 except json.JSONDecodeError:
+#                     return JsonResponse({
+#                         'code': 400,
+#                         'message': '无效的json数据',
+#                         'data': None
+#                     })
+#
+#             # 验证必要字段
+#             required_fields = ['city', 'season', 'days']
+#             for field in required_fields:
+#                 if field not in data:
+#                     return JsonResponse({
+#                         'code': 400,
+#                         'message': f'缺少必要字段: {field}',
+#                         'data': None
+#                     })
+#
+#             # 处理预算参数
+#             budget = data.get('budget', 0)
+#             if budget == 0:
+#                 budget = '无预算'
+#
+#             # 调用DeepSeek生成旅游计划
+#             dp = Get_DeepSeek()
+#             result = dp._get_travel_plan(
+#                 city=data['city'],
+#                 season=data['season'],
+#                 days=data['days'],
+#                 budget=budget
+#             )
+#
+#             # 返回结果
+#             if result['code'] == 200:
+#                 return JsonResponse({
+#                     'code': 200,
+#                     'message': '旅游路线生成成功',
+#                     'data': result['data']
+#                 })
+#             else:
+#                 return JsonResponse({
+#                     'code': result['code'],
+#                     'message': '旅游路线生成失败',
+#                     'data': None
+#                 })
+#
+#         except Exception as e:
+#             return JsonResponse({
+#                 "code": 500,
+#                 "message": f"服务器内部错误: {str(e)}",
+#                 "data": None
+#             })
+#
+#
+#
+#
+#     return render(request, 'ksh/get_ai_travelRoute.html')
+
+# ... existing code ...
+def get_ai_travelRoute(request):
+    if request.method == 'POST':
+        try:
+            # 解析请求数据
+            if hasattr(request, 'data'):
+                data = request.data
+            else:
+                try:
+                    data = json.loads(request.body.decode('utf-8'))
+                except json.JSONDecodeError:
+                    return JsonResponse({
+                        'code': 400,
+                        'message': '无效的 json 数据',
+                        'data': None
+                    })
+
+            # 验证必要字段
+            required_fields = ['city', 'season', 'days']
+            for field in required_fields:
+                if field not in data:
+                    return JsonResponse({
+                        'code': 400,
+                        'message': f'缺少必要字段：{field}',
+                        'data': None
+                    })
+
+            # 处理预算参数
+            budget = data.get('budget', 0)
+            if budget == 0:
+                budget = '无预算'
+
+            print(f"DEBUG: 调用 Get_DeepSeek, 参数：city={data['city']}, season={data['season']}, days={data['days']}, budget={budget}")
+
+            # 调用 DeepSeek 生成旅游计划
+            dp = Get_DeepSeek()
+            result = dp._get_travel_plan(
+                city=data['city'],
+                season=data['season'],
+                days=data['days'],
+                budget=budget
+            )
+
+            print(f"DEBUG: Get_DeepSeek 返回结果：{result}")
+
+            # 返回结果
+            if result['code'] == 200:
+                return JsonResponse({
+                    'code': 200,
+                    'message': '旅游路线生成成功',
+                    'data': result['data']
+                })
+            else:
+                error_message = result.get('message', '未知错误')
+                raw_result = result.get('raw', '')
+                print(f"ERROR: 旅游路线生成失败 - {error_message}")
+                print(f"ERROR: AI 原始返回：{raw_result}")
+                return JsonResponse({
+                    'code': result['code'],
+                    'message': f'旅游路线生成失败：{error_message}',
+                    'data': None
+                })
+
+        except Exception as e:
+            import traceback
+            error_detail = traceback.format_exc()
+            print(f"ERROR: 服务器异常 - {str(e)}")
+            print(f"ERROR: 详细堆栈：{error_detail}")
+            return JsonResponse({
+                "code": 500,
+                "message": f"服务器内部错误：{str(e)}",
+                "data": None
+            })
+
+
+    return render(request, 'ksh/get_ai_travelRoute.html')

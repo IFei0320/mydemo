@@ -1,0 +1,101 @@
+{%  extends "base.html" %}
+{% block content %}
+    {% load static %}
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">景点位置信息</h5>
+                                            <p class="m-b-0">景点区域分布</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="breadcrumb-title">
+                                            <li class="breadcrumb-item">
+                                                <a href="{% url 'home:index' %}"> <i class="fa fa-home"></i> </a>
+                                            </li>
+                                            <li class="breadcrumb-item"><a href="#!">数据分析可视化</a>
+                                            </li>
+                                            <li class="breadcrumb-item"><a href="#!">景点区域分析</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <!-- Main-body start -->
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <!-- SITE VISIT CHART start -->
+                                            <div class="col-md-12 col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>景点分布</h5>
+
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="part4" style="width: 100%; height: 600px;"></div>
+                                                    </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- SITE VISIT CHART Ends -->
+                                            <!-- Bar Chart start -->
+{#                                            <div class="col-md-12 col-lg-6">#}
+{#                                                <div class="card">#}
+{#                                                    <div class="card-header">#}
+{#                                                        <h5>各省份景点平均评分</h5>#}
+{##}
+{#                                                    </div>#}
+{#                                                    <div class="card-block">#}
+{#                                                        <div id="part3"  style="width: 100%;height: 600px;"  ></div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+
+                                            <!-- Bar Chart Ends -->
+
+                                            <!-- Donut chart Ends -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+
+    <script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>
+     <script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+
+<script>
+
+var chartDom = document.getElementById('part4');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+  series: [
+    {
+      type: 'treemap',
+      data: [{{ data_list|safe }}
+
+      ]
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+
+
+
+
+</script>
+{% endblock %}

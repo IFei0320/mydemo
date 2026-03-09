@@ -1,153 +1,535 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     {% load static %}
-    <title>Mega Able bootstrap admin template</title>
+    <title>旅游数据分析平台 - 登录</title>
 
-      <!-- Meta -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-      <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-        <!-- Favicon icon -->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="智能旅游数据分析平台 - 登录" />
+    <meta name="keywords" content="旅游,数据分析,登录,admin" />
 
-     <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+    <!-- Favicon icon -->
+    <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+
     <!-- Google font-->
-     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:400,500,700" rel="stylesheet">
+
     <!-- Required Fremwork -->
-     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap/css/bootstrap.min.css' %}">
     <!-- waves.css -->
-     <link rel="stylesheet" href="{% static 'assets/pages/waves/css/waves.min.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'assets/pages/waves/css/waves.min.css' %}" type="text/css" media="all">
     <!-- themify-icons line icon -->
-     <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/themify-icons/themify-icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/themify-icons/themify-icons.css' %}">
     <!-- ico font -->
-     <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/icofont/css/icofont.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/icofont/css/icofont.css' %}">
     <!-- Font Awesome -->
-     <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/font-awesome/css/font-awesome.min.css' %}">
     <!-- Style.css -->
-     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+
+    <!-- 自定义样式 -->
+    <style>
+        /* 页面背景优化 */
+        .login-block {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%);
+            z-index: 0;
+        }
+
+        .login-block .container-fluid {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo区域美化 */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo-section img {
+            max-height: 80px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-section img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
+
+        .logo-subtext {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* 登录卡片美化 */
+        .auth-box {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-box .card-block {
+            padding: 40px;
+        }
+
+        /* 标题样式 */
+        .auth-box h3 {
+            color: #333;
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .auth-box h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        /* 输入框样式优化 */
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            height: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .float-label {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 15px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: transparent;
+            padding: 0 5px;
+        }
+
+        .form-control:focus ~ .float-label,
+        .form-control:not(:placeholder-shown) ~ .float-label {
+            top: 0;
+            font-size: 12px;
+            color: #667eea;
+            background: white;
+        }
+
+        .form-bar {
+            display: none;
+        }
+
+        /* 图标装饰 */
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus ~ .input-icon {
+            color: #667eea;
+        }
+
+        /* 记住我和忘记密码 */
+        .remember-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0;
+        }
+
+        .checkbox-fade label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .cr {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="checkbox"]:checked ~ .cr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+        }
+
+        .cr-icon {
+            color: white;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        input[type="checkbox"]:checked ~ .cr .cr-icon {
+            opacity: 1;
+        }
+
+        .text-inverse {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #764ba2;
+            text-decoration: none;
+        }
+
+        /* 登录按钮 */
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            height: 50px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-login:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* 分隔线 */
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+        }
+
+        .divider-text {
+            background: white;
+            padding: 0 20px;
+            color: #999;
+            font-size: 13px;
+            position: relative;
+        }
+
+        /* 注册提示 */
+        .register-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .register-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .register-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .register-link:hover {
+            color: #764ba2;
+            text-decoration: none;
+        }
+
+        /* 小logo */
+        .small-logo {
+            width: 40px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .small-logo:hover {
+            opacity: 1;
+            transform: rotate(10deg);
+        }
+
+        /* 动画 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 加载动画优化 */
+        .theme-loader {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* 响应式 */
+        @media (max-width: 576px) {
+            .auth-box .card-block {
+                padding: 30px 20px;
+            }
+
+            .logo-text {
+                font-size: 22px;
+            }
+
+            .remember-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        /* 输入框图标 */
+        .input-group-icon {
+            position: relative;
+        }
+
+        .input-group-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .input-group-icon .form-control {
+            padding-left: 45px;
+        }
+
+        .input-group-icon .form-control:focus ~ i {
+            color: #667eea;
+        }
+    </style>
 </head>
-  <body themebg-pattern="theme1">
-  <!-- Pre-loader start -->
-  <div class="theme-loader">
-      <div class="loader-track">
-          <div class="preloader-wrapper">
-              <div class="spinner-layer spinner-blue">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-              <div class="spinner-layer spinner-red">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
 
-              <div class="spinner-layer spinner-yellow">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-
-              <div class="spinner-layer spinner-green">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- Pre-loader end -->
+<body themebg-pattern="theme1">
+    <!-- Pre-loader start -->
+    <div class="theme-loader">
+        <div class="loader-track">
+            <div class="preloader-wrapper">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left"><div class="circle"></div></div>
+                    <div class="gap-patch"><div class="circle"></div></div>
+                    <div class="circle-clipper right"><div class="circle"></div></div>
+                </div>
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left"><div class="circle"></div></div>
+                    <div class="gap-patch"><div class="circle"></div></div>
+                    <div class="circle-clipper right"><div class="circle"></div></div>
+                </div>
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left"><div class="circle"></div></div>
+                    <div class="gap-patch"><div class="circle"></div></div>
+                    <div class="circle-clipper right"><div class="circle"></div></div>
+                </div>
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left"><div class="circle"></div></div>
+                    <div class="gap-patch"><div class="circle"></div></div>
+                    <div class="circle-clipper right"><div class="circle"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pre-loader end -->
 
     <section class="login-block">
         <!-- Container-fluid starts -->
-        <div class="container-fluid" style="background-image: url({% static 'assets/images/login.jpg' %}); min-height: 100vh; background-size: cover;">
-            <div class="row">
-                <div class="col-sm-12">
+        <div class="container-fluid" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+            <div class="row w-100 justify-content-center">
+                <div class="col-sm-12 col-md-8 col-lg-5 col-xl-4">
+
+                    <!-- Logo区域 -->
+                    <div class="logo-section">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo">
+                        <div class="logo-text">旅游数据分析平台</div>
+                        <div class="logo-subtext">Intelligent Tourism Data Analytics</div>
+                    </div>
+
                     <!-- Authentication card start -->
-
-                        <form class="md-float-material form-material"  id="loginForm">
-                          <div class="text-center" style="color: white; font-size: 25px;">
-    <img src="{% static 'assets/images/logo.png' %}" alt="logo.png">
-</div>
-
-                            <div class="auth-box card">
-                                <div class="card-block">
-                                    <div class="row m-b-20">
-                                        <div class="col-md-12">
-                                            <h3 class="text-center">Sign In</h3>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <input type="text" name="username" class="form-control" required="">
-                                        <span class="form-bar"></span>
-                                        <label class="float-label">Your Email Address</label>
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <input type="password" name="password" class="form-control" required="">
-                                        <span class="form-bar"></span>
-                                        <label class="float-label">Password</label>
-                                    </div>
-                                    <div class="row m-t-25 text-left">
-                                        <div class="col-12">
-                                            <div class="checkbox-fade fade-in-primary d-">
-                                                <label>
-                                                       <input type="checkbox" value="1"  id="agree_terms"  checked>
-                                                    <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                                    <span class="text-inverse">Remember me</span>
-                                                </label>
-                                            </div>
-                                            <div class="forgot-phone text-right f-right">
-                                                <a href="#" class="text-right f-w-600"> Forgot Password?</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row m-t-30">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign in</button>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div class="row">
-                                        <div class="col-md-10">
-    <p class="text-inverse text-left m-b-0">还没有账户？</p>
-    <p class="text-inverse text-left"><a href="{% url 'user:register' %}"><b>点击注册</b></a></p>
-</div>
-
-                                        <div class="col-md-2">
-                                           <img src="{% static 'assets/images/auth/Logo-small-bottom.png' %}" alt="small-logo.png">
-                                        </div>
+                    <form class="md-float-material form-material" id="loginForm">
+                        <div class="auth-box card">
+                            <div class="card-block">
+                                <!-- 标题 -->
+                                <div class="row m-b-20">
+                                    <div class="col-md-12 text-center">
+                                        <h3>用户登录</h3>
+                                        <p class="text-muted mt-3">欢迎回来，请登录您的账户</p>
                                     </div>
                                 </div>
+
+                                <!-- 用户名输入 -->
+                                <div class="form-group input-group-icon">
+                                    <i class="fa fa-user"></i>
+                                    <input type="text" name="username" class="form-control" placeholder=" " required>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">用户名 / 邮箱地址</label>
+                                </div>
+
+                                <!-- 密码输入 -->
+                                <div class="form-group input-group-icon">
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" name="password" class="form-control" placeholder=" " required>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">登录密码</label>
+                                </div>
+
+                                <!-- 记住我和忘记密码 -->
+                                <div class="remember-section">
+                                    <div class="checkbox-fade fade-in-primary">
+                                        <label>
+                                            <input type="checkbox" value="1" id="agree_terms" checked>
+                                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                            <span class="text-inverse">记住我</span>
+                                        </label>
+                                    </div>
+                                    <a href="#" class="forgot-password">忘记密码？</a>
+                                </div>
+
+                                <!-- 登录按钮 -->
+                                <div class="row m-t-30">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20 btn-login">
+                                            <i class="fa fa-sign-in mr-2"></i>立即登录
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 分隔线 -->
+                                <div class="divider">
+                                    <span class="divider-text">还没有账户？</span>
+                                </div>
+
+                                <!-- 注册提示 -->
+                                <div class="register-section">
+                                    <div class="register-text">
+                                        新用户？<a href="{% url 'user:register' %}" class="register-link">立即注册</a>
+                                    </div>
+                                    <img src="{% static 'assets/images/auth/Logo-small-bottom.png' %}" alt="small-logo" class="small-logo">
+                                </div>
                             </div>
-                        </form>
-                        <!-- end of form -->
+                        </div>
+                    </form>
+                    <!-- end of form -->
                 </div>
                 <!-- end of col-sm-12 -->
             </div>
@@ -156,8 +538,8 @@
         <!-- end of container-fluid -->
     </section>
     <!-- Warning Section Ends -->
+
     <!-- Required Jquery -->
-  <!-- Scripts -->
     <script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/jquery-ui/jquery-ui.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/popper.js/popper.min.js' %}"></script>
@@ -176,40 +558,46 @@
     <script type="text/javascript" src="{% static 'bower_components/jquery-i18next/js/jquery-i18next.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/common-pages.js' %}"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
 
-  <script>
-$(document).ready(function() {
-    $('#loginForm').on('submit', function(e) {
-        e.preventDefault();
+                var formData = $(this).serialize();
 
-        var formData = $(this).serialize();
-
-        if (!$('#agree_terms').is(':checked')) {
-            alert('请阅读并同意条款和条件！');
-            return false;
-        }
-
-        $.ajax({
-           url: "{% url 'user:login' %}",
-            type: "post",
-            dataType: 'json',
-            data: formData,
-            success: function(response) {
-                if(response.code === 200) {
-
-                    window.location.href = "/mydemo/";
-                } else {
-                    alert(response.msg);
+                if (!$('#agree_terms').is(':checked')) {
+                    alert('请阅读并同意条款和条件！');
+                    return false;
                 }
-            },  // 在这里添加了缺失的逗号
-            error: function(xhr, status, error) {
-                alert('注册失败，请稍后重试！');
-            }
+
+                // 按钮加载状态
+                var $btn = $('.btn-login');
+                var originalText = $btn.html();
+                $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin mr-2"></i>登录中...');
+
+                $.ajax({
+                    url: "{% url 'user:login' %}",
+                    type: "post",
+                    dataType: 'json',
+                    data: formData,
+                    success: function(response) {
+                        if(response.code === 200) {
+                            $btn.html('<i class="fa fa-check mr-2"></i>登录成功');
+                            setTimeout(function() {
+                                window.location.href = "/mydemo/";
+                            }, 500);
+                        } else {
+                            alert(response.msg);
+                            $btn.prop('disabled', false).html(originalText);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('登录失败，请稍后重试！');
+                        $btn.prop('disabled', false).html(originalText);
+                    }
+                });
+            });
         });
-    });
-});
-</script>
-
+    </script>
 </body>
-
 </html>
