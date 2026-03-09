@@ -75,27 +75,67 @@
     <script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>
      <script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
 
+<!-- ... existing code ... -->
 <script>
 
 var chartDom = document.getElementById('part4');
 var myChart = echarts.init(chartDom);
 var option;
 
+// 确保数据正确格式化
+var rawData = {{ data_list|safe }};
+var data = rawData.map(function(item) {
+    return {
+        name: item.name,
+        value: parseFloat(item.value) || 0
+    };
+});
+
 option = {
+  tooltip: {
+    trigger: 'item',
+    formatter: function (params) {
+      return params.name + '<br/>数量：' + params.value;
+    }
+  },
   series: [
     {
       type: 'treemap',
-      data: [{{ data_list|safe }}
-
-      ]
+      width: '90%',
+      height: '90%',
+      left: '5%',
+      top: '5%',
+      label: {
+        show: true,
+        formatter: '{b}'
+      },
+      itemStyle: {
+        borderColor: '#fff'
+      },
+      data: data
     }
   ]
 };
 
-option && myChart.setOption(option);
-
-
-
+if (data.length > 0) {
+    myChart.setOption(option);
+} else {
+    // 显示无数据提示
+    option = {
+        title: {
+            text: '暂无数据',
+            left: 'center',
+            top: 'center',
+            textStyle: {
+                fontSize: 24,
+                color: '#999'
+            }
+        }
+    };
+    myChart.setOption(option);
+}
 
 </script>
+<!-- ... existing code ... -->
+
 {% endblock %}

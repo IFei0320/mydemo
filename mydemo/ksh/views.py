@@ -77,11 +77,35 @@ def part3(request):
     return render(request, 'ksh/part3.html', content)
 
 
+# def part4(request):
+#     sql = 'select * from part4'
+#
+#     res = util.query(sql)
+#     data_list = [{"name": i[1], "value": i[2]} for i in res]
+#     content = {
+#         'data_list': data_list
+#     }
+#     return render(request, 'ksh/part4.html', content)
+
 def part4(request):
     sql = 'select * from part4'
 
     res = util.query(sql)
-    data_list = [{"name": i[1], "value": i[2]} for i in res]
+    if res:
+        data_list = [{"name": str(i[1]), "value": float(i[2]) if i[2] else 0} for i in res]
+    else:
+        # 如果 part4 表没有数据，从 TravelInfo 表查询
+        from home.models import TravelInfo
+        from django.db.models import Count
+
+        # 按区域统计景点数量
+        area_stats = TravelInfo.objects.values('area').annotate(
+            count=Count('id')
+        ).order_by('-count')
+
+        data_list = [{"name": item['area'] or '未知区域', "value": item['count']}
+                     for item in area_stats if item['count'] > 0]
+
     content = {
         'data_list': data_list
     }
