@@ -10,7 +10,7 @@ from openai import OpenAI
 
 
 class Get_DeepSeek:
-    def __init__(self,model:str="deepseek-chat"):
+    def __init__(self,model:str="deepseek-v4-flash"):
         self.model = model
         self.client = OpenAI(
             api_key='sk-d2e0034a6f264140a8017b1e98359312',
@@ -189,7 +189,3 @@ class Get_DeepSeek:
         print("最终数据:", df.to_dict(orient='records'))
 
         return df.to_dict(orient='records')
-
-
-
-
