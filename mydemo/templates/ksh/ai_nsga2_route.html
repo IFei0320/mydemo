@@ -452,27 +452,27 @@
 </div>
 
 <!-- 滴答导出弹窗 -->
-<div id="didaModalMask" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999;">
-    <div style="max-width:480px; margin:10vh auto; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,0.25);">
-        <div style="padding:14px 18px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:#fff;">
+<div id="didaModalMask" class="modal-mask" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-header-gradient">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="m-0 font-weight-bold"><i class="fas fa-list-check mr-2"></i>添加到滴答清单</h5>
-                <button id="closeDidaModalBtn" type="button" style="background:none;border:none;color:#fff;font-size:22px;line-height:1;">&times;</button>
+                <button id="closeDidaModalBtn" type="button" class="modal-close-btn">&times;</button>
             </div>
         </div>
-        <div style="padding:18px;">
-            <p class="text-muted mb-2">请选择你的出发时间：</p>
-            <input id="didaDepartureInput" type="datetime-local" class="form-control mb-3" />
-            <small class="text-muted d-block mb-3">将自动写入你配置的“旅游规划”清单。</small>
+        <div class="modal-body">
+            <p class="text-muted mb-2"><i class="far fa-calendar-alt mr-1"></i>请选择你的出发时间：</p>
+            <input id="didaDepartureInput" type="datetime-local" class="form-control modal-input mb-3" />
+            <small class="text-muted d-block mb-3"><i class="fas fa-info-circle mr-1"></i>将自动写入你配置的“旅游规划”清单。</small>
             <div class="text-right">
-                <button id="cancelDidaBtn" type="button" class="btn btn-light mr-2">取消</button>
-                <button id="confirmDidaBtn" type="button" class="btn btn-warning">
+                <button id="cancelDidaBtn" type="button" class="btn btn-outline-secondary rounded-pill px-4 mr-2">取消</button>
+                <button id="confirmDidaBtn" type="button" class="btn btn-login rounded-pill px-4">
                     <i class="fas fa-cloud-upload-alt mr-1"></i>确认添加
                 </button>
             </div>
         </div>
     </div>
-</div>
+</div></div>
 
 <script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
 <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=cfETvEepoN8AZZADHeRsFDymt6Lu55Er"></script>
@@ -681,7 +681,8 @@ function sanitizeHtmlForPreview(rawHtml) {
     if (!rawHtml) return "";
     let cleaned = rawHtml.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
     if (!/<!doctype html>/i.test(cleaned)) {
-        cleaned = `<!doctype html><html><head><meta charset="utf-8"><title>AI报告</title><base target="_blank"></head><body>${cleaned}</body></html>`;
+        cleaned = `<!doctype html><html><head><meta charset="utf-8"><title>AI报告</title><base target="_blank"><base target="_blank">
+</head><body>${cleaned}</body></html>`;
     }
     return cleaned;
 }
@@ -1365,6 +1366,74 @@ $("#plannerForm").on("submit", function (e) {
             height: 28px;
             font-size: 12px;
         }
+    }
+
+    /* ===== 弹窗系统 ===== */
+    .modal-mask {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        backdrop-filter: blur(4px);
+    }
+    .modal-card {
+        max-width: 480px;
+        width: 100%;
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+        from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-header-gradient {
+        padding: 18px 22px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+    .modal-close-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        line-height: 1;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .modal-close-btn:hover {
+        background: rgba(255,255,255,0.2);
+        transform: rotate(90deg);
+    }
+    .modal-body {
+        padding: 24px;
+    }
+    .modal-input {
+        height: 48px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 10px 15px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #fafafa;
+    }
+    .modal-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        background: white;
+        outline: none;
     }
 </style>
 
