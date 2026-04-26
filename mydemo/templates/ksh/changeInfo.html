@@ -287,22 +287,22 @@
                                             <div class="avatar-wrapper mb-4">
                                                 <div class="avatar-preview-container position-relative mx-auto" style="width: 180px; height: 180px;">
                                                     <img id="avatarPreview"
-                                                         src="{% if user.avatar %}{{ user.avatar }}{% else %}{% static 'assets/images/default-avatar.png' %}{% endif %}"
+                                                         src="{% if user.avatar %}{{ user.avatar }}{% else %}{% static 'assets/images/default-avatar.svg' %}{% endif %}"
                                                          alt="头像预览"
                                                          class="rounded-circle shadow-lg w-100 h-100 object-fit-cover border-4 border-white"
                                                          style="object-fit: cover; border: 4px solid white;">
-                                                    <div class="avatar-overlay rounded-circle d-flex align-items-center justify-content-center" onclick="document.getElementById('avatarInput').click()">
+                                                    <label for="avatarInput" class="avatar-overlay rounded-circle d-flex align-items-center justify-content-center mb-0">
                                                         <i class="fas fa-camera fa-2x text-white"></i>
-                                                    </div>
+                                                    </label>
                                                     <div class="avatar-status online"></div>
                                                 </div>
                                             </div>
 
-                                            <input type="file" id="avatarInput" class="d-none" accept="image/*">
+                                            <input type="file" id="avatarInput" class="avatar-file-input" accept="image/*">
 
-                                            <button type="button" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm mb-3" onclick="document.getElementById('avatarInput').click()">
+                                            <label for="avatarInput" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm mb-3 avatar-upload-btn">
                                                 <i class="fas fa-cloud-upload-alt mr-2"></i>上传新头像
-                                            </button>
+                                            </label>
 
                                             <p class="text-muted small mb-0">
                                                 <i class="fas fa-info-circle mr-1"></i>
@@ -399,7 +399,7 @@
                                                                 <input type="tel"
                                                                        class="form-control border-0"
                                                                        name="phone"
-                                                                       value="{{ user.uhphone }}"
+                                                                       value="{{ user.uphone }}"
                                                                        required
                                                                        placeholder="请输入手机号">
                                                             </div>
@@ -477,6 +477,106 @@
 </div>
 
 <script>
+let avatarPickerPending = false;
+
+if (!window.jQuery) {
+    const messageContainer = document.getElementById('messageContainer');
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const uploadBtn = document.querySelector('.avatar-upload-btn');
+    const profileForm = document.getElementById('profileForm');
+
+    function showMessageNative(message, type) {
+        if (!messageContainer) return;
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const title = type === 'success' ? '操作成功！' : '操作失败！';
+        messageContainer.innerHTML = `
+            <div class="alert ${alertClass} shadow-sm mb-4" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} fa-lg mr-3"></i>
+                    <div>
+                        <strong>${title}</strong>
+                        <p class="mb-0">${message}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    if (avatarInput) {
+        avatarInput.addEventListener('change', function (e) {
+            avatarPickerPending = false;
+            const file = e.target.files && e.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                showMessageNative('请上传 JPG、PNG 或 GIF 格式的图片', 'error');
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                showMessageNative('图片大小不能超过 2MB', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                if (avatarPreview) avatarPreview.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append('avatar', file);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            const originalText = uploadBtn ? uploadBtn.innerHTML : '';
+            if (uploadBtn) {
+                uploadBtn.classList.add('disabled');
+                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>上传中...';
+            }
+
+            fetch('{% url "user:upload_avatar" %}', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+            })
+            .then(async (resp) => {
+                let json = {};
+                try {
+                    json = await resp.json();
+                } catch (err) {}
+                if (!resp.ok || !json || json.code !== 200) {
+                    const msg = (json && json.msg) ? json.msg : `上传失败(${resp.status})`;
+                    showMessageNative(msg, 'error');
+                    throw new Error(msg);
+                }
+                showMessageNative(json.msg || '头像上传成功', 'success');
+                if (json.avatar_url && avatarPreview) avatarPreview.src = json.avatar_url;
+            })
+            .catch(() => {})
+            .finally(() => {
+                if (uploadBtn) {
+                    uploadBtn.classList.remove('disabled');
+                    uploadBtn.innerHTML = originalText;
+                }
+                avatarInput.value = '';
+            });
+        });
+    }
+
+    if (profileForm) {
+        profileForm.addEventListener('submit', function (e) {
+            if (!profileForm.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+                showMessageNative('请填写所有必填项', 'error');
+            }
+            profileForm.classList.add('was-validated');
+        });
+    }
+} else {
 $(document).ready(function () {
     // 显示消息（自动消失）
     function showMessage(message, type) {
@@ -508,8 +608,11 @@ $(document).ready(function () {
 
     // 头像上传处理
     $('#avatarInput').on('change', function (e) {
+        avatarPickerPending = false;
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file) {
+            return;
+        }
 
         // 验证文件类型
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -560,7 +663,7 @@ $(document).ready(function () {
                 } else {
                     showMessage(response.msg || '上传失败', 'error');
                     // 恢复原头像
-                    $('#avatarPreview').attr('src', '{{ user.avatar|default:"/static/assets/images/default-avatar.png" }}');
+                    $('#avatarPreview').attr('src', '{{ user.avatar|default:"/static/assets/images/default-avatar.svg" }}');
                 }
             },
             error: function (xhr) {
@@ -588,6 +691,7 @@ $(document).ready(function () {
         $(this).addClass('was-validated');
     });
 });
+}
 </script>
 
 <style>
@@ -655,6 +759,19 @@ $(document).ready(function () {
 
     .avatar-status.online {
         background: #28a745;
+    }
+
+    .avatar-file-input {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+        opacity: 0 !important;
     }
 
     .form-control:focus {

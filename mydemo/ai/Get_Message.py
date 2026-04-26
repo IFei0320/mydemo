@@ -70,7 +70,8 @@ class Get_DeepSeek:
             model="deepseek-chat",
             messages=messages,
             stream=False,
-            max_tokens=1024
+            max_tokens=1024,
+            extra_body={"thinking": {"type": "disabled"}}
              )
         return response.choices[0].message.content
 

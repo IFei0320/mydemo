@@ -137,16 +137,16 @@ def write_header():
 if __name__ == '__main__':
     cityDict = {
         "上海": 2,
-        "北京": 1,
-        "广州": 100051,
-        "青岛": 5,
+        # "北京": 1,
+        # "广州": 100051,
+        # "青岛": 5,
     }
 
     # 先写入表头
     # write_header()
 
     for k, v in cityDict.items():
-        for page in range(1, 16):
+        for page in range(1, 30):
             print(f"正在获取 {k} 第 {page} 页...")
             resp = get_json(k, v, page)
             get_data_info(resp, k)

@@ -659,12 +659,15 @@ def export_to_dida_checklist(request):
             "",
             "出发前检查：证件/电量/网络/交通路线，建议提前15分钟出发。",
         ]
+        detail_text = "\n".join(desc_lines)
 
         dida_payload = {
             "title": f"{row.get('visit_time', '')}｜{spot_name}",
             "projectId": project_id,
-            "content": f"{city} {style or '推荐'}方案 · 单景点执行任务",
-            "desc": "\n".join(desc_lines),
+            # TickTick/Dida 客户端通常优先展示 content；将提醒详情放在 content 中确保可见
+            "content": detail_text,
+            # desc 作为兼容保留，避免某些端只读取该字段
+            "desc": detail_text,
             "isAllDay": False,
             "startDate": _format_dida_datetime(start_dt),
             "dueDate": _format_dida_datetime(due_dt),
@@ -690,6 +693,7 @@ def export_to_dida_checklist(request):
                     {
                         "task_id": resp_json.get("id", ""),
                         "title": dida_payload["title"],
+                        "content_preview": dida_payload["content"][:80],
                     }
                 )
         except HTTPError as exc:

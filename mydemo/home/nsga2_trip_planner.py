@@ -529,6 +529,7 @@ def call_ai_refiner(
             ],
             max_tokens=1200,
             stream=False,
+            extra_body={"thinking": {"type": "disabled"}},
         )
         return response.choices[0].message.content or ""
     except Exception as exc:

@@ -59,7 +59,7 @@
 #
 #
 import os
-from time import timezone
+from django.utils import timezone
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -136,8 +136,61 @@ def register(request):
 
 def changeInfo(request):
     uid = request.session.get('uid')
+    if not uid:
+        return redirect('user:login')
+
     if request.method == 'POST':
-        return None
+        try:
+            user = UserInfo.objects.get(id=uid)
+        except UserInfo.DoesNotExist:
+            return render(request, 'ksh/changeInfo.html', {
+                'error': '用户不存在',
+                'success': None
+            })
+
+        username = (request.POST.get('username') or '').strip()
+        email = (request.POST.get('email') or '').strip()
+        phone = (request.POST.get('phone') or '').strip()
+        address = (request.POST.get('address') or '').strip()
+        youbian = (request.POST.get('youbian') or '').strip()
+
+        if not username or not email:
+            return render(request, 'ksh/changeInfo.html', {
+                'user': user,
+                'error': '用户名和邮箱不能为空',
+                'success': None
+            })
+
+        # 避免用户名/邮箱与其他账号冲突
+        if UserInfo.objects.exclude(id=uid).filter(username=username).exists():
+            return render(request, 'ksh/changeInfo.html', {
+                'user': user,
+                'error': '用户名已存在，请更换',
+                'success': None
+            })
+        if UserInfo.objects.exclude(id=uid).filter(uemail=email).exists():
+            return render(request, 'ksh/changeInfo.html', {
+                'user': user,
+                'error': '邮箱已被占用，请更换',
+                'success': None
+            })
+
+        user.username = username
+        user.uemail = email
+        user.uphone = phone
+        user.uaddress = address
+        user.uyoubian = youbian
+        user.save()
+
+        # 若改了用户名，保持 session 显示一致
+        request.session['uname'] = user.username
+        request.session['avatar'] = user.avatar
+
+        return render(request, 'ksh/changeInfo.html', {
+            'user': user,
+            'success': '个人信息已保存',
+            'error': None
+        })
     else:
         # GET请求，显示个人信息
         try:
