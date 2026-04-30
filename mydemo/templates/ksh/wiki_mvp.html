@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="pcoded-inner-content">
+  <div class="main-body">
+    <div class="page-wrapper">
+      <div class="page-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h5>LLM Wiki MVP（独立新增模块）</h5>
+                <span>先跑通摄入、查询、检查，不影响原有 NSGA-II 页面。</span>
+              </div>
+              <div class="card-block">
+                <div class="form-group">
+                  <button id="btnIngest" class="btn btn-primary">1) 摄入 raw 文档</button>
+                  <button id="btnLint" class="btn btn-warning m-l-10">2) 健康检查</button>
+                </div>
+                <div class="form-group">
+                  <label for="city">城市过滤（可选，例如：上海）</label>
+                  <input id="city" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label for="question">问题（例如：上海夜景路线怎么安排）</label>
+                  <textarea id="question" class="form-control" rows="3"></textarea>
+                </div>
+                <button id="btnQuery" class="btn btn-success">3) 查询 Wiki</button>
+                <hr>
+                <h6>执行结果</h6>
+                <pre id="output" style="white-space: pre-wrap; background:#f8f9fa; border:1px solid #e9ecef; padding:12px; border-radius:6px; min-height:220px;"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function callApi(url, payload) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: payload ? JSON.stringify(payload) : JSON.stringify({})
+    });
+    return res.json();
+  }
+
+  const output = document.getElementById('output');
+  const question = document.getElementById('question');
+  const city = document.getElementById('city');
+
+  document.getElementById('btnIngest').addEventListener('click', async () => {
+    output.textContent = '正在摄入...';
+    try {
+      const data = await callApi('/mydemo/api/wiki/ingest');
+      output.textContent = JSON.stringify(data, null, 2);
+    } catch (e) {
+      output.textContent = '摄入失败: ' + e;
+    }
+  });
+
+  document.getElementById('btnLint').addEventListener('click', async () => {
+    output.textContent = '正在检查...';
+    try {
+      const data = await callApi('/mydemo/api/wiki/lint');
+      output.textContent = JSON.stringify(data, null, 2);
+    } catch (e) {
+      output.textContent = '检查失败: ' + e;
+    }
+  });
+
+  document.getElementById('btnQuery').addEventListener('click', async () => {
+    output.textContent = '正在查询...';
+    try {
+      const data = await callApi('/mydemo/api/wiki/query', {question: question.value, city: city.value});
+      output.textContent = JSON.stringify(data, null, 2);
+    } catch (e) {
+      output.textContent = '查询失败: ' + e;
+    }
+  });
+</script>
+{% endblock %}

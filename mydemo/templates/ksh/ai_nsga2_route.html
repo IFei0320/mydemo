@@ -99,6 +99,14 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
+                                        <div class="col-md-12 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="useWikiKnowledge">
+                                                <label class="form-check-label" for="useWikiKnowledge">
+                                                    启用 Wiki 知识增强（默认关闭，保持原 JSON 逻辑）
+                                                </label>
+                                            </div>
+                                        </div>
                                         <div class="col-md-4">
                                             <div class="slider-group">
                                                 <label class="d-flex justify-content-between">
@@ -395,8 +403,11 @@
                                         </div>
                                         <div>
                                             <h5 class="m-0 font-weight-bold">RAG本地知识卡命中</h5>
-                                            <small class="text-white-50">本地向量检索增强生成</small>
+                                            <small class="text-white-50">本地知识增强生成（JSON基线 + Wiki可选增强）</small>
                                         </div>
+                                        <span id="wikiModeBadge" class="badge badge-light text-secondary ml-3">Wiki: 关闭</span>
+                                        <span id="jsonHitBadge" class="badge badge-light text-primary ml-2">JSON 0</span>
+                                        <span id="wikiHitBadge" class="badge badge-light text-info ml-2">Wiki 0</span>
                                         <span class="badge badge-light text-success ml-auto">
                                             命中 <b id="knowledgeCount">0</b> 条
                                         </span>
@@ -901,6 +912,14 @@ function renderSelectedPlan(data, payload) {
     $("#prefMatchPct").text(metricValue((data.explain || {}).preference_match_pct, 1) + "%");
     $("#crowdAvoidScore").text(metricValue((data.explain || {}).crowd_avoid_score, 1));
     $("#aiSummary").text((data.ai_summary || "暂无 AI 攻略").replace(/\*/g, ""));
+    const kb = data.knowledge_breakdown || {};
+    const useWiki = !!kb.use_wiki_knowledge;
+    $("#wikiModeBadge")
+        .text(useWiki ? "Wiki: 开启" : "Wiki: 关闭")
+        .removeClass("text-secondary text-success")
+        .addClass(useWiki ? "text-success" : "text-secondary");
+    $("#jsonHitBadge").text("JSON " + metricValue(kb.json_count || 0));
+    $("#wikiHitBadge").text("Wiki " + metricValue(kb.wiki_count || 0));
     latestHtmlReport = data.ai_html_report || "";
     $("#previewHtmlReportBtn").prop("disabled", !latestHtmlReport);
     $("#downloadHtmlReportBtn").prop("disabled", !latestHtmlReport);
@@ -929,7 +948,11 @@ $(document).on("click", ".select-plan-btn", function () {
         url: '{% url "home:select_ai_nsga2_plan" %}',
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify({ request_token: currentRequestToken, option_id: optionId }),
+        data: JSON.stringify({
+            request_token: currentRequestToken,
+            option_id: optionId,
+            use_wiki_knowledge: $("#useWikiKnowledge").is(":checked")
+        }),
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
         success: function (res) {
             $("#loading").hide();

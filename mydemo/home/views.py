@@ -21,6 +21,7 @@ from home.nsga2_trip_planner import (
     retrieve_knowledge_cards,
     run_nsga2,
 )
+from home.wiki_mvp import ingest_all_raw, lint_wiki, query_wiki, retrieve_wiki_knowledge_cards
 from django.db.models import Q, Sum
 from untils import util
 from django.db.models import Count
@@ -356,6 +357,19 @@ def _build_cache_key(city, season, days, budget, sensitivities):
     )
 
 
+def _as_bool(raw_value, default=False):
+    if raw_value is None:
+        return default
+    if isinstance(raw_value, bool):
+        return raw_value
+    text = str(raw_value).strip().lower()
+    if text in {"1", "true", "yes", "on"}:
+        return True
+    if text in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
 @require_POST
 def generate_ai_nsga2_route(request):
     _cleanup_plan_cache()
@@ -483,6 +497,7 @@ def select_ai_nsga2_plan(request):
 
     token = str(data.get("request_token", "")).strip()
     option_id = int(data.get("option_id", 0) or 0)
+    use_wiki_knowledge = _as_bool(data.get("use_wiki_knowledge", False), default=False)
     if not token or option_id <= 0:
         return JsonResponse({"code": 400, "message": "请求参数缺失", "data": None})
 
@@ -496,7 +511,19 @@ def select_ai_nsga2_plan(request):
 
     route_data = selected["route"]
     metrics = selected.get("metrics", {})
-    knowledge_cards = retrieve_knowledge_cards(cache_item["city"], route_data, max_cards=12)
+    json_cards = retrieve_knowledge_cards(cache_item["city"], route_data, max_cards=12)
+    knowledge_cards = list(json_cards)
+    wiki_cards = []
+    if use_wiki_knowledge:
+        wiki_cards = retrieve_wiki_knowledge_cards(
+            city=cache_item["city"],
+            route_data=route_data,
+            max_cards=8,
+            season=cache_item.get("season", ""),
+            budget=float(cache_item.get("budget", 0) or 0),
+        )
+        # 保持兼容：只增不替换，wiki 结果追加到原 cards
+        knowledge_cards.extend(wiki_cards)
     ai_text = call_ai_refiner(
         city=cache_item["city"],
         season=cache_item["season"],
@@ -533,6 +560,11 @@ def select_ai_nsga2_plan(request):
                 "style": selected.get("style", ""),
                 "knowledge_cards": knowledge_cards,
                 "knowledge_count": len(knowledge_cards),
+                "knowledge_breakdown": {
+                    "json_count": len(json_cards),
+                    "wiki_count": len(wiki_cards),
+                    "use_wiki_knowledge": use_wiki_knowledge,
+                },
             },
         }
     )
@@ -723,3 +755,32 @@ def export_to_dida_checklist(request):
             },
         }
     )
+
+
+def wiki_mvp_page(request):
+    return render(request, "ksh/wiki_mvp.html")
+
+
+@require_POST
+def wiki_ingest(request):
+    result = ingest_all_raw()
+    return JsonResponse({"code": 200 if result.get("ok") else 500, "message": "摄入完成", "data": result})
+
+
+@require_POST
+def wiki_query(request):
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except json.JSONDecodeError:
+        return JsonResponse({"code": 400, "message": "无效的 json 数据", "data": None})
+    result = query_wiki(
+        str(data.get("question", "")).strip(),
+        city=str(data.get("city", "")).strip(),
+    )
+    return JsonResponse({"code": 200 if result.get("ok") else 400, "message": "查询完成", "data": result})
+
+
+@require_POST
+def wiki_lint(request):
+    result = lint_wiki()
+    return JsonResponse({"code": 200 if result.get("ok") else 500, "message": "检查完成", "data": result})
