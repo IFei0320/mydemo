@@ -33,7 +33,7 @@ PLAN_CACHE = {}
 RECENT_PLANS = []
 RECENT_PLAN_LIMIT = 12
 
-# 毕设演示用固定配置（按用户要求内置）
+
 DIDA_FIXED_ACCESS_TOKEN = "dp_edb471742d2c40f7bf40589ba2366328"
 DIDA_FIXED_PROJECT_INPUT = "旅游规划"
 # Create your views here.
@@ -43,7 +43,7 @@ def index(request):
     ).count()
 
     pro_count = TravelInfo.objects.values('province').distinct().count()
-    print(f"DEBUG: pro_count in view = {pro_count}")  # 添加这行打印
+    print(f"DEBUG: pro_count in view = {pro_count}")
 
     city_count = TravelInfo.objects.values('city').distinct().count()
     total_reviews = TravelInfo.objects.aggregate(
@@ -55,7 +55,7 @@ def index(request):
     mapData = [{"name":i[0],"value":i[1]} for i in res]
     top_5_travel = TravelInfo.objects.all().order_by('-popularity_score')[:5]
 
-    # 按评论数取前5（原变量名 top_1e_travel 疑似拼写错误）
+
     top_10_travel = TravelInfo.objects.all().order_by('-review_count')[:5]
 
     daily_users = UserInfo.objects.annotate(
@@ -120,73 +120,6 @@ def travel_list(request):
     return render(request, 'travel_list.html', content)
 
 
-# def get_ai_travelRoute(request):
-#     if request.method == 'POST':
-#         try:
-#             # 解析请求数据
-#             if hasattr(request, 'data'):
-#                 data = request.data
-#             else:
-#                 try:
-#                     data = json.loads(request.body.decode('utf-8'))
-#                 except json.JSONDecodeError:
-#                     return JsonResponse({
-#                         'code': 400,
-#                         'message': '无效的json数据',
-#                         'data': None
-#                     })
-#
-#             # 验证必要字段
-#             required_fields = ['city', 'season', 'days']
-#             for field in required_fields:
-#                 if field not in data:
-#                     return JsonResponse({
-#                         'code': 400,
-#                         'message': f'缺少必要字段: {field}',
-#                         'data': None
-#                     })
-#
-#             # 处理预算参数
-#             budget = data.get('budget', 0)
-#             if budget == 0:
-#                 budget = '无预算'
-#
-#             # 调用DeepSeek生成旅游计划
-#             dp = Get_DeepSeek()
-#             result = dp._get_travel_plan(
-#                 city=data['city'],
-#                 season=data['season'],
-#                 days=data['days'],
-#                 budget=budget
-#             )
-#
-#             # 返回结果
-#             if result['code'] == 200:
-#                 return JsonResponse({
-#                     'code': 200,
-#                     'message': '旅游路线生成成功',
-#                     'data': result['data']
-#                 })
-#             else:
-#                 return JsonResponse({
-#                     'code': result['code'],
-#                     'message': '旅游路线生成失败',
-#                     'data': None
-#                 })
-#
-#         except Exception as e:
-#             return JsonResponse({
-#                 "code": 500,
-#                 "message": f"服务器内部错误: {str(e)}",
-#                 "data": None
-#             })
-#
-#
-#
-#
-#     return render(request, 'ksh/get_ai_travelRoute.html')
-
-# ... existing code ...
 def get_ai_travelRoute(request):
     if request.method == 'POST':
         try:

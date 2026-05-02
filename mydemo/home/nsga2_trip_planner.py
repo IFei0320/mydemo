@@ -95,11 +95,11 @@ def _normalize_coord_pair(lon_raw, lat_raw) -> Tuple[float, float]:
     if not lon or not lat:
         return 0.0, 0.0
 
-    # 情况1：正常中国坐标
+
     if _is_valid_china_coord(lon, lat):
         return lon, lat
 
-    # 情况2：疑似经纬度颠倒（很多脏数据会把 121/31 反着存）
+
     if _is_valid_china_coord(lat, lon):
         return lat, lon
 
@@ -396,8 +396,8 @@ def run_nsga2(
     days: int,
     budget: float,
     per_day: int = 3,
-    pop_size: int = 60,
-    generations: int = 70,
+    pop_size: int = 40,
+    generations: int = 50,
 ) -> Tuple[List[Dict], int]:
     route_len = min(days * per_day, len(spots))
     if route_len <= 1:
