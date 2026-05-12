@@ -88,18 +88,18 @@
                         </div>
                     </div>
 
-                    <!-- Treemap Chart -->
+                    <!-- 区域景点数量：横向条形图（易读、易区分颜色） -->
                     <div class="col-md-12 col-lg-12 mb-4">
                         <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
                             <div class="card-header bg-gradient-dark text-white py-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
                                         <div class="icon-circle bg-white text-dark mr-3" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-th-large"></i>
+                                            <i class="fas fa-chart-bar"></i>
                                         </div>
                                         <div>
-                                            <h5 class="m-0 font-weight-bold">景点区域分布矩形树图</h5>
-                                            <small class="text-white-50">矩形大小代表该区域景点数量，颜色深浅代表密度等级</small>
+                                            <h5 class="m-0 font-weight-bold">各区域景点数量</h5>
+                                            <small class="text-white-50">横向条形：越长表示该区域收录的景点越多；颜色仅作区分</small>
                                         </div>
                                     </div>
                                     <div class="chart-tools">
@@ -112,8 +112,13 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if chart_note %}
+                            <div class="alert alert-light border-0 rounded-0 mb-0 small text-dark border-bottom">
+                                <i class="fas fa-info-circle text-primary mr-1"></i>{{ chart_note }}
+                            </div>
+                            {% endif %}
                             <div class="card-block p-0 position-relative">
-                                <div id="part4" style="width: 100%; height: 650px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
+                                <div id="part4" style="width: 100%; min-height: 480px; height: 560px; background: #f8fafc;"></div>
 
                                 <!-- 加载动画 -->
                                 <div id="chartLoading" class="position-absolute d-none" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
@@ -134,14 +139,11 @@
                                     <div class="col-md-6">
                                         <small class="text-muted">
                                             <i class="fas fa-info-circle mr-1 text-primary"></i>
-                                            点击色块查看详情，鼠标悬停显示具体数值
+                                            区域多时页面可向下滚动查看；悬停条形可看数量与占比
                                         </small>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <span class="badge badge-primary mr-2">高密集区</span>
-                                        <span class="badge badge-success mr-2">中等密集</span>
-                                        <span class="badge badge-warning mr-2">一般密集</span>
-                                        <span class="badge badge-secondary">稀疏区</span>
+                                        <span class="badge badge-secondary">条形长度 = 该分类下景点条数</span>
                                     </div>
                                 </div>
                             </div>
@@ -161,25 +163,34 @@
 <script>
 var chartDom = document.getElementById('part4');
 var myChart = echarts.init(chartDom);
-var option;
 
-// 确保数据正确格式化
-var rawData = {{ data_list|safe }};
-var data = rawData.map(function(item) {
-    return {
-        name: item.name,
-        value: parseFloat(item.value) || 0
-    };
+var rawData = {{ data_list_json }};
+var data = rawData.map(function (item) {
+    return { name: String(item.name || '未知区域'), value: parseFloat(item.value) || 0 };
 });
+data.sort(function (a, b) { return b.value - a.value; });
 
-// 计算统计数据
-function calculateStats(data) {
-    if (data.length === 0) return;
+var categories = data.map(function (d) { return d.name; });
+var values = data.map(function (d) { return d.value; });
+var total = values.reduce(function (a, b) { return a + b; }, 0) || 1;
 
-    var totalAreas = data.length;
-    var totalSpots = data.reduce(function(sum, item) { return sum + item.value; }, 0);
-    var maxItem = data.reduce(function(max, item) { return item.value > max.value ? item : max; }, data[0]);
+var vmin = values.length ? Math.min.apply(null, values) : 0;
+var vmax = values.length ? Math.max.apply(null, values) : 1;
 
+function barColor(index, value) {
+    var n = Math.max(categories.length, 1);
+    var hue = Math.round((index / n) * 300 + (value >= vmax ? 0 : 210));
+    var t = vmax > vmin ? (value - vmin) / (vmax - vmin) : 0.5;
+    var light = Math.round(38 + t * 22);
+    var sat = 62 + (index % 4) * 7;
+    return 'hsl(' + hue + ',' + sat + '%,' + light + '%)';
+}
+
+function calculateStats(dataArr) {
+    if (!dataArr.length) return;
+    var totalAreas = dataArr.length;
+    var totalSpots = dataArr.reduce(function (sum, item) { return sum + item.value; }, 0);
+    var maxItem = dataArr.reduce(function (max, item) { return item.value > max.value ? item : max; }, dataArr[0]);
     $('#totalAreas').text(totalAreas + ' 个');
     $('#totalSpots').text(totalSpots.toLocaleString() + ' 个');
     $('#maxArea').text(maxItem ? maxItem.name : '-');
@@ -187,214 +198,131 @@ function calculateStats(data) {
 
 calculateStats(data);
 
-// 自定义颜色数组（美观的渐变色系）
-var colorPalette = [
-    '#5470c6', '#91cc75', '#fac858', '#ee6666',
-    '#73c0de', '#3ba272', '#fc8452', '#9a60b4',
-    '#ea7ccc', '#ff9f7f', '#ffdb5c', '#67e0e3',
-    '#37a2da', '#32c5e9', '#9fe6b8', '#ff9f7f'
-];
+var rowPx = 40;
+var chartH = Math.min(1400, Math.max(480, 140 + categories.length * rowPx));
+chartDom.style.height = chartH + 'px';
 
-option = {
+var option = {
     backgroundColor: 'transparent',
     title: {
-        text: '景点区域分布',
-        subtext: '数据更新时间：' + new Date().toLocaleString(),
+        text: '各区域景点数量对比',
+        subtext: '更新：' + new Date().toLocaleString(),
         left: 'center',
-        top: 20,
-        textStyle: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: '#333'
-        },
-        subtextStyle: {
-            fontSize: 12,
-            color: '#999'
-        }
+        top: 8,
+        textStyle: { fontSize: 20, fontWeight: 'bold', color: '#1e293b' },
+        subtextStyle: { fontSize: 12, color: '#64748b' }
     },
     tooltip: {
-        trigger: 'item',
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#eee',
-        borderWidth: 1,
-        textStyle: {
-            color: '#333',
-            fontSize: 14
-        },
-        extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px;',
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
         formatter: function (params) {
-            var percent = params.treePathInfo && params.treePathInfo.length > 1
-                ? ((params.value / params.treePathInfo[1].value) * 100).toFixed(1)
-                : 0;
-            return `
-                <div style="padding: 10px;">
-                    <div style="font-weight: bold; font-size: 16px; color: #667eea; margin-bottom: 8px;">
-                        ${params.name}
-                    </div>
-                    <div style="color: #666; margin-bottom: 5px;">
-                        <i class="fas fa-map-marker-alt mr-2"></i>景点数量：<span style="color: #ff6b6b; font-weight: bold;">${params.value}</span>
-                    </div>
-                    <div style="color: #666;">
-                        <i class="fas fa-percentage mr-2"></i>占比：<span style="color: #4ecdc4; font-weight: bold;">${percent}%</span>
-                    </div>
-                </div>
-            `;
+            var p = params[0];
+            var pct = ((p.value / total) * 100).toFixed(1);
+            return (
+                '<div style="padding:8px 10px;min-width:180px;">' +
+                '<div style="font-weight:700;color:#334155;margin-bottom:6px;">' + p.name + '</div>' +
+                '<div style="color:#64748b;">景点数：<b style="color:#0f172a;">' + p.value + '</b> 条</div>' +
+                '<div style="color:#64748b;">占全部景点：<b style="color:#2563eb;">' + pct + '%</b>（相对本页全部条数）</div>' +
+                '</div>'
+            );
         }
     },
     toolbox: {
         feature: {
-            dataView: {
-                show: true,
-                readOnly: false,
-                title: '数据视图',
-                lang: ['数据视图', '关闭', '刷新']
-            },
+            dataView: { show: true, readOnly: false, title: '数据视图', lang: ['数据视图', '关闭', '刷新'] },
             restore: { show: true, title: '还原' },
             saveAsImage: { show: true, title: '保存为图片' }
         },
-        right: 30,
-        top: 20
+        right: 16,
+        top: 8
     },
+    grid: { left: '3%', right: '5%', top: 72, bottom: 28, containLabel: true },
+    xAxis: {
+        type: 'value',
+        name: '景点条数',
+        nameTextStyle: { color: '#64748b' },
+        splitLine: { lineStyle: { type: 'dashed', color: '#e2e8f0' } },
+        axisLabel: { color: '#64748b' }
+    },
+    yAxis: {
+        type: 'category',
+        data: categories,
+        inverse: true,
+        axisLabel: {
+            color: '#334155',
+            fontSize: 12,
+            width: 140,
+            overflow: 'truncate',
+            ellipsis: '…'
+        },
+        axisTick: { show: false },
+        axisLine: { lineStyle: { color: '#cbd5e1' } }
+    },
+    dataZoom: [
+        { type: 'inside', yAxisIndex: 0, filterMode: 'none' }
+    ],
     series: [
         {
-            type: 'treemap',
-            width: '90%',
-            height: '80%',
-            left: '5%',
-            top: '15%',
-            roam: false,
-            nodeClick: false,
-            breadcrumb: {
-                show: true,
-                height: 30,
-                left: 'center',
-                bottom: 20,
-                itemStyle: {
-                    color: '#667eea',
-                    borderWidth: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.1)',
-                    shadowBlur: 5
-                },
-                textStyle: {
-                    color: '#fff',
-                    fontSize: 14
-                }
-            },
+            name: '景点数',
+            type: 'bar',
+            data: values.map(function (v, i) {
+                return {
+                    value: v,
+                    itemStyle: {
+                        color: barColor(i, v),
+                        borderRadius: [0, 6, 6, 0]
+                    }
+                };
+            }),
+            barMaxWidth: 26,
             label: {
                 show: true,
-                formatter: function(params) {
-                    return params.name + '\n' + params.value + '个';
-                },
-                fontSize: 14,
-                fontWeight: 'bold',
-                color: '#fff',
-                textShadowColor: 'rgba(0,0,0,0.3)',
-                textShadowBlur: 3
+                position: 'right',
+                formatter: '{c}',
+                color: '#475569',
+                fontWeight: 600
             },
-            itemStyle: {
-                borderColor: '#fff',
-                borderWidth: 2,
-                gapWidth: 2,
-                borderRadius: 8
-            },
-            levels: [
-                {
-                    itemStyle: {
-                        borderColor: '#fff',
-                        borderWidth: 4,
-                        gapWidth: 4
-                    },
-                    upperLabel: {
-                        show: false
-                    }
-                },
-                {
-                    itemStyle: {
-                        borderColor: '#fff',
-                        borderWidth: 2,
-                        gapWidth: 2
-                    },
-                    emphasis: {
-                        itemStyle: {
-                            borderColor: '#fff',
-                            borderWidth: 4,
-                            shadowBlur: 20,
-                            shadowColor: 'rgba(0, 0, 0, 0.3)'
-                        }
-                    }
-                }
-            ],
-            data: data,
-            colorMappingBy: 'value',
-            visibleMin: 300,
-            childrenVisibleMin: 20,
-            color: colorPalette
+            emphasis: {
+                itemStyle: { shadowBlur: 8, shadowColor: 'rgba(15,23,42,0.25)' }
+            }
         }
     ]
 };
 
 if (data.length > 0) {
     myChart.setOption(option);
-
-    // 添加点击事件
-    myChart.on('click', function(params) {
-        console.log('点击了：', params.name, '数量：', params.value);
-        // 这里可以添加跳转到详情页的逻辑
-    });
 } else {
     $('#noDataAlert').removeClass('d-none');
-    option = {
-        title: {
-            text: '暂无数据',
-            left: 'center',
-            top: 'center',
-            textStyle: {
-                fontSize: 24,
-                color: '#999'
-            }
-        }
-    };
-    myChart.setOption(option);
+    myChart.setOption({
+        title: { text: '暂无数据', left: 'center', top: 'center', textStyle: { fontSize: 22, color: '#94a3b8' } }
+    });
 }
 
-// 刷新图表
 function refreshChart() {
     $('#chartLoading').removeClass('d-none');
-    myChart.showLoading({
-        text: '数据加载中...',
-        color: '#667eea',
-        textColor: '#667eea',
-        maskColor: 'rgba(255, 255, 255, 0.8)'
-    });
-
-    setTimeout(function() {
+    myChart.showLoading({ text: '…', color: '#667eea', maskColor: 'rgba(255,255,255,0.7)' });
+    setTimeout(function () {
         myChart.hideLoading();
         $('#chartLoading').addClass('d-none');
+        chartDom.style.height = chartH + 'px';
         myChart.resize();
-    }, 1000);
+    }, 400);
 }
 
-// 下载图表
 function downloadChart() {
-    var url = myChart.getDataURL({
-        type: 'png',
-        pixelRatio: 2,
-        backgroundColor: '#fff'
-    });
+    var url = myChart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#ffffff' });
     var link = document.createElement('a');
-    link.download = '景点区域分布图_' + new Date().toLocaleDateString() + '.png';
+    link.download = '各区域景点数量_' + new Date().toLocaleDateString() + '.png';
     link.href = url;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
 
-// 响应式
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
     myChart.resize();
 });
 </script>
-
 <style>
     /* 自定义样式 */
     .bg-gradient-primary {

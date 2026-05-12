@@ -202,27 +202,37 @@ var chartDom = document.getElementById('part3');
 var myChart = echarts.init(chartDom);
 var currentChartType = 'line'; // 当前图表类型
 
-// 获取数据
-var nameList = {{ name_list|safe }};
-var valueList = {{ value_list|safe }};
+// 数据（JSON，避免模板里 Python repr 引号错误）
+var nameList = {{ name_list_json }};
+var valueList = ({{ value_list_json }}).map(function (v) { return Number(v); });
 
 // 计算统计数据
 function calculateStats(values) {
-    if (values.length === 0) return;
+    if (!values || values.length === 0) {
+        $('#avgPrice').text('-');
+        $('#maxPrice').text('-');
+        $('#minPrice').text('-');
+        $('#priceRange').text('-');
+        return;
+    }
 
-    var sum = values.reduce(function(a, b) { return a + b; }, 0);
+    var sum = values.reduce(function (a, b) { return a + b; }, 0);
     var avg = (sum / values.length).toFixed(2);
     var max = Math.max(...values);
     var min = Math.min(...values);
     var range = max - min;
 
     $('#avgPrice').text('¥' + avg);
-    $('#maxPrice').text('¥' + max);
-    $('#minPrice').text('¥' + min);
-    $('#priceRange').text('¥' + range);
+    $('#maxPrice').text('¥' + Number(max).toFixed(2));
+    $('#minPrice').text('¥' + Number(min).toFixed(2));
+    $('#priceRange').text('¥' + range.toFixed(2));
 }
 
-calculateStats(valueList);
+if (nameList.length === 0) {
+    $('#noDataAlert').removeClass('d-none');
+} else {
+    calculateStats(valueList);
+}
 
 // 填充表格
 function fillTable(names, values) {
@@ -252,15 +262,19 @@ function fillTable(names, values) {
 
         var row = $('<tr class="transition-all"></tr>');
         row.append('<td class="py-3 px-4"><span class="rank-badge">' + (index + 1) + '</span></td>');
-        row.append('<td class="py-3 px-4 font-weight-bold">' + item.name + '</td>');
-        row.append('<td class="py-3 px-4 text-right"><span class="price-tag">¥' + item.value + '</span></td>');
+        var nameTd = $('<td class="py-3 px-4 font-weight-bold"></td>');
+        nameTd.text(item.name);
+        row.append(nameTd);
+        row.append('<td class="py-3 px-4 text-right"><span class="price-tag">¥' + Number(item.value).toFixed(2) + '</span></td>');
         row.append('<td class="py-3 px-4 text-center"><span class="badge ' + badgeClass + '">' + level + '</span></td>');
 
         tbody.append(row);
     });
 }
 
-fillTable(nameList, valueList);
+if (nameList.length > 0) {
+    fillTable(nameList, valueList);
+}
 
 // 图表配置
 function getOption(type) {
@@ -497,11 +511,15 @@ function getOption(type) {
     };
 }
 
-var option = getOption('line');
-myChart.setOption(option);
+var option = {};
+if (nameList.length > 0) {
+    option = getOption('line');
+    myChart.setOption(option);
+}
 
 // 切换图表类型
 function toggleChartType() {
+    if (nameList.length === 0) return;
     currentChartType = currentChartType === 'line' ? 'bar' : 'line';
     myChart.clear();
     myChart.setOption(getOption(currentChartType));

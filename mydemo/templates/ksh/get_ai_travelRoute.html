@@ -10,10 +10,10 @@
             <div class="col-md-8">
                 <div class="page-header-title">
                     <h5 class="m-b-10">
-                        <i class="fas fa-robot text-primary mr-2"></i>AI旅游路线推荐
+                        <i class="fas fa-compass text-primary mr-2"></i>目的地速览
                     </h5>
                     <p class="m-b-0 text-muted">
-                        <i class="fas fa-magic mr-1"></i>智能算法为您规划完美行程
+                        <i class="fas fa-map-marked-alt mr-1"></i>城市概况、出行参考与景点分布
                     </p>
                 </div>
             </div>
@@ -25,10 +25,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="#!" class="text-secondary">AI智能推荐</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="#!" class="text-dark font-weight-bold">旅游路线规划</a>
+                        <a href="#!" class="text-dark font-weight-bold">目的地速览</a>
                     </li>
                 </ul>
             </div>
@@ -53,8 +50,8 @@
                                         <i class="fas fa-map-marked-alt"></i>
                                     </div>
                                     <div>
-                                        <h5 class="m-0 font-weight-bold">智能行程规划</h5>
-                                        <small class="text-white-50">填写您的旅行偏好，AI将为您生成最优路线</small>
+                                        <h5 class="m-0 font-weight-bold">出行参考</h5>
+                                        <small class="text-white-50">填写目的地与行程偏好</small>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +130,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn btn-ai btn-lg px-5 py-3 font-weight-bold shadow-lg" id="submitBtn" style="border-radius: 50px; font-size: 18px;">
-                                                <i class="fas fa-paper-plane mr-2"></i>立即生成AI推荐路线
+                                                <i class="fas fa-paper-plane mr-2"></i>生成目的地速览
                                                 <i class="fas fa-wand-magic-sparkles ml-2"></i>
                                             </button>
                                         </div>
@@ -157,9 +154,9 @@
                                     <div class="spinner-grow text-warning" style="width: 3rem; height: 3rem; animation-delay: 0.4s;" role="status"></div>
                                 </div>
                                 <h4 class="mb-3 text-white font-weight-bold">
-                                    <i class="fas fa-brain mr-2"></i>AI正在深度分析
+                                    <i class="fas fa-book-reader mr-2"></i>正在生成
                                 </h4>
-                                <p class="text-white-50 mb-0">正在计算最优路线 • 分析景点热度 • 评估交通时间 • 匹配您的偏好...</p>
+                                <p class="text-white-50 mb-0">正在生成内容，请稍候…</p>
                                 <div class="progress mt-4" style="height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2);">
                                     <div class="progress-bar bg-white progress-bar-striped progress-bar-animated" style="width: 100%"></div>
                                 </div>
@@ -196,67 +193,73 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
                                         <div class="icon-circle bg-white text-result mr-3" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-route"></i>
+                                            <i class="fas fa-map"></i>
                                         </div>
                                         <div>
-                                            <h5 class="m-0 font-weight-bold">AI推荐旅游路线</h5>
-                                            <small class="text-white-50">基于大数据智能优化</small>
+                                            <h5 class="m-0 font-weight-bold">速览与地图</h5>
+                                            <small class="text-white-50">文字说明与景点位置参考</small>
                                         </div>
                                     </div>
                                     <span class="badge badge-light text-result px-3 py-2">
-                                        <i class="fas fa-check-circle mr-1"></i>已优化
+                                        <i class="fas fa-check mr-1"></i>已生成
                                     </span>
                                 </div>
                             </div>
                             <div class="card-body p-0">
-                                <!-- 警告提示 -->
-                                <div class="alert alert-warning m-3 mb-0" role="alert" style="border-radius: 8px; background: #fff3cd; border: 1px solid #ffeaa7;">
-                                    <i class="fas fa-exclamation-triangle text-warning mr-2"></i>
-                                    <strong>注意：</strong>AI给定的旅游景点经纬度可能与实际不符，经纬度仅供参考！建议结合地图应用确认具体位置。
-                                </div>
+                                <div class="alert alert-secondary m-3 mb-0 d-none" id="parseNoteBox" role="alert"></div>
 
-                                <!-- 地图容器 -->
                                 <div class="p-3">
-                                    <div id="map" style="width: 100%; height: 600px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></div>
+                                    <div class="card border-0 shadow-sm mb-3">
+                                        <div class="card-body">
+                                            <h6 class="text-muted text-uppercase small mb-2">概况</h6>
+                                            <p class="mb-0 lead" id="citySummary"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="card border-0 shadow-sm h-100">
+                                                <div class="card-header bg-white border-bottom-0 font-weight-bold text-primary">
+                                                    <i class="fas fa-th-large mr-2"></i>大致能玩什么 / 主题方向
+                                                </div>
+                                                <ul class="list-group list-group-flush" id="whatToSeeList"></ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="card border-0 shadow-sm h-100">
+                                                <div class="card-header bg-white border-bottom-0 font-weight-bold text-warning">
+                                                    <i class="fas fa-exclamation-circle mr-2"></i>行前注意什么
+                                                </div>
+                                                <ul class="list-group list-group-flush" id="watchoutsList"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card border-0 shadow-sm mb-3">
+                                        <div class="card-header bg-white border-bottom-0 font-weight-bold text-info">
+                                            <i class="fas fa-map-signs mr-2"></i>片区 / 主题提示
+                                        </div>
+                                        <div class="card-body pt-2" id="regionsBox"></div>
+                                    </div>
                                 </div>
 
-                                <!-- 路线详情表格 -->
-                                <div class="px-3 pb-3">
-                                    <div class="table-responsive rounded-lg overflow-hidden border">
-                                        <table class="table table-hover mb-0" id="routeTable">
-                                            <thead class="bg-dark text-white">
-                                                <tr>
-                                                    <th class="py-3 px-4" style="width: 15%;"><i class="fas fa-map-pin mr-2"></i>景点名称</th>
-                                                    <th class="py-3 px-4" style="width: 15%;"><i class="fas fa-clock mr-2"></i>游玩时间</th>
-                                                    <th class="py-3 px-4" style="width: 35%;"><i class="fas fa-star mr-2"></i>景点特点</th>
-                                                    <th class="py-3 px-4" style="width: 15%;"><i class="fas fa-tag mr-2"></i>预计花费</th>
-                                                    <th class="py-3 px-4" style="width: 20%;"><i class="fas fa-location-arrow mr-2"></i>位置坐标</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="routeTableBody" class="bg-white">
-                                                <!-- 表格内容将通过JavaScript动态填充 -->
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="p-3 pt-0">
+                                    <h6 class="text-muted mb-2"><i class="fas fa-map-marked-alt mr-1"></i>地图分布</h6>
+                                    <div id="map" style="width: 100%; height: 520px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></div>
+                                    <p class="text-muted small px-1 pt-2 mb-0 d-none" id="mapEmptyHint">当前条件下暂无可用景点坐标。</p>
                                 </div>
                             </div>
                             <div class="card-footer bg-light py-3">
                                 <div class="row text-center">
-                                    <div class="col-md-3">
-                                        <small class="text-muted d-block">总景点数</small>
-                                        <span class="font-weight-bold text-primary h5" id="totalSpots">-</span>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">地图点数</small>
+                                        <span class="font-weight-bold text-primary h5" id="mapSpotCount">-</span>
                                     </div>
-                                    <div class="col-md-3">
-                                        <small class="text-muted d-block">预计总花费</small>
-                                        <span class="font-weight-bold text-success h5" id="totalCost">-</span>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">玩法要点条数</small>
+                                        <span class="font-weight-bold text-success h5" id="highlightCount">-</span>
                                     </div>
-                                    <div class="col-md-3">
-                                        <small class="text-muted d-block">行程天数</small>
-                                        <span class="font-weight-bold text-warning h5" id="totalDays">-</span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <small class="text-muted d-block">路线优化度</small>
-                                        <span class="font-weight-bold text-info h5">98%</span>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">注意事项条数</small>
+                                        <span class="font-weight-bold text-warning h5" id="watchoutCount">-</span>
                                     </div>
                                 </div>
                             </div>
@@ -336,12 +339,45 @@
             $('#loadingContainer').hide();
         }
 
-        // 显示结果
-        function showResult() {
-            $('#resultContainer').fadeIn(500);
-            $('html, body').animate({
-                scrollTop: $('#resultContainer').offset().top - 50
-            }, 800);
+        // 显示结果；done 在布局稳定后调用（地图需可见后再初始化）
+        function showResult(done) {
+            $('#resultContainer').fadeIn(500, function () {
+                $('html, body').animate({
+                    scrollTop: $('#resultContainer').offset().top - 50
+                }, 300);
+                setTimeout(function () {
+                    if (typeof done === 'function') {
+                        done();
+                    }
+                }, 80);
+            });
+        }
+
+        function bindMapAfterResultVisible(mapSpots) {
+            if (!BMap) {
+                showError('百度地图 API 未加载');
+                return;
+            }
+            if (!map) {
+                if (!initMap()) {
+                    showError('地图初始化失败');
+                    return;
+                }
+            }
+            try {
+                map.checkResize();
+            } catch (e) { /* ignore */ }
+            markDatasetSpots(mapSpots || []);
+            try {
+                map.checkResize();
+            } catch (e) { /* ignore */ }
+            if (window.requestAnimationFrame) {
+                requestAnimationFrame(function () {
+                    try {
+                        map.checkResize();
+                    } catch (e) { /* ignore */ }
+                });
+            }
         }
 
         // 隐藏结果
@@ -349,47 +385,66 @@
             $('#resultContainer').hide();
         }
 
-        // 创建自定义标记类
-        function CustomMarker(point, number, dayInfo) {
-            this._point = point;
-            this._number = number;
-            this._dayInfo = dayInfo;
+        function escapeHtml(s) {
+            if (s === null || s === undefined) return '';
+            return String(s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
         }
 
-        CustomMarker.prototype = new BMap.Overlay();
-        CustomMarker.prototype.initialize = function (map) {
-            this._map = map;
+        function renderOverview(overview, mapSpotCount) {
+            overview = overview || {};
+            $('#citySummary').text(overview.city_summary || '（暂无概况）');
 
-            const markerDiv = document.createElement('div');
-            markerDiv.className = 'custom-marker';
-            markerDiv.innerHTML = `
-                <div class="marker-number">${this._number}</div>
-                <div class="marker-day">${this._dayInfo}</div>
-            `;
-
-            markerDiv.style.position = 'absolute';
-            markerDiv.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
-            markerDiv.style.pointerEvents = 'auto';
-
-            const pixel = this._map.pointToOverlayPixel(this._point);
-            markerDiv.style.left = pixel.x - (markerDiv.offsetWidth / 2) + 'px';
-            markerDiv.style.top = pixel.y - markerDiv.offsetHeight + 'px';
-
-            this._div = markerDiv;
-            map.getPanes().markerPane.appendChild(markerDiv);
-
-            return markerDiv;
-        };
-
-        CustomMarker.prototype.draw = function () {
-            if (this._div) {
-                const pixel = this._map.pointToOverlayPixel(this._point);
-                this._div.style.left = pixel.x - (this._div.offsetWidth / 2) + 'px';
-                this._div.style.top = pixel.y - this._div.offsetHeight + 'px';
+            const wList = $('#whatToSeeList');
+            wList.empty();
+            (overview.what_to_see || []).forEach(function (line) {
+                wList.append($('<li class="list-group-item"></li>').text(line));
+            });
+            if (!wList.children().length) {
+                wList.append($('<li class="list-group-item text-muted">暂无要点，可重试或微调城市名。</li>'));
             }
-        };
 
-        // 清除地图上的标记和路线
+            const wo = $('#watchoutsList');
+            wo.empty();
+            (overview.watchouts || []).forEach(function (line) {
+                wo.append($('<li class="list-group-item"></li>').text(line));
+            });
+            if (!wo.children().length) {
+                wo.append($('<li class="list-group-item text-muted">暂无单独条目，可查看概况段落。</li>'));
+            }
+
+            const regBox = $('#regionsBox');
+            regBox.empty();
+            (overview.regions || []).forEach(function (r) {
+                const title = escapeHtml(r.title || '');
+                const blurb = escapeHtml(r.blurb || '');
+                regBox.append(
+                    $('<div class="border-bottom py-2"></div>').html(
+                        '<strong>' + title + '</strong><p class="mb-0 text-muted small">' + blurb + '</p>'
+                    )
+                );
+            });
+            if (!(overview.regions || []).length) {
+                regBox.append($('<p class="text-muted small mb-0">暂无片区主题提示。</p>'));
+            }
+
+            if (overview.parse_note) {
+                $('#parseNoteBox').removeClass('d-none').text(overview.parse_note);
+            } else {
+                $('#parseNoteBox').addClass('d-none').empty();
+            }
+
+            const hi = (overview.what_to_see || []).length;
+            const wc = (overview.watchouts || []).length;
+            $('#highlightCount').text(hi);
+            $('#watchoutCount').text(wc);
+            $('#mapSpotCount').text(typeof mapSpotCount === 'number' ? mapSpotCount : '-');
+        }
+
+        // 清除地图上的标记
         function clearMap() {
             if (map) {
                 map.clearOverlays();
@@ -398,150 +453,66 @@
             }
         }
 
-        // 在地图上标记路线
-        function markRouteOnMap(routeData) {
-            if (!map || !BMap || !routeData.length) {
-                console.error('地图未初始化或没有数据');
+        // 景点位置标注
+        function markDatasetSpots(spots) {
+            $('#mapEmptyHint').addClass('d-none');
+            if (!map || !BMap) {
+                console.error('地图未初始化');
                 return;
             }
-
             try {
-                clearMap();
-                const points = [];
+                map.checkResize();
+            } catch (e) { /* ignore */ }
+            clearMap();
+            const points = [];
+            const list = spots || [];
 
-                const validPoints = routeData.filter(item =>
-                    item.longitude && item.latitude &&
-                    !isNaN(item.longitude) && !isNaN(item.latitude)
-                );
+            list.forEach(function (item) {
+                const lon = item.longitude;
+                const lat = item.latitude;
+                if (lon == null || lat == null || isNaN(lon) || isNaN(lat)) return;
+                const point = new BMap.Point(lon, lat);
+                points.push(point);
+                const marker = new BMap.Marker(point);
+                map.addOverlay(marker);
+                markers.push(marker);
 
-                if (validPoints.length === 0) {
-                    showError('没有有效的坐标数据可供显示');
-                    return;
-                }
-
-                console.log('有效坐标点:', validPoints);
-
-                const dayInfoMap = new Map();
-                validPoints.forEach((item, index) => {
-                    const dayMatch = item.visit_time?.match(/第(\d+)天/);
-                    const day = dayMatch ? parseInt(dayMatch[1]) : index + 1;
-                    dayInfoMap.set(index, `D${day}`);
+                const name = escapeHtml(item.name || '景点');
+                const area = escapeHtml(item.area || '');
+                const rating = escapeHtml(item.rating || '');
+                const price = escapeHtml(item.price_hint || '');
+                const infoHtml =
+                    '<div style="min-width:240px;padding:10px;font-size:13px;">' +
+                    '<div style="font-weight:bold;color:#1a73e8;margin-bottom:6px;">' + name + '</div>' +
+                    (area ? '<div>区域：' + area + '</div>' : '') +
+                    (rating ? '<div>评分：' + rating + '</div>' : '') +
+                    (price ? '<div>票价参考：' + price + '</div>' : '') +
+                    '<div style="color:#888;font-size:11px;margin-top:6px;">景点信息</div>' +
+                    '</div>';
+                const infoWindow = new BMap.InfoWindow(infoHtml, {
+                    width: 280,
+                    title: '景点',
+                    enableMessage: false
                 });
-
-                validPoints.forEach((item, index) => {
-                    const point = new BMap.Point(item.longitude, item.latitude);
-                    points.push(point);
-
-                    const dayInfo = dayInfoMap.get(index) || `D${index + 1}`;
-                    const customMarker = new CustomMarker(point, index + 1, dayInfo);
-
-                    map.addOverlay(customMarker);
-                    markers.push(customMarker);
-
-                    const infoContent = `
-                        <div style="min-width:280px;padding:15px;font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;">
-                            <h4 style="margin:0 0 12px 0;color:#4a90e2;font-size:18px;border-bottom:2px solid #4a90e2;padding-bottom:8px;">
-                                ${item.name || '未知景点'}
-                            </h4>
-                            <div style="margin-bottom:10px;">
-                                <span style="background:#4a90e2;color:white;padding:4px 8px;border-radius:4px;font-size:12px;">
-                                    ${item.visit_time || '时间待定'}
-                                </span>
-                            </div>
-                            <p style="margin:8px 0;color:#666;line-height:1.6;">
-                                <strong style="color:#333;">特点:</strong> ${item.features || '暂无描述'}
-                            </p>
-                            <p style="margin:8px 0;color:#ff6b35;font-weight:bold;">
-                                <strong>预计花费:</strong> ${item.estimated_cost || '免费'}
-                            </p>
-                            <p style="margin:8px 0;color:#888;font-size:12px;">
-                                坐标: ${item.latitude.toFixed(4)}, ${item.longitude.toFixed(4)}
-                            </p>
-                        </div>
-                    `;
-
-                    const infoWindow = new BMap.InfoWindow(infoContent, {
-                        width: 320,
-                        height: 220,
-                        title: '景点详细信息',
-                        enableMessage: false
-                    });
-
-                    customMarker._div.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        map.openInfoWindow(infoWindow, point);
-                    });
+                marker.addEventListener('click', function () {
+                    map.openInfoWindow(infoWindow, point);
                 });
-
-                if (points.length > 1) {
-                    const polyline = new BMap.Polyline(points, {
-                        strokeColor: "#4a90e2",
-                        strokeWeight: 5,
-                        strokeOpacity: 0.8,
-                        strokeStyle: 'solid'
-                    });
-                    map.addOverlay(polyline);
-                    polylines.push(polyline);
-                }
-
-                if (points.length > 0) {
-                    const viewport = map.getViewport(points);
-                    const zoom = Math.min(viewport.zoom - 1, 18);
-                    map.centerAndZoom(viewport.center, zoom);
-                }
-
-                console.log('成功在地图上标记了', validPoints.length, '个景点');
-            } catch (error) {
-                console.error('地图标记失败:', error);
-                showError('地图标记失败: ' + error.message);
-            }
-        }
-
-        // 填充路线表格
-        function fillRouteTable(routeData) {
-            const tableBody = $('#routeTableBody');
-            tableBody.empty();
-
-            let totalCost = 0;
-            let maxDay = 1;
-
-            routeData.forEach(function (item, index) {
-                const row = $('<tr></tr>');
-                row.addClass(index % 2 === 0 ? 'bg-light' : 'bg-white');
-
-                // 景点名称带序号徽章
-                const nameCell = $('<td class="py-3 px-4 font-weight-bold"></td>');
-                nameCell.html(`<span class="badge badge-primary mr-2">${index + 1}</span>${item.name || ''}`);
-                row.append(nameCell);
-
-                row.append($('<td class="py-3 px-4"></td>').html(`<span class="badge badge-info">${item.visit_time || ''}</span>`));
-                row.append($('<td class="py-3 px-4 text-muted"></td>').text(item.features || ''));
-
-                // 花费处理
-                const cost = item.estimated_cost || '免费';
-                row.append($('<td class="py-3 px-4 font-weight-bold text-success"></td>').text(cost));
-                if (cost !== '免费' && !isNaN(parseFloat(cost))) {
-                    totalCost += parseFloat(cost);
-                }
-
-                const locationText = (item.latitude && item.longitude)
-                    ? `${item.latitude.toFixed(4)}, ${item.longitude.toFixed(4)}`
-                    : '未知';
-                row.append($('<td class="py-3 px-4"><small class="text-muted font-monospace"></small></td>').text(locationText));
-
-                // 计算天数
-                const dayMatch = item.visit_time?.match(/第(\d+)天/);
-                if (dayMatch) {
-                    maxDay = Math.max(maxDay, parseInt(dayMatch[1]));
-                }
-
-                tableBody.append(row);
             });
 
-            // 更新统计信息
-            $('#totalSpots').text(routeData.length);
-            $('#totalCost').text(totalCost > 0 ? `¥${totalCost}` : '免费');
-            $('#totalDays').text(`${maxDay}天`);
+            if (points.length === 0) {
+                $('#mapEmptyHint').removeClass('d-none');
+                return;
+            }
+            try {
+                map.checkResize();
+                const viewport = map.getViewport(points);
+                const zoom = Math.min(viewport.zoom - 1, 16);
+                map.centerAndZoom(viewport.center, zoom);
+                setTimeout(function () { try { map.checkResize(); } catch (e) {} }, 100);
+            } catch (err) {
+                console.warn('viewport', err);
+                map.centerAndZoom(points[0], 13);
+            }
         }
 
         // 提交表单处理
@@ -567,7 +538,7 @@
             hideResult();
             showLoading();
 
-            $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i>AI计算中...');
+            $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i>生成中...');
 
             const requestData = {
                 city: city,
@@ -575,8 +546,6 @@
                 days: days,
                 budget: budget || 0
             };
-
-            console.log('发送请求数据:', requestData);
 
             $.ajax({
                 url: '{% url "home:get_ai_travelRoute" %}',
@@ -587,13 +556,14 @@
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    console.log('API响应:', response);
-                    if (response.code === 200) {
-                        fillRouteTable(response.data);
-                        markRouteOnMap(response.data);
-                        showResult();
+                    if (response.code === 200 && response.data) {
+                        const d = response.data;
+                        renderOverview(d.overview, d.map_spot_count);
+                        showResult(function () {
+                            bindMapAfterResultVisible(d.map_spots);
+                        });
                     } else {
-                        showError(response.message || '生成路线失败');
+                        showError(response.message || '生成失败');
                     }
                 },
                 error: function (xhr, status, error) {
@@ -602,14 +572,12 @@
                 },
                 complete: function () {
                     hideLoading();
-                    $('#submitBtn').prop('disabled', false).html('<i class="fas fa-paper-plane mr-2"></i>立即生成AI推荐路线<i class="fas fa-wand-magic-sparkles ml-2"></i>');
+                    $('#submitBtn').prop('disabled', false).html('<i class="fas fa-paper-plane mr-2"></i>生成目的地速览<i class="fas fa-wand-magic-sparkles ml-2"></i>');
                 }
             });
         });
 
-        if (!initMap()) {
-            showError('地图初始化失败，可能影响路线可视化');
-        }
+        // 地图改为在首次展示结果后再初始化，避免 #resultContainer 隐藏时画布尺寸为 0
     });
 </script>
 

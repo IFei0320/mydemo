@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from ai.Get_Message import Get_DeepSeek
 from home.models import TravelInfo
 from home.nsga2_trip_planner import (
+    _normalize_coord_pair,
     build_candidates,
     build_route_payload,
     call_ai_html_report,
@@ -151,36 +152,65 @@ def get_ai_travelRoute(request):
             if budget == 0:
                 budget = '无预算'
 
-            print(f"DEBUG: 调用 Get_DeepSeek, 参数：city={data['city']}, season={data['season']}, days={data['days']}, budget={budget}")
-
-            # 调用 DeepSeek 生成旅游计划
             dp = Get_DeepSeek()
-            result = dp._get_travel_plan(
-                city=data['city'],
-                season=data['season'],
-                days=data['days'],
-                budget=budget
+            result = dp.get_city_travel_overview(
+                city=data["city"],
+                season=data["season"],
+                days=str(data["days"]),
+                budget=str(budget),
             )
 
-            print(f"DEBUG: Get_DeepSeek 返回结果：{result}")
+            if result["code"] != 200:
+                return JsonResponse(
+                    {
+                        "code": result["code"],
+                        "message": result.get("message", "生成失败"),
+                        "data": None,
+                    }
+                )
 
-            # 返回结果
-            if result['code'] == 200:
-                return JsonResponse({
-                    'code': 200,
-                    'message': '旅游路线生成成功',
-                    'data': result['data']
-                })
-            else:
-                error_message = result.get('message', '未知错误')
-                raw_result = result.get('raw', '')
-                print(f"ERROR: 旅游路线生成失败 - {error_message}")
-                print(f"ERROR: AI 原始返回：{raw_result}")
-                return JsonResponse({
-                    'code': result['code'],
-                    'message': f'旅游路线生成失败：{error_message}',
-                    'data': None
-                })
+            city_key = str(data["city"]).strip()
+            city_rows = list(
+                TravelInfo.objects.filter(city__icontains=city_key)
+                .exclude(longitude__isnull=True)
+                .exclude(latitude__isnull=True)[:250]
+            )
+            primary = [
+                row
+                for row in city_rows
+                if str(row.city or "").replace("市", "") == city_key.replace("市", "")
+            ]
+            source_rows = primary if len(primary) >= 9 else city_rows
+
+            map_spots = []
+            for t in source_rows[:120]:
+                lon, lat = _normalize_coord_pair(t.longitude, t.latitude)
+                if not lon or not lat:
+                    continue
+                price_hint = t.actual_price or t.market_price or ""
+                map_spots.append(
+                    {
+                        "name": t.name or "",
+                        "longitude": lon,
+                        "latitude": lat,
+                        "rating": t.rating or "",
+                        "area": t.area or "",
+                        "price_hint": str(price_hint)[:120],
+                    }
+                )
+
+            return JsonResponse(
+                {
+                    "code": 200,
+                    "message": "目的地概览生成成功",
+                    "data": {
+                        "overview": result["overview"],
+                        "map_spots": map_spots,
+                        "map_spot_count": len(map_spots),
+                        "city": city_key,
+                    },
+                }
+            )
 
         except Exception as e:
             import traceback
