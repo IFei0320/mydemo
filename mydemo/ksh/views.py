@@ -70,24 +70,66 @@ def part3(request):
     注：dy_analysis.part3 表由 data_analysis.part3() 写入的是「价格区间 -> 该区间景点数量」，
     并非单景点票价；若用该表会把「数量」误当「元」参与平均，且名称列会变成区间代号。
     """
-    pairs = []
-    for row in TravelInfo.objects.all().only("name", "actual_price", "market_price", "is_free"):
-        name = (row.name or "").strip() or "未知景点"
-        if bool(row.is_free):
-            price = 0.0
-        else:
-            price = _parse_price(row.actual_price)
-            if price <= 0:
-                price = _parse_price(row.market_price)
-        pairs.append((name, round(float(price), 2)))
+    from collections import defaultdict
 
-    pairs.sort(key=lambda x: -x[1])
+    selected_province = request.GET.get('province', '')
+
+    # 获取所有省份列表（用于下拉筛选）
+    provinces = list(
+        TravelInfo.objects.exclude(province__isnull=True)
+        .exclude(province='')
+        .values_list('province', flat=True)
+        .distinct()
+        .order_by('province')
+    )
+
+    if selected_province:
+        # 详情模式：指定省份的景点价格
+        qs = TravelInfo.objects.filter(province=selected_province)
+        pairs = []
+        for row in qs.only("name", "actual_price", "market_price", "is_free"):
+            name = (row.name or "").strip() or "未知景点"
+            if bool(row.is_free):
+                price = 0.0
+            else:
+                price = _parse_price(row.actual_price)
+                if price <= 0:
+                    price = _parse_price(row.market_price)
+            pairs.append((name, round(float(price), 2)))
+        pairs.sort(key=lambda x: -x[1])
+        chart_mode = 'detail'
+    else:
+        # 汇总模式：各省份平均门票价格
+        province_prices = defaultdict(list)
+        for row in TravelInfo.objects.all().only("province", "actual_price", "market_price", "is_free"):
+            province = row.province
+            if not province:
+                continue
+            if bool(row.is_free):
+                price = 0.0
+            else:
+                price = _parse_price(row.actual_price)
+                if price <= 0:
+                    price = _parse_price(row.market_price)
+            province_prices[province].append(round(float(price), 2))
+
+        pairs = []
+        for prov, prices in province_prices.items():
+            if prices:
+                avg_price = round(sum(prices) / len(prices), 2)
+                pairs.append((prov, avg_price))
+        pairs.sort(key=lambda x: -x[1])
+        chart_mode = 'summary'
+
     name_list = [p[0] for p in pairs]
     value_list = [p[1] for p in pairs]
 
     content = {
         "name_list_json": mark_safe(json.dumps(name_list, ensure_ascii=False)),
         "value_list_json": mark_safe(json.dumps(value_list)),
+        "provinces": provinces,
+        "selected_province": selected_province,
+        "chart_mode": chart_mode,
     }
     return render(request, "ksh/part3.html", content)
 

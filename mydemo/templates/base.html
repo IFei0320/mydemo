@@ -1,389 +1,705 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
-    <title>Mega Able bootstrap admin template</title>
-
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-      <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-        <!-- Favicon icon -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>旅游数据分析平台</title>
     {% load static %}
+    <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/pages/waves/css/waves.min.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/themify-icons/themify-icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/jquery.mCustomScrollbar.css' %}">
 
-<link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
-<!-- Google font (Google Fonts CSS 可以选择本地化或继续使用 CDN) -->
-<!-- 如果选择本地化，需要下载 Roboto 字体文件并放入 static 目录，然后像下面这样引用 -->
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/fonts/roboto.css' %}"> -->
-<!-- 或者继续使用 CDN (通常推荐，因为可能更快更稳定) -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <style>
+        /* ========== Apple Liquid Glass 全局风格 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- waves.css -->
-<link rel="stylesheet" href="{% static 'assets/pages/waves/css/waves.min.css' %}" type="text/css" media="all">
+        body {
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-<!-- Required Fremwork (Bootstrap CSS) -->
-<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap/css/bootstrap.min.css' %}">
+        /* ========== 顶部导航栏 - 液态玻璃 ========== */
+        .pcoded-header {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 56px;
+        }
 
-<!-- Note: waves.css is loaded again here, you might want to remove the duplicate if it's not intentional -->
-<!-- <link rel="stylesheet" href="{% static 'assets/pages/waves/css/waves.min.css' %}" type="text/css" media="all"> -->
+        .navbar-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 20px;
+        }
 
-<!-- themify icon -->
-<link rel="stylesheet" type="text/css" href="{% static 'assets/icon/themify-icons/themify-icons.css' %}">
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-<!-- Font Awesome (If you have a local copy in your static files) -->
-<link rel="stylesheet" type="text/css" href="{% static 'assets/icon/font-awesome/css/font-awesome.min.css' %}">
-<!-- If using Font Awesome from a CDN instead of local file, comment out the line above and uncomment the one below -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiXdTtIQcLhvG3zCrB6TS66HsFc7O3zoFIFQlr5LHSMPe89hgQrHp46ko7kpW7Xt7U445H8Ia87OiuyozoQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+        .navbar-logo a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+        }
 
-<!-- scrollbar.css (jQuery mCustomScrollbar) -->
-<link rel="stylesheet" type="text/css" href="{% static 'assets/css/jquery.mCustomScrollbar.css' %}">
+        .navbar-logo img {
+            height: 28px;
+            width: auto;
+        }
 
-<!-- am chart export.css (You can host this locally or use CDN) -->
-<!-- If hosting locally: -->
-<!-- export.css 本地文件缺失，避免 404 -->
-<!-- <link rel="stylesheet" href="{% static 'assets/amcharts/export/export.css' %}" type="text/css" media="all" /> -->
-<!-- If continuing to use CDN: -->
-<!-- <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" /> -->
+        .mobile-menu {
+            display: none;
+            color: #1d1d1f;
+            font-size: 20px;
+        }
 
-<!-- Style.css (Your main custom style) -->
-<link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-  </head>
+        .nav-left li a, .nav-right li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            color: #86868b;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-  <body>
-  <!-- Pre-loader start -->
-  <div class="theme-loader">
-      <div class="loader-track">
-          <div class="preloader-wrapper">
-              <div class="spinner-layer spinner-blue">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-              <div class="spinner-layer spinner-red">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
+        .nav-left li a:hover, .nav-right li a:hover {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1d1d1f;
+        }
 
-              <div class="spinner-layer spinner-yellow">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
+        /* 搜索框 - 液态玻璃 */
+        .header-search {
+            position: relative;
+        }
 
-              <div class="spinner-layer spinner-green">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- Pre-loader end -->
-  <div id="pcoded" class="pcoded">
-      <div class="pcoded-overlay-box"></div>
-      <div class="pcoded-container navbar-wrapper">
-          <nav class="navbar header-navbar pcoded-header">
-              <div class="navbar-wrapper">
-                  <div class="navbar-logo">
-                      <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
-                          <i class="ti-menu"></i>
-                      </a>
-                      <div class="mobile-search waves-effect waves-light">
-                          <div class="header-search">
-                              <div class="main-search morphsearch-search">
-                                  <div class="input-group">
-                                      <span class="input-group-addon search-close"><i class="ti-close"></i></span>
-                                      <input type="text" class="form-control" placeholder="Enter Keyword">
-                                      <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <a href="{% url 'home:index' %}">
-                          <img class="img-fluid" src="{% static 'assets/images/default-avatar.svg' %}" alt="Theme-Logo" style="height:32px; width:auto;" />
-                      </a>
-                      <a class="mobile-options waves-effect waves-light">
-                          <i class="ti-more"></i>
-                      </a>
-                  </div>
+        .header-search .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 10px;
+            padding: 0 12px;
+            height: 36px;
+            transition: all 0.3s ease;
+        }
 
-                  <div class="navbar-container container-fluid">
-                      <ul class="nav-left">
-                          <li>
-                              <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
-                          </li>
-                          <li class="header-search">
-                              <div class="main-search morphsearch-search">
-                                  <div class="input-group">
-                                      <span class="input-group-addon search-close"><i class="ti-close"></i></span>
-                                      <input type="text" class="form-control">
-                                      <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
-                                  <i class="ti-fullscreen"></i>
-                              </a>
-                          </li>
-                      </ul>
-                      <ul class="nav-right">
-                          <li class="header-notification">
-                              <a href="#!" class="waves-effect waves-light">
-                                  <i class="ti-bell"></i>
-                                  <span class="badge bg-c-red"></span>
-                              </a>
-                              <ul class="show-notification">
-                                  <li>
-                                      <h6>Notifications</h6>
-                                      <label class="label label-danger">New</label>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <div class="media">
-                                          <img class="d-flex align-self-center img-radius" src="{% static 'assets/images/default-avatar.svg' %}" alt="Generic placeholder image">
-                                          <div class="media-body">
-                                              <h5 class="notification-user">John Doe</h5>
-                                              <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                              <span class="notification-time">30 minutes ago</span>
-                                          </div>
-                                      </div>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <div class="media">
-                                          <img class="d-flex align-self-center img-radius" src="{% static 'assets/images/default-avatar.svg' %}" alt="Generic placeholder image">
-                                          <div class="media-body">
-                                              <h5 class="notification-user">Joseph William</h5>
-                                              <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                              <span class="notification-time">30 minutes ago</span>
-                                          </div>
-                                      </div>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <div class="media">
-                                          <img class="d-flex align-self-center img-radius" src="{% static 'assets/images/default-avatar.svg' %}" alt="Generic placeholder image">
-                                          <div class="media-body">
-                                              <h5 class="notification-user">Sara Soudein</h5>
-                                              <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                              <span class="notification-time">30 minutes ago</span>
-                                          </div>
-                                      </div>
-                                  </li>
-                              </ul>
-                          </li>
-                          <li class="user-profile header-notification">
-                              <a href="#!" class="waves-effect waves-light">
-                                  <img src="{% static 'assets/images/default-avatar.svg' %}" class="img-radius" alt="User-Profile-Image">
-                                  <span>John Doe</span>
-                                  <i class="ti-angle-down"></i>
-                              </a>
-                              <ul class="show-notification profile-notification">
-                                  <li class="waves-effect waves-light">
-                                      <a href="#!">
-                                          <i class="ti-settings"></i> Settings
-                                      </a>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <a href="user-profile.html">
-                                          <i class="ti-user"></i> Profile
-                                      </a>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <a href="email-inbox.html">
-                                          <i class="ti-email"></i> My Messages
-                                      </a>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <a href="auth-lock-screen.html">
-                                          <i class="ti-lock"></i> Lock Screen
-                                      </a>
-                                  </li>
-                                  <li class="waves-effect waves-light">
-                                      <a href="auth-normal-sign-in.html">
-                                          <i class="ti-layout-sidebar-left"></i> Logout
-                                      </a>
-                                  </li>
-                              </ul>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-          </nav>
+        .header-search .input-group:focus-within {
+            background: rgba(0, 0, 0, 0.06);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+        }
 
-          <div class="pcoded-main-container">
-              <div class="pcoded-wrapper">
-                  <nav class="pcoded-navbar">
-                      <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
-                      <div class="pcoded-inner-navbar main-menu">
-                          <div class="">
-                              <div class="main-menu-header">
-                                  <img class="img-80 img-radius" src="{{ request.session.avatar }}" alt="User-Profile-Image">
-                                  <div class="user-details">
-                                      <span id="more-details">{{ request.session.uname }}<i class="fa fa-caret-down"></i></span>
-                                  </div>
-                              </div>
+        .header-search input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            color: #1d1d1f;
+            width: 180px;
+            font-family: inherit;
+        }
 
-                              <div class="main-menu-content">
-                                  <ul>
-                                      <li class="more-details">
-                                          <a href="{% url 'user:changeInfo' %}"><i class="ti-user"></i>个人信息</a>
-                                          <a href="{% url 'user:logout' %}"><i class="ti-layout-sidebar-left"></i> Logout</a>
-                                      </li>
-                                  </ul>
-                              </div>
-                          </div>
-                          <div class="p-15 p-b-0">
-                              <form class="form-material" action="{% url 'home:travel_list' %}" method="get" >
-                                  <div class="form-group form-primary">
-                                      <input type="text" name="search-name" class="form-control" required="">
-                                      <span class="form-bar"></span>
-                                      <label class="float-label"><i class="fa fa-search m-r-10"></i>搜素景点</label>
-                                  </div>
-                              </form>
-                          </div>
-                          <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">布局</div>
-                          <ul class="pcoded-item pcoded-left-item">
-                              <li class="active">
-                                  <a href="{% url 'home:index' %}" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.dash.main">首页</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
-                              <li >
-                                  <a href="{% url 'home:travel_list' %}" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
-                                      <span class="pcoded-mtext"  data-i18n="nav.dash.main">国内旅游景点</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
+        .header-search input::placeholder {
+            color: #86868b;
+        }
 
-                              </li>
-                          </ul>
-                          <div class="pcoded-navigation-label" data-i18n="nav.category.forms">数据分析 &amp; 可视化</div>
-                          <ul class="pcoded-item pcoded-left-item">
-                              <li>
-                                  <a href="{% url 'ksh:part1' %}" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-pie-chart"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">景点评分信息</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="{% url 'ksh:part2' %}" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">景点热度分析</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
-                                  <li>
-                                  <a href="{% url 'ksh:part3' %}" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-line-dashed"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">门票价格分析</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="{% url 'ksh:part4' %}" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-map"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">景点地区分部</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
+        .header-search .search-btn, .header-search .search-close {
+            color: #86868b;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
+        /* ========== 侧边栏 - 液态玻璃 ========== */
+        .pcoded-navbar {
+            width: 260px;
+            position: fixed;
+            left: 0;
+            top: 56px;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+            z-index: 999;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
 
-                          </ul>
+        .pcoded-navbar::-webkit-scrollbar {
+            width: 6px;
+        }
 
-                          <div class="pcoded-navigation-label" data-i18n="nav.category.forms">智能出行</div>
-                          <ul class="pcoded-item pcoded-left-item">
-                              <li>
-                                  <a href="{% url 'home:get_ai_travelRoute' %}"class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-rocket"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">目的地速览</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="{% url 'home:ai_nsga2_route' %}"class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">智能路线规划</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="{% url 'home:wiki_mvp' %}"class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-book"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">LLM Wiki MVP</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                              </li>
+        .pcoded-navbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
+        .pcoded-navbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
 
+        /* 用户信息区 */
+        .main-menu-header {
+            padding: 24px 20px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
 
-                          </ul>
+        .main-menu-header img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
+        .user-details {
+            flex: 1;
+        }
 
-                      </div>
-                  </nav>
-                  <div class="pcoded-content">
-                      {% block content %}
+        .user-details span {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1d1d1f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-                      {% endblock %}
-                  </div>
+        .user-details span:hover {
+            color: #007aff;
+        }
 
-                </div>
+        .user-details i {
+            font-size: 12px;
+            color: #86868b;
+            transition: transform 0.3s ease;
+        }
+
+        .user-details.open i {
+            transform: rotate(180deg);
+        }
+
+        /* 下拉菜单 - 可折叠 */
+        .main-menu-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 16px;
+        }
+
+        .main-menu-content.open {
+            max-height: 200px;
+            opacity: 1;
+            padding: 8px 16px 12px;
+        }
+
+        .main-menu-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .main-menu-content li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: #86868b;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .main-menu-content li a:hover {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1d1d1f;
+        }
+
+        .main-menu-content li a i {
+            font-size: 16px;
+        }
+
+        /* 搜索表单 */
+        .p-15 {
+            padding: 16px 20px 8px;
+        }
+
+        .sidebar-search {
+            position: relative;
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 10px;
+            padding: 0 14px 0 36px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sidebar-search input:focus {
+            border-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .sidebar-search i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #86868b;
+            font-size: 14px;
+        }
+
+        /* 导航标签 */
+        .pcoded-navigation-label {
+            padding: 16px 20px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* 导航菜单 */
+        .pcoded-item {
+            list-style: none;
+            padding: 0 12px;
+            margin: 0;
+        }
+
+        .pcoded-item li {
+            margin-bottom: 4px;
+        }
+
+        .pcoded-item li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            color: #86868b;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pcoded-item li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 20px;
+            background: linear-gradient(180deg, rgba(60, 60, 67, 0.3), rgba(60, 60, 67, 0.1));
+            border-radius: 0 3px 3px 0;
+            transition: width 0.3s ease;
+        }
+
+        .pcoded-item li a:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: #1d1d1f;
+        }
+
+        .pcoded-item li a:hover::before {
+            width: 3px;
+        }
+
+        .pcoded-item li a i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* ========== 灰度和谐选中效果 ========== */
+        .pcoded-item li.active a {
+            background: rgba(0, 0, 0, 0.06);
+            color: #1d1d1f;
+            font-weight: 600;
+            box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.03);
+        }
+
+        .pcoded-item li.active a::before {
+            width: 3px;
+            background: linear-gradient(180deg, rgba(60, 60, 67, 0.4), rgba(60, 60, 67, 0.15));
+        }
+
+        .pcoded-item li.active a i {
+            color: #1d1d1f;
+        }
+
+        /* ========== 主内容区 ========== */
+        .pcoded-main-container {
+            margin-left: 260px;
+            margin-top: 56px;
+            min-height: calc(100vh - 56px);
+            padding: 24px;
+            background: #f5f5f7;
+        }
+
+        .pcoded-content {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            min-height: calc(100vh - 104px);
+        }
+
+        /* ========== 预加载器 ========== */
+        .theme-loader {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-track {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #1d1d1f;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 992px) {
+            .pcoded-navbar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .pcoded-navbar.open {
+                transform: translateX(0);
+            }
+
+            .pcoded-main-container {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .header-search input {
+                width: 120px;
+            }
+        }
+
+        /* ========== 滚动条美化 ========== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+    </style>
+<base target="_blank">
+</head>
+
+<body>
+    <!-- Pre-loader -->
+    <div class="theme-loader">
+        <div class="loader-track"></div>
+    </div>
+
+    <!-- Header -->
+    <nav class="pcoded-header">
+        <div class="navbar-wrapper">
+            <div class="navbar-logo">
+                <a href="javascript:void(0)" class="mobile-menu" id="mobile-collapse">
+                    <i class="ti-menu"></i>
+                </a>
+                <a href="{% url 'home:index' %}">
+                    <img src="{% static 'assets/images/default-avatar.svg' %}" alt="Logo">
+                </a>
+                <a href="{% url 'home:index' %}" style="font-weight: 700; color: #1d1d1f; text-decoration: none; font-size: 17px;">
+                    旅游数据分析平台
+                </a>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <ul class="nav-left">
+                    <li>
+                        <a href="javascript:void(0)" onclick="toggleFullScreen()">
+                            <i class="ti-fullscreen"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <nav class="pcoded-navbar">
+        <div class="pcoded-inner-navbar main-menu">
+            <!-- 用户信息 -->
+            <div class="main-menu-header">
+                <img src="{{ request.session.avatar|default:'/static/assets/images/default-avatar.svg' }}" alt="User">
+                <div class="user-details">
+                    <span id="more-details">
+                        {{ request.session.uname|default:'用户' }}
+                        <i class="fa fa-caret-down"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 下拉菜单（默认可折叠） -->
+            <div class="main-menu-content" id="userDropdown">
+                <ul>
+                    <li>
+                        <a href="{% url 'user:changeInfo' %}"><i class="ti-user"></i>个人信息</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user:logout' %}"><i class="ti-layout-sidebar-left"></i>退出登录</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 搜索 -->
+            <div class="p-15">
+                <form action="{% url 'home:travel_list' %}" method="get">
+                    <div class="sidebar-search">
+                        <i class="fa fa-search"></i>
+                        <input type="text" name="search_name" placeholder="搜索景点..." required>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 布局 -->
+            <div class="pcoded-navigation-label">布局</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="active" data-menu="index">
+                    <a href="{% url 'home:index' %}">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext">首页</span>
+                    </a>
+                </li>
+                <li data-menu="travel_list">
+                    <a href="{% url 'home:travel_list' %}">
+                        <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                        <span class="pcoded-mtext">国内旅游景点</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- 数据分析 -->
+            <div class="pcoded-navigation-label">数据分析 & 可视化</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li data-menu="part1">
+                    <a href="{% url 'ksh:part1' %}">
+                        <span class="pcoded-micon"><i class="ti-pie-chart"></i></span>
+                        <span class="pcoded-mtext">景点评分信息</span>
+                    </a>
+                </li>
+                <li data-menu="part2">
+                    <a href="{% url 'ksh:part2' %}">
+                        <span class="pcoded-micon"><i class="ti-layers"></i></span>
+                        <span class="pcoded-mtext">景点热度分析</span>
+                    </a>
+                </li>
+                <li data-menu="part3">
+                    <a href="{% url 'ksh:part3' %}">
+                        <span class="pcoded-micon"><i class="ti-line-dashed"></i></span>
+                        <span class="pcoded-mtext">门票价格分析</span>
+                    </a>
+                </li>
+                <li data-menu="part4">
+                    <a href="{% url 'ksh:part4' %}">
+                        <span class="pcoded-micon"><i class="ti-map"></i></span>
+                        <span class="pcoded-mtext">景点地区分部</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- AI推荐 -->
+            <div class="pcoded-navigation-label">智能出行</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li data-menu="travelRoute">
+                    <a href="{% url 'home:get_ai_travelRoute' %}">
+                        <span class="pcoded-micon"><i class="ti-rocket"></i></span>
+                        <span class="pcoded-mtext">目的地速览</span>
+                    </a>
+                </li>
+                <li data-menu="nsga2">
+                    <a href="{% url 'home:ai_nsga2_route' %}">
+                        <span class="pcoded-micon"><i class="ti-stats-up"></i></span>
+                        <span class="pcoded-mtext">智能路线规划</span>
+                    </a>
+                </li>
+                <li data-menu="wiki">
+                    <a href="{% url 'home:wiki_mvp' %}">
+                        <span class="pcoded-micon"><i class="ti-book"></i></span>
+                        <span class="pcoded-mtext">LLM Wiki MVP</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            {% block content %}{% endblock %}
+        </div>
     </div>
-    <!-- Warning Section Starts -->
 
-    <!-- Required Jquery -->
-  <script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/jquery-ui/jquery-ui.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/popper.js/popper.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/bootstrap/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/pages/widget/excanvas.js' %}"></script>
-<script src="{% static 'assets/pages/waves/js/waves.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/jquery-slimscroll/jquery.slimscroll.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/modernizr/modernizr.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/SmoothScroll.js' %}"></script>
-<script src="{% static 'assets/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/chart.js/Chart.js' %}"></script>
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="{% static 'assets/pages/widget/amchart/gauge.js' %}"></script>
-<script src="{% static 'assets/pages/widget/amchart/serial.js' %}"></script>
-<script src="{% static 'assets/pages/widget/amchart/light.js' %}"></script>
-<script src="{% static 'assets/pages/widget/amchart/pie.min.js' %}"></script>
-<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-<script src="{% static 'assets/js/pcoded.min.js' %}"></script>
-<script src="{% static 'assets/js/vertical-layout.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/pages/dashboard/custom-dashboard.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/script.js' %}"></script>
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/pages/waves/js/waves.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-slimscroll/jquery.slimscroll.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <script src="{% static 'assets/js/pcoded.min.js' %}"></script>
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+    <script>
+        // 全屏切换
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // 移动端菜单切换
+        document.getElementById('mobile-collapse').addEventListener('click', function() {
+            document.querySelector('.pcoded-navbar').classList.toggle('open');
+        });
+
+        // 用户下拉菜单
+        document.getElementById('more-details').addEventListener('click', function() {
+            const dropdown = document.getElementById('userDropdown');
+            const caret = this.querySelector('i');
+            dropdown.classList.toggle('open');
+            this.classList.toggle('open');
+        });
+
+        // 侧边栏选中高亮 - 根据当前 URL 自动匹配
+        (function() {
+            const currentPath = window.location.pathname;
+            const menuMap = {
+                '/mydemo/index': 'index',
+                '/mydemo/': 'index',
+                '/mydemo/travel_list': 'travel_list',
+                '/ksh/part1': 'part1',
+                '/ksh/part2': 'part2',
+                '/ksh/part3': 'part3',
+                '/ksh/part4': 'part4',
+                '/mydemo/get_ai_travelRoute': 'travelRoute',
+                '/mydemo/ai_nsga2_route': 'nsga2',
+                '/mydemo/wiki_mvp': 'wiki',
+            };
+
+            // 移除所有 active
+            document.querySelectorAll('.pcoded-item li').forEach(li => {
+                li.classList.remove('active');
+            });
+
+            // 匹配当前路径
+            let matched = false;
+            for (const [path, menu] of Object.entries(menuMap)) {
+                if (currentPath === path || currentPath.startsWith(path + '/')) {
+                    const target = document.querySelector(`[data-menu="${menu}"]`);
+                    if (target) {
+                        target.classList.add('active');
+                        matched = true;
+                    }
+                    break;
+                }
+            }
+
+            // 如果没匹配到，默认首页
+            if (!matched) {
+                const indexItem = document.querySelector('[data-menu="index"]');
+                if (indexItem) indexItem.classList.add('active');
+            }
+        })();
+
+        // 预加载器
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.theme-loader').style.display = 'none';
+            }, 500);
+        });
+    </script>
 </body>
-
 </html>

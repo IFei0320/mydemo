@@ -7,6 +7,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
+import family
 from openai import OpenAI
 
 

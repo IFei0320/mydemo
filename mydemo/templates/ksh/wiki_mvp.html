@@ -2,41 +2,384 @@
 {% load static %}
 
 {% block content %}
-<div class="pcoded-inner-content">
-  <div class="main-body">
-    <div class="page-wrapper">
-      <div class="page-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="card">
-              <div class="card-header">
-                <h5>LLM Wiki MVP（独立新增模块）</h5>
-                <span>先跑通摄入、查询、检查，不影响原有 NSGA-II 页面。</span>
-              </div>
-              <div class="card-block">
-                <div class="form-group">
-                  <button id="btnIngest" class="btn btn-primary">1) 摄入 raw 文档</button>
-                  <button id="btnLint" class="btn btn-warning m-l-10">2) 健康检查</button>
-                </div>
-                <div class="form-group">
-                  <label for="city">城市过滤（可选，例如：上海）</label>
-                  <input id="city" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label for="question">问题（例如：上海夜景路线怎么安排）</label>
-                  <textarea id="question" class="form-control" rows="3"></textarea>
-                </div>
-                <button id="btnQuery" class="btn btn-success">3) 查询 Wiki</button>
-                <hr>
-                <h6>执行结果</h6>
-                <pre id="output" style="white-space: pre-wrap; background:#f8f9fa; border:1px solid #e9ecef; padding:12px; border-radius:6px; min-height:220px;"></pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+<style>
+    /* ========== 全局灰色玻璃风格 ========== */
+    .glass-page {
+        background: #e8ecf1;
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+        padding: 28px;
+    }
+
+    .glass-bg-decoration {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .glass-bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.3;
+    }
+
+    .glass-bg-circle:nth-child(1) {
+        width: 600px;
+        height: 600px;
+        background: #a0aec0;
+        top: -15%;
+        right: -10%;
+    }
+
+    .glass-bg-circle:nth-child(2) {
+        width: 500px;
+        height: 500px;
+        background: #cbd5e0;
+        bottom: -15%;
+        left: -10%;
+    }
+
+    .glass-bg-circle:nth-child(3) {
+        width: 400px;
+        height: 400px;
+        background: #b8c5d6;
+        top: 45%;
+        left: 35%;
+    }
+
+    /* ========== 玻璃卡片 ========== */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .glass-card-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .glass-card-header h5 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a202c;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .glass-card-header span {
+        color: #a0aec0;
+        font-size: 13px;
+        display: block;
+        margin-top: 4px;
+    }
+
+    .glass-card-body {
+        padding: 24px;
+    }
+
+    /* ========== 新拟态图标 ========== */
+    .neumorph-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+        background: linear-gradient(145deg, #f0f0f5, #ffffff);
+        box-shadow: 4px 4px 10px rgba(174, 174, 192, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 1px 1px 1px rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+    }
+
+    .glass-card:hover .neumorph-icon {
+        transform: scale(1.05) rotate(-3deg);
+    }
+
+    .icon-purple { color: #8b7fd4; }
+
+    /* ========== 按钮 ========== */
+    .glass-btn {
+        padding: 12px 24px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        color: #4c6ef5;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 48px;
+    }
+
+    .glass-btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .glass-btn-primary {
+        background: #4c6ef5;
+        color: white;
+        border: none;
+    }
+
+    .glass-btn-primary:hover {
+        background: #4263eb;
+        color: white;
+    }
+
+    .glass-btn-warning {
+        background: #e0a96d;
+        color: white;
+        border: none;
+    }
+
+    .glass-btn-warning:hover {
+        background: #c0392b;
+        color: white;
+    }
+
+    .glass-btn-success {
+        background: #5dbea3;
+        color: white;
+        border: none;
+    }
+
+    .glass-btn-success:hover {
+        background: #3d9970;
+        color: white;
+    }
+
+    /* ========== 输入框 ========== */
+    .glass-input {
+        width: 100%;
+        height: 48px;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #2d3748;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.04);
+        font-family: inherit;
+    }
+
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(76, 110, 245, 0.4);
+        box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.08), inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .glass-textarea {
+        width: 100%;
+        min-height: 120px;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #2d3748;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.04);
+        font-family: inherit;
+        resize: vertical;
+    }
+
+    .glass-textarea:focus {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(76, 110, 245, 0.4);
+        box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.08), inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    /* ========== 表单组 ========== */
+    .glass-form-group {
+        margin-bottom: 20px;
+    }
+
+    .glass-form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 8px;
+    }
+
+    .glass-form-group label i {
+        color: #4c6ef5;
+        margin-right: 4px;
+    }
+
+    /* ========== 输出区域 ========== */
+    .glass-output {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 16px;
+        padding: 20px;
+        min-height: 220px;
+        font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #4a4a6a;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .glass-output:empty::before {
+        content: '等待执行...';
+        color: #a0aec0;
+        font-style: italic;
+    }
+
+    /* ========== 按钮组 ========== */
+    .btn-group-glass {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    /* ========== 分割线 ========== */
+    .glass-divider {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
+        margin: 24px 0;
+    }
+
+    /* ========== 标题装饰 ========== */
+    .section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section-title i {
+        color: #5dbea3;
+    }
+
+    /* ========== 滚动条美化 ========== */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(160, 174, 192, 0.5);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(160, 174, 192, 0.7);
+    }
+</style>
+
+<div class="glass-page">
+    <!-- 背景装饰 -->
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
     </div>
-  </div>
+
+    <div style="position: relative; z-index: 1;">
+        <div class="glass-card">
+            <div class="glass-card-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="neumorph-icon icon-purple">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h5>LLM Wiki MVP</h5>
+                        <span>先跑通摄入、查询、检查，不影响原有 NSGA-II 页面</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card-body">
+                <!-- 操作按钮组 -->
+                <div class="btn-group-glass">
+                    <button id="btnIngest" class="glass-btn glass-btn-primary">
+                        <i class="fas fa-database"></i>1) 摄入 raw 文档
+                    </button>
+                    <button id="btnLint" class="glass-btn glass-btn-warning">
+                        <i class="fas fa-stethoscope"></i>2) 健康检查
+                    </button>
+                </div>
+
+                <!-- 城市过滤 -->
+                <div class="glass-form-group">
+                    <label for="city">
+                        <i class="fas fa-city"></i>城市过滤（可选，例如：上海）
+                    </label>
+                    <input id="city" class="glass-input" placeholder="输入城市名称..." />
+                </div>
+
+                <!-- 问题输入 -->
+                <div class="glass-form-group">
+                    <label for="question">
+                        <i class="fas fa-question-circle"></i>问题（例如：上海夜景路线怎么安排）
+                    </label>
+                    <textarea id="question" class="glass-textarea" rows="3" placeholder="请输入您的问题..."></textarea>
+                </div>
+
+                <!-- 查询按钮 -->
+                <button id="btnQuery" class="glass-btn glass-btn-success" style="margin-bottom: 20px;">
+                    <i class="fas fa-search"></i>3) 查询 Wiki
+                </button>
+
+                <hr class="glass-divider">
+
+                <!-- 执行结果 -->
+                <div class="section-title">
+                    <i class="fas fa-terminal"></i>执行结果
+                </div>
+                <pre id="output" class="glass-output"></pre>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -83,4 +426,5 @@
     }
   });
 </script>
+
 {% endblock %}

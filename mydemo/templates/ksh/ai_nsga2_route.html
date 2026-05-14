@@ -2,505 +2,1127 @@
 {% block content %}
 {% load static %}
 
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<!-- Page-header start -->
-<div class="page-header">
-    <div class="page-block">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <div class="page-header-title">
-                    <h5 class="m-b-10">
-                        <i class="fas fa-dna text-gradient-purple mr-2"></i>NSGA-II 算法 + AI 智能路线
-                    </h5>
-                    <p class="m-b-0 text-muted">
-                        <i class="fas fa-robot mr-1"></i>多目标优化生成路线，并由 AI 生成详细攻略
-                    </p>
+<style>
+    .glass-page {
+        background: #e8ecf1;
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+        padding: 28px;
+    }
+    .glass-bg-decoration {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+    .glass-bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.3;
+    }
+    .glass-bg-circle:nth-child(1) {
+        width: 600px;
+        height: 600px;
+        background: #a0aec0;
+        top: -15%;
+        right: -10%;
+    }
+    .glass-bg-circle:nth-child(2) {
+        width: 500px;
+        height: 500px;
+        background: #cbd5e0;
+        bottom: -15%;
+        left: -10%;
+    }
+    .glass-bg-circle:nth-child(3) {
+        width: 400px;
+        height: 400px;
+        background: #b8c5d6;
+        top: 45%;
+        left: 35%;
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 24px;
+    }
+    .glass-card:hover {
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    }
+    .glass-card-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .glass-card-header h5 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a202c;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .glass-card-header small {
+        color: #a0aec0;
+        font-size: 12px;
+        display: block;
+        margin-top: 2px;
+    }
+    .glass-card-body {
+        padding: 24px;
+    }
+    .glass-page-header {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        padding: 20px 28px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    .glass-page-header h5 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .glass-page-header p {
+        color: #a0aec0;
+        font-size: 13px;
+        margin: 0;
+    }
+    .glass-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .glass-breadcrumb li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .glass-breadcrumb li:not(:last-child)::after {
+        content: '/';
+        color: #a0aec0;
+        font-size: 12px;
+    }
+    .glass-breadcrumb a {
+        color: #4c6ef5;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+    .glass-breadcrumb a:hover {
+        color: #3b5bdb;
+    }
+    .glass-breadcrumb .active {
+        color: #1a202c;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .glass-input {
+        width: 100%;
+        height: 48px;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 14px;
+        padding: 12px 16px 12px 44px;
+        font-size: 14px;
+        color: #2d3748;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.04);
+        font-family: inherit;
+    }
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(76, 110, 245, 0.4);
+        box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.08);
+    }
+    .glass-select {
+        width: 100%;
+        height: 48px;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #2d3748;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.04);
+        font-family: inherit;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+    .glass-select:focus {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(76, 110, 245, 0.4);
+        box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.08);
+    }
+    .input-wrapper {
+        position: relative;
+    }
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+        font-size: 15px;
+        pointer-events: none;
+        z-index: 2;
+    }
+    .glass-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 8px;
+    }
+    .slider-group {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .slider-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 500;
+        color: #4a5568;
+        margin-bottom: 8px;
+    }
+    .slider-val {
+        padding: 3px 10px;
+        border-radius: 10px;
+        background: #4c6ef5;
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        min-width: 32px;
+        text-align: center;
+    }
+    .glass-range {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #e2e8f0;
+        outline: none;
+    }
+    .glass-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #4c6ef5;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(76, 110, 245, 0.4);
+        transition: all 0.2s;
+    }
+    .glass-range::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 4px 12px rgba(76, 110, 245, 0.5);
+    }
+    .glass-btn {
+        padding: 12px 24px;
+        border-radius: 14px;
+        border: none;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        color: #4c6ef5;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 48px;
+    }
+    .glass-btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    .glass-btn-primary {
+        background: #4c6ef5;
+        color: white;
+    }
+    .glass-btn-primary:hover {
+        background: #4263eb;
+        color: white;
+    }
+    .glass-btn-sm {
+        padding: 8px 16px;
+        height: 36px;
+        font-size: 13px;
+    }
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+    }
+    .stat-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateX(4px);
+    }
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .stat-icon-blue { background: linear-gradient(135deg, #6bb3d9, #2980b9); color: white; }
+    .stat-icon-green { background: linear-gradient(135deg, #5dbea3, #3d9970); color: white; }
+    .stat-icon-red { background: linear-gradient(135deg, #e07a7a, #c0392b); color: white; }
+    .stat-icon-purple { background: linear-gradient(135deg, #8b7fd4, #6b5b95); color: white; }
+    .stat-icon-orange { background: linear-gradient(135deg, #e0a96d, #c0392b); color: white; }
+    .stat-icon-yellow { background: linear-gradient(135deg, #feca57, #ff9f43); color: white; }
+    .stat-info small {
+        font-size: 12px;
+        color: #a0aec0;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .stat-info h5 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a202c;
+        margin: 0;
+    }
+    .plan-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .plan-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    }
+    .plan-card-header {
+        padding: 16px 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .plan-card-header .rank-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: white;
+        color: #1a202c;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .plan-card-body {
+        padding: 20px;
+    }
+    .plan-metric {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .plan-metric:last-child {
+        border-bottom: none;
+    }
+    .plan-metric small {
+        color: #a0aec0;
+        font-size: 12px;
+    }
+    .plan-metric span {
+        font-weight: 700;
+        font-size: 14px;
+        color: #1a202c;
+    }
+    .plan-badge {
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .badge-blue { background: rgba(76, 110, 245, 0.1); color: #4c6ef5; }
+    .badge-green { background: rgba(72, 187, 120, 0.1); color: #38a169; }
+    .badge-red { background: rgba(229, 62, 62, 0.1); color: #e53e3e; }
+    .badge-orange { background: rgba(237, 137, 54, 0.1); color: #c05621; }
+    .badge-purple { background: rgba(139, 127, 212, 0.1); color: #6b5b95; }
+    .badge-gray { background: rgba(160, 174, 192, 0.2); color: #718096; }
+    .glass-table-wrap {
+        overflow: hidden;
+    }
+    .glass-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    .glass-table thead th {
+        padding: 14px 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        background: rgba(255, 255, 255, 0.5);
+        white-space: nowrap;
+    }
+    .glass-table tbody tr {
+        transition: all 0.2s ease;
+    }
+    .glass-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+    .glass-table tbody td {
+        padding: 14px 20px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+    .table-rank {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        color: #718096;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .knowledge-card {
+        padding: 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.6);
+        border-left: 3px solid #4c6ef5;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+    .knowledge-card:hover {
+        background: rgba(255, 255, 255, 0.85);
+        transform: translateX(4px);
+    }
+    .knowledge-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 10px;
+    }
+    .knowledge-grid > div small {
+        font-size: 11px;
+        color: #a0aec0;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .knowledge-grid > div p {
+        font-size: 13px;
+        color: #4a5568;
+        margin: 0;
+        font-weight: 500;
+    }
+    .glass-alert {
+        padding: 14px 20px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+    .alert-info {
+        background: rgba(76, 110, 245, 0.15);
+        border: 1px solid rgba(76, 110, 245, 0.2);
+        color: #4c6ef5;
+    }
+    .alert-danger {
+        background: rgba(229, 62, 62, 0.15);
+        border: 1px solid rgba(229, 62, 62, 0.2);
+        color: #e53e3e;
+    }
+    .glass-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #4a5568;
+        user-select: none;
+    }
+    .glass-check input {
+        display: none;
+    }
+    .check-box {
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(0,0,0,0.15);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        background: rgba(255,255,255,0.6);
+        flex-shrink: 0;
+    }
+    .glass-check input:checked + .check-box {
+        background: #4c6ef5;
+        border-color: #4c6ef5;
+    }
+    .check-icon {
+        color: white;
+        font-size: 10px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .glass-check input:checked + .check-box .check-icon {
+        opacity: 1;
+    }
+    .live-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: rgba(72, 187, 120, 0.15);
+        color: #38a169;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .live-badge::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #48bb78;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+    .recent-tag {
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(0,0,0,0.08);
+        color: #4a5568;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s;
+        cursor: default;
+    }
+    .recent-tag:hover {
+        background: #4c6ef5;
+        color: white;
+        border-color: #4c6ef5;
+        transform: translateY(-2px);
+    }
+    .ai-summary {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 20px;
+        border-radius: 14px;
+        font-family: inherit;
+        white-space: pre-wrap;
+        line-height: 1.8;
+        color: #4a5568;
+        font-size: 14px;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .modal-mask {
+        position: fixed;
+        inset: 0;
+        background: rgba(31, 41, 55, 0.55);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        backdrop-filter: blur(6px);
+    }
+    .modal-card {
+        max-width: 520px;
+        width: 100%;
+        background: #ffffff;
+        border-radius: 22px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+        animation: modalIn 0.32s ease;
+    }
+    @keyframes modalIn {
+        from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-header-gradient {
+        padding: 20px 24px 18px;
+        background: #4c6ef5;
+        color: #fff;
+    }
+    .modal-subtitle {
+        font-size: 13px;
+        opacity: 0.9;
+        line-height: 1.4;
+    }
+    .modal-close-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        line-height: 1;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .modal-close-btn:hover {
+        background: rgba(255,255,255,0.2);
+        transform: rotate(90deg);
+    }
+    .modal-body {
+        padding: 24px 24px 22px;
+        background: #ffffff;
+    }
+    .modal-tip-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(76, 110, 245, 0.05);
+        border: 1px solid rgba(76, 110, 245, 0.1);
+        margin-bottom: 16px;
+    }
+    .modal-tip-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4c6ef5;
+        background: #ffffff;
+        box-shadow: 0 4px 10px rgba(76, 110, 245, 0.15);
+        flex-shrink: 0;
+    }
+    .modal-label {
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+        color: #374151;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+    .modal-hint {
+        color: #6b7280;
+        font-size: 12px;
+    }
+    .modal-input {
+        width: 100%;
+        height: 50px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 10px 15px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #ffffff;
+        outline: none;
+        font-family: inherit;
+    }
+    .modal-input:focus {
+        border-color: #4c6ef5;
+        box-shadow: 0 0 0 4px rgba(76, 110, 245, 0.1);
+    }
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .modal-btn-cancel {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        background: white;
+        color: #4b5563;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .modal-btn-cancel:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+    }
+    .modal-btn-confirm {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        background: #4c6ef5;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);
+    }
+    .modal-btn-confirm:hover {
+        background: #4263eb;
+        transform: translateY(-2px);
+    }
+    .form-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr 1fr;
+        gap: 16px;
+        align-items: end;
+    }
+    .slider-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    .slider-row-2 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    .result-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+    }
+    .top3-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    @media (max-width: 1200px) {
+        .form-row { grid-template-columns: 1fr 1fr; }
+        .slider-row { grid-template-columns: 1fr 1fr; }
+        .slider-row-2 { grid-template-columns: 1fr 1fr; }
+        .result-grid { grid-template-columns: 1fr; }
+        .top3-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+        .form-row { grid-template-columns: 1fr; }
+        .slider-row { grid-template-columns: 1fr; }
+        .slider-row-2 { grid-template-columns: 1fr; }
+        .stat-grid { grid-template-columns: 1fr; }
+        .knowledge-grid { grid-template-columns: 1fr 1fr; }
+    }
+</style>
+
+<div class="glass-page">
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <!-- Page-header -->
+        <div class="glass-page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5><i class="fas fa-dna" style="color: #8b7fd4;"></i>NSGA-II 算法 + AI 智能路线</h5>
+                    <p><i class="fas fa-robot mr-1"></i>多目标优化生成路线，并由 AI 生成详细攻略</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <ul class="breadcrumb-title">
-                    <li class="breadcrumb-item">
-                        <a href="{% url 'home:index' %}" class="text-primary">
-                            <i class="fa fa-home"></i>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="#!" class="text-dark font-weight-bold">智能路线规划</a>
-                    </li>
+                <ul class="glass-breadcrumb">
+                    <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
+                    <li><span class="active">智能路线规划</span></li>
                 </ul>
             </div>
         </div>
-    </div>
-</div>
-<!-- Page-header end -->
 
-<div class="pcoded-inner-content">
-    <div class="main-body">
-        <div class="page-wrapper">
-            <div class="page-body">
-
-                <!-- 参数设置卡片 -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
-                            <div class="card-header bg-gradient-primary text-white py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon-circle bg-white text-primary mr-3" style="width: 40px; height: 40px;">
-                                        <i class="fas fa-sliders-h"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="m-0 font-weight-bold">参数设置</h5>
-                                        <small class="text-white-50">配置城市、预算与偏好权重</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-block p-4">
-                                <form id="plannerForm">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group input-group-icon">
-                                                <i class="fas fa-city"></i>
-                                                <label>城市</label>
-                                                <input id="city" class="form-control" placeholder="例如：上海" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group input-group-icon">
-                                                <i class="fas fa-leaf"></i>
-                                                <label>季节</label>
-                                                <select id="season" class="form-control" required>
-                                                    <option value="spring">🌸 春</option>
-                                                    <option value="summer">☀️ 夏</option>
-                                                    <option value="autumn">🍁 秋</option>
-                                                    <option value="winter">❄️ 冬</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group input-group-icon">
-                                                <i class="fas fa-wallet"></i>
-                                                <label>预算(元)</label>
-                                                <input id="budget" type="number" min="0" value="2000" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group input-group-icon">
-                                                <i class="fas fa-calendar-alt"></i>
-                                                <label>天数(上限)</label>
-                                                <input id="days" type="number" min="1" max="10" value="3" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 d-flex align-items-end">
-                                            <button type="submit" class="btn btn-primary btn-block btn-login shadow-sm">
-                                                <i class="fas fa-magic mr-2"></i>生成算法路线
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-12 mb-2">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="useWikiKnowledge">
-                                                <label class="form-check-label" for="useWikiKnowledge">
-                                                    启用 Wiki 知识增强（默认关闭，保持原 JSON 逻辑）
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="slider-group">
-                                                <label class="d-flex justify-content-between">
-                                                    <span><i class="fas fa-tag text-purple mr-1"></i>价格敏感度</span>
-                                                    <span id="priceVal" class="badge badge-gradient-purple">50</span>
-                                                </label>
-                                                <input id="priceSensitivity" type="range" min="0" max="100" value="50" class="custom-range">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="slider-group">
-                                                <label class="d-flex justify-content-between">
-                                                    <span><i class="fas fa-route text-success mr-1"></i>路程敏感度</span>
-                                                    <span id="distanceVal" class="badge badge-gradient-success">50</span>
-                                                </label>
-                                                <input id="distanceSensitivity" type="range" min="0" max="100" value="50" class="custom-range">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="slider-group">
-                                                <label class="d-flex justify-content-between">
-                                                    <span><i class="fas fa-fire text-danger mr-1"></i>热度偏好</span>
-                                                    <span id="hotnessVal" class="badge badge-gradient-danger">50</span>
-                                                </label>
-                                                <input id="hotnessPreference" type="range" min="0" max="100" value="50" class="custom-range">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-md-4">
-                                            <div class="slider-group">
-                                                <label class="d-flex justify-content-between">
-                                                    <span><i class="fas fa-star text-info mr-1"></i>评分偏好</span>
-                                                    <span id="ratingVal" class="badge badge-gradient-info">50</span>
-                                                </label>
-                                                <input id="ratingPreference" type="range" min="0" max="100" value="50" class="custom-range">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="slider-group">
-                                                <label class="d-flex justify-content-between">
-                                                    <span><i class="fas fa-users text-warning mr-1"></i>拥挤规避</span>
-                                                    <span id="crowdVal" class="badge badge-gradient-warning">50</span>
-                                                </label>
-                                                <input id="crowdAvoidance" type="range" min="0" max="100" value="50" class="custom-range">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+        <!-- 参数设置卡片 -->
+        <div class="glass-card">
+            <div class="glass-card-header">
+                <div>
+                    <h5><i class="fas fa-sliders-h" style="color: #4c6ef5;"></i>参数设置</h5>
+                    <small>配置城市、预算与偏好权重</small>
+                </div>
+            </div>
+            <div class="glass-card-body">
+                <form id="plannerForm">
+                    <div class="form-row">
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-city mr-1" style="color: #4c6ef5;"></i>城市</label>
+                            <i class="fas fa-city input-icon"></i>
+                            <input id="city" class="glass-input" placeholder="例如：上海" required>
                         </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-leaf mr-1" style="color: #5dbea3;"></i>季节</label>
+                            <select id="season" class="glass-select" required>
+                                <option value="spring">春</option>
+                                <option value="summer">夏</option>
+                                <option value="autumn">秋</option>
+                                <option value="winter">冬</option>
+                            </select>
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-wallet mr-1" style="color: #e07a7a;"></i>预算(元)</label>
+                            <i class="fas fa-wallet input-icon"></i>
+                            <input id="budget" type="number" min="0" value="2000" class="glass-input">
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-calendar-alt mr-1" style="color: #6bb3d9;"></i>天数(上限)</label>
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                            <input id="days" type="number" min="1" max="10" value="3" class="glass-input">
+                        </div>
+                        <div>
+                            <button type="submit" class="glass-btn glass-btn-primary" style="width: 100%;">
+                                <i class="fas fa-magic mr-1"></i>生成算法路线
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin: 16px 0;">
+                        <label class="glass-check">
+                            <input type="checkbox" id="useWikiKnowledge">
+                            <span class="check-box"><i class="fas fa-check check-icon"></i></span>
+                            <span>启用 Wiki 知识增强（默认关闭，保持原 JSON 逻辑）</span>
+                        </label>
+                    </div>
+
+                    <div class="slider-row">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-tag mr-1" style="color: #8b7fd4;"></i>价格敏感度</span>
+                                <span id="priceVal" class="slider-val">50</span>
+                            </div>
+                            <input id="priceSensitivity" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-route mr-1" style="color: #5dbea3;"></i>路程敏感度</span>
+                                <span id="distanceVal" class="slider-val">50</span>
+                            </div>
+                            <input id="distanceSensitivity" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-fire mr-1" style="color: #e07a7a;"></i>热度偏好</span>
+                                <span id="hotnessVal" class="slider-val">50</span>
+                            </div>
+                            <input id="hotnessPreference" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                    </div>
+
+                    <div class="slider-row-2" style="margin-top: 16px;">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-star mr-1" style="color: #6bb3d9;"></i>评分偏好</span>
+                                <span id="ratingVal" class="slider-val">50</span>
+                            </div>
+                            <input id="ratingPreference" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-users mr-1" style="color: #e0a96d;"></i>拥挤规避</span>
+                                <span id="crowdVal" class="slider-val">50</span>
+                            </div>
+                            <input id="crowdAvoidance" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 状态提示 -->
+        <div id="loading" class="glass-alert alert-info" style="display:none;">
+            <div class="spinner-border spinner-border-sm" role="status" style="border-color: currentColor; border-right-color: transparent;"></div>
+            <span><i class="fas fa-cog fa-spin mr-2"></i>正在执行 NSGA-II 进化与 AI 润色，请稍候...</span>
+        </div>
+        <div id="error" class="glass-alert alert-danger" style="display:none;">
+            <i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span>
+        </div>
+
+        <!-- Top3 候选方案 -->
+        <div id="top3Panel" style="display:none;">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-trophy" style="color: #feca57;"></i>Top3 候选方案</h5>
+                        <small>先选方案，再生成地图与AI报告</small>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div class="top3-grid" id="top3Options"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近方案记录 -->
+        <div id="recentPanel" style="display:none;">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-history" style="color: #a0aec0;"></i>最近方案记录</h5>
+                        <small>10分钟缓存可复现</small>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div id="recentList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果面板 -->
+        <div id="resultPanel" style="display:none;">
+            <div class="result-grid">
+                <!-- 路线地图 -->
+                <div class="glass-card">
+                    <div class="glass-card-header">
+                        <div>
+                            <h5><i class="fas fa-map-marked-alt" style="color: #4c6ef5;"></i>路线地图</h5>
+                            <small>按天分色 + 连线导航</small>
+                        </div>
+                        <span class="live-badge">实时渲染</span>
+                    </div>
+                    <div style="padding: 0;">
+                        <div id="routeMap" style="height: 520px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
                     </div>
                 </div>
 
-                <!-- 状态提示 -->
-                <div id="loading" class="alert alert-gradient-info shadow-sm rounded-xl mt-4" style="display:none;">
-                    <div class="d-flex align-items-center">
-                        <div class="spinner-border spinner-border-sm text-white mr-3" role="status"></div>
-                        <span><i class="fas fa-cog fa-spin mr-2"></i>正在执行 NSGA-II 进化与 AI 润色，请稍候...</span>
-                    </div>
-                </div>
-                <div id="error" class="alert alert-gradient-danger shadow-sm rounded-xl mt-4 text-white" style="display:none;">
-                    <i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span>
-                </div>
-
-                <!-- Top3 候选方案 -->
-                <div id="top3Panel" style="display:none;" class="mt-4">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
-                                <div class="card-header bg-gradient-warning text-white py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-white text-warning mr-3" style="width: 40px; height: 40px;">
-                                            <i class="fas fa-trophy"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="m-0 font-weight-bold">Top3 候选方案</h5>
-                                            <small class="text-white-50">先选方案，再生成地图与AI报告</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-block p-4">
-                                    <div class="row" id="top3Options"></div>
-                                </div>
-                            </div>
+                <!-- 算法统计 -->
+                <div class="glass-card">
+                    <div class="glass-card-header">
+                        <div>
+                            <h5><i class="fas fa-chart-pie" style="color: #6bb3d9;"></i>算法统计</h5>
+                            <small>NSGA-II 多目标优化指标</small>
                         </div>
                     </div>
-                </div>
-
-                <!-- 最近方案记录 -->
-                <div id="recentPanel" style="display:none;" class="mt-4">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
-                                <div class="card-header bg-gradient-dark text-white py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-white text-dark mr-3" style="width: 40px; height: 40px;">
-                                            <i class="fas fa-history"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="m-0 font-weight-bold">最近方案记录</h5>
-                                            <small class="text-white-50">10分钟缓存可复现</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-block p-4">
-                                    <div id="recentList" class="d-flex flex-wrap"></div>
+                    <div class="glass-card-body">
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-blue"><i class="fas fa-calendar-check"></i></div>
+                                <div class="stat-info">
+                                    <small>使用天数</small>
+                                    <h5 id="usedDays">-</h5>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 结果面板 -->
-                <div id="resultPanel" style="display:none;" class="mt-4">
-                    <div class="row">
-                        <!-- 路线地图 -->
-                        <div class="col-lg-8 mb-4">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden h-100">
-                                <div class="card-header bg-gradient-dark text-white py-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-white text-dark mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-map-marked-alt"></i>
-                                            </div>
-                                            <div>
-                                                <h5 class="m-0 font-weight-bold">路线地图</h5>
-                                                <small class="text-white-50">按天分色 + 连线导航</small>
-                                            </div>
-                                        </div>
-                                        <span class="badge badge-light text-dark">
-                                            <i class="fas fa-fire mr-1"></i>实时渲染
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="card-block p-0">
-                                    <div id="routeMap" style="height: 520px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-green"><i class="fas fa-project-diagram"></i></div>
+                                <div class="stat-info">
+                                    <small>Pareto 解集规模</small>
+                                    <h5 id="paretoSize">-</h5>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- 算法统计 -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden h-100">
-                                <div class="card-header bg-gradient-info text-white py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-white text-info mr-3" style="width: 40px; height: 40px;">
-                                            <i class="fas fa-chart-pie"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="m-0 font-weight-bold">算法统计</h5>
-                                            <small class="text-white-50">NSGA-II 多目标优化指标</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-block p-4">
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-primary text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-calendar-check"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">使用天数</small>
-                                                <h5 class="m-0 text-gradient-purple font-weight-bold" id="usedDays">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-success text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-project-diagram"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">Pareto 解集规模</small>
-                                                <h5 class="m-0 text-gradient-success font-weight-bold" id="paretoSize">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-danger text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-coins"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">总花费</small>
-                                                <h5 class="m-0 text-gradient-danger font-weight-bold" id="totalCost">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-info text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-road"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">路线距离指标</small>
-                                                <h5 class="m-0 text-gradient-info font-weight-bold" id="totalDistance">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr class="my-3"/>
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-warning text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">方案优势</small>
-                                                <h6 class="m-0 font-weight-bold text-dark" id="selectedAdvantage">-</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-purple text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-percentage"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">预算利用率</small>
-                                                <h5 class="m-0 text-gradient-purple font-weight-bold" id="budgetUsagePct">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item mb-3 p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-success text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-bullseye"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">偏好匹配度</small>
-                                                <h5 class="m-0 text-gradient-success font-weight-bold" id="prefMatchPct">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item p-3 rounded-lg bg-light-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-gradient-danger text-white mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-user-shield"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">拥挤规避分</small>
-                                                <h5 class="m-0 text-gradient-danger font-weight-bold" id="crowdAvoidScore">-</h5>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-coins"></i></div>
+                                <div class="stat-info">
+                                    <small>总花费</small>
+                                    <h5 id="totalCost">-</h5>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- AI 详细攻略 -->
-                    <div class="row">
-                        <div class="col-lg-12 mb-4">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
-                                <div class="card-header bg-gradient-primary text-white py-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-circle bg-white text-primary mr-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-robot"></i>
-                                            </div>
-                                            <div>
-                                                <h5 class="m-0 font-weight-bold">AI 详细攻略</h5>
-                                                <small class="text-white-50">基于大模型的智能行程分析与建议</small>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3" style="margin-bottom:0 !important;">
-                                            <button id="previewHtmlReportBtn" type="button" class="btn btn-light btn-sm mr-2 rounded-pill px-3" disabled>
-                                                <i class="fas fa-eye mr-1"></i>预览精美HTML报告
-                                            </button>
-                                            <button id="downloadHtmlReportBtn" type="button" class="btn btn-success btn-sm rounded-pill px-3" disabled>
-                                                <i class="fas fa-download mr-1"></i>下载HTML报告
-                                            </button>
-                                            <button id="exportDidaBtn" type="button" class="btn btn-warning btn-sm ml-2 rounded-pill px-3" disabled>
-                                                <i class="fas fa-list-check mr-1"></i>添加到滴答清单
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-block p-4">
-                                    <pre id="aiSummary" style="white-space:pre-wrap; font-family:inherit; background:#f8f9fa; padding:20px; border-radius:12px; border:none;"></pre>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-purple"><i class="fas fa-road"></i></div>
+                                <div class="stat-info">
+                                    <small>路线距离指标</small>
+                                    <h5 id="totalDistance">-</h5>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- RAG本地知识卡命中 -->
-                    <div class="row">
-                        <div class="col-lg-12 mb-4">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
-                                <div class="card-header bg-gradient-success text-white py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-white text-success mr-3" style="width: 40px; height: 40px;">
-                                            <i class="fas fa-database"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="m-0 font-weight-bold">RAG本地知识卡命中</h5>
-                                            <small class="text-white-50">本地知识增强生成（JSON基线 + Wiki可选增强）</small>
-                                        </div>
-                                        <span id="wikiModeBadge" class="badge badge-light text-secondary ml-3">Wiki: 关闭</span>
-                                        <span id="jsonHitBadge" class="badge badge-light text-primary ml-2">JSON 0</span>
-                                        <span id="wikiHitBadge" class="badge badge-light text-info ml-2">Wiki 0</span>
-                                        <span class="badge badge-light text-success ml-auto">
-                                            命中 <b id="knowledgeCount">0</b> 条
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="card-block p-4">
-                                    <div id="knowledgeList"></div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-yellow"><i class="fas fa-star"></i></div>
+                                <div class="stat-info">
+                                    <small>方案优势</small>
+                                    <h5 id="selectedAdvantage" style="font-size: 13px;">-</h5>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- 路线明细表格 -->
-                    <div class="row">
-                        <div class="col-lg-12 mb-4">
-                            <div class="card shadow-lg border-0 rounded-xl overflow-hidden">
-                                <div class="card-header bg-gradient-info text-white py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-white text-info mr-3" style="width: 40px; height: 40px;">
-                                            <i class="fas fa-list-ol"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="m-0 font-weight-bold">路线明细</h5>
-                                            <small class="text-white-50">逐景点详细行程数据</small>
-                                        </div>
-                                    </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-orange"><i class="fas fa-percentage"></i></div>
+                                <div class="stat-info">
+                                    <small>预算利用率</small>
+                                    <h5 id="budgetUsagePct">-</h5>
                                 </div>
-                                <div class="card-block p-0">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover mb-0">
-                                            <thead class="bg-light">
-                                                <tr>
-                                                    <th class="py-3 px-4 border-0">#</th>
-                                                    <th class="py-3 px-4 border-0">景点</th>
-                                                    <th class="py-3 px-4 border-0">时间</th>
-                                                    <th class="py-3 px-4 border-0">特点</th>
-                                                    <th class="py-3 px-4 border-0">花费</th>
-                                                    <th class="py-3 px-4 border-0">经纬度</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="routeBody"></tbody>
-                                        </table>
-                                    </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-green"><i class="fas fa-bullseye"></i></div>
+                                <div class="stat-info">
+                                    <small>偏好匹配度</small>
+                                    <h5 id="prefMatchPct">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-user-shield"></i></div>
+                                <div class="stat-info">
+                                    <small>拥挤规避分</small>
+                                    <h5 id="crowdAvoidScore">-</h5>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- AI 详细攻略 -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-robot" style="color: #4c6ef5;"></i>AI 详细攻略</h5>
+                        <small>基于大模型的智能行程分析与建议</small>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="previewHtmlReportBtn" type="button" class="glass-btn glass-btn-sm" disabled>
+                            <i class="fas fa-eye mr-1"></i>预览HTML报告
+                        </button>
+                        <button id="downloadHtmlReportBtn" type="button" class="glass-btn glass-btn-sm glass-btn-primary" disabled>
+                            <i class="fas fa-download mr-1"></i>下载HTML报告
+                        </button>
+                        <button id="exportDidaBtn" type="button" class="glass-btn glass-btn-sm" style="background: #feca57; color: #744210;" disabled>
+                            <i class="fas fa-list-check mr-1"></i>添加到滴答清单
+                        </button>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <pre id="aiSummary" class="ai-summary"></pre>
+                </div>
+            </div>
+
+            <!-- RAG本地知识卡命中 -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="glass-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <div>
+                            <h5><i class="fas fa-database" style="color: #5dbea3;"></i>RAG本地知识卡命中</h5>
+                            <small>本地知识增强生成（JSON基线 + Wiki可选增强）</small>
+                        </div>
+                        <span id="wikiModeBadge" class="plan-badge badge-gray">Wiki: 关闭</span>
+                        <span id="jsonHitBadge" class="plan-badge badge-blue">JSON 0</span>
+                        <span id="wikiHitBadge" class="plan-badge badge-green">Wiki 0</span>
+                        <span class="plan-badge badge-purple">命中 <b id="knowledgeCount">0</b> 条</span>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div id="knowledgeList"></div>
+                </div>
+            </div>
+
+            <!-- 路线明细表格 -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-list-ol" style="color: #6bb3d9;"></i>路线明细</h5>
+                        <small>逐景点详细行程数据</small>
+                    </div>
+                </div>
+                <div class="glass-table-wrap">
+                    <table class="glass-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>景点</th>
+                                <th>时间</th>
+                                <th>特点</th>
+                                <th>花费</th>
+                                <th>经纬度</th>
+                            </tr>
+                        </thead>
+                        <tbody id="routeBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="styleSelector"></div>
 </div>
 
 <!-- 滴答导出弹窗 -->
 <div id="didaModalMask" class="modal-mask" style="display:none;">
     <div class="modal-card">
         <div class="modal-header-gradient">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-0 font-weight-bold"><i class="fas fa-list-check mr-2"></i>添加到滴答清单</h5>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h5 style="margin: 0; font-weight: 700;"><i class="fas fa-list-check mr-2"></i>添加到滴答清单</h5>
                 <button id="closeDidaModalBtn" type="button" class="modal-close-btn">&times;</button>
             </div>
-            <p class="modal-subtitle mb-0 mt-2">
+            <p class="modal-subtitle">
                 <i class="far fa-clock mr-1"></i>设置出发时间后，将自动生成按天分段的待办任务
             </p>
         </div>
         <div class="modal-body">
-            <div class="modal-tip-card mb-3">
+            <div class="modal-tip-card">
                 <div class="modal-tip-icon"><i class="fas fa-bolt"></i></div>
-                <div class="modal-tip-text">
-                    <div class="font-weight-bold text-dark">智能提醒说明</div>
-                    <small class="text-muted">系统会根据你选择的出发时间，自动生成每个景点的执行时段。</small>
+                <div>
+                    <div style="font-weight: 700; color: #1a202c;">智能提醒说明</div>
+                    <small style="color: #a0aec0;">系统会根据你选择的出发时间，自动生成每个景点的执行时段。</small>
                 </div>
             </div>
 
-            <label class="modal-label mb-2" for="didaDepartureInput">
+            <label class="modal-label" for="didaDepartureInput">
                 <i class="far fa-calendar-alt mr-1"></i>请选择你的出发时间
             </label>
-            <input id="didaDepartureInput" type="datetime-local" class="form-control modal-input mb-2" />
-            <small class="modal-hint d-block mb-4"><i class="fas fa-info-circle mr-1"></i>任务将写入固定清单“旅游规划”。</small>
+            <input id="didaDepartureInput" type="datetime-local" class="modal-input" />
+            <small class="modal-hint d-block" style="margin-bottom: 20px;"><i class="fas fa-info-circle mr-1"></i>任务将写入固定清单"旅游规划"。</small>
 
-            <div class="text-right modal-actions">
-                <button id="cancelDidaBtn" type="button" class="btn btn-outline-secondary rounded-pill px-4 mr-2 modal-btn-cancel">取消</button>
-                <button id="confirmDidaBtn" type="button" class="btn btn-login rounded-pill px-4 modal-btn-confirm">
+            <div class="modal-actions">
+                <button id="cancelDidaBtn" type="button" class="modal-btn-cancel">取消</button>
+                <button id="confirmDidaBtn" type="button" class="modal-btn-confirm">
                     <i class="fas fa-cloud-upload-alt mr-1"></i>确认添加
                 </button>
             </div>
         </div>
     </div>
-</div></div>
+</div>
 
 <script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
 <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=cfETvEepoN8AZZADHeRsFDymt6Lu55Er"></script>
+
 <script>
 const sliderPairs = [
     ["priceSensitivity", "priceVal"],
@@ -626,30 +1248,20 @@ function renderTable(route) {
     tbody.empty();
     route.forEach((row, i) => {
         tbody.append(`
-            <tr class="transition-all">
-                <td class="py-3 px-4 align-middle">
-                    <span class="rank-number">${i + 1}</span>
-                </td>
-                <td class="py-3 px-4 align-middle">
-                    <div class="d-flex align-items-center">
-                        <div class="icon-circle bg-gradient-primary text-white mr-3" style="width:36px;height:36px;">
+            <tr>
+                <td><span class="table-rank">${i + 1}</span></td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #4c6ef5, #748ffc); display: flex; align-items: center; justify-content: center; color: white; font-size: 13px;">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
-                        <h6 class="font-weight-bold text-dark mb-0">${row.name}</h6>
+                        <span style="font-weight: 700; color: #1a202c;">${row.name}</span>
                     </div>
                 </td>
-                <td class="py-3 px-4 align-middle">
-                    <span class="badge badge-area"><i class="far fa-clock mr-1"></i>${row.visit_time}</span>
-                </td>
-                <td class="py-3 px-4 align-middle">
-                    <span class="tag-item">${row.features}</span>
-                </td>
-                <td class="py-3 px-4 align-middle">
-                    <span class="price-tag">${row.estimated_cost}</span>
-                </td>
-                <td class="py-3 px-4 align-middle text-muted">
-                    <small><i class="fas fa-crosshairs mr-1"></i>${row.latitude}, ${row.longitude}</small>
-                </td>
+                <td><span class="plan-badge badge-blue"><i class="far fa-clock mr-1"></i>${row.visit_time}</span></td>
+                <td><span class="plan-badge badge-green">${row.features}</span></td>
+                <td><span style="color: #e53e3e; font-weight: 700;">${row.estimated_cost}</span></td>
+                <td><small style="color: #a0aec0;"><i class="fas fa-crosshairs mr-1"></i>${row.latitude}, ${row.longitude}</small></td>
             </tr>
         `);
     });
@@ -660,11 +1272,9 @@ function renderKnowledgeCards(cards) {
     root.empty();
     if (!cards || !cards.length) {
         root.append(`
-            <div class="text-center p-4">
-                <div class="icon-circle bg-light text-muted mx-auto mb-3" style="width:60px;height:60px;">
-                    <i class="fas fa-inbox fa-lg"></i>
-                </div>
-                <p class="text-muted">未命中本地知识卡，将以通用建议为主。</p>
+            <div style="text-align: center; padding: 40px; color: #a0aec0;">
+                <i class="fas fa-inbox" style="font-size: 36px; margin-bottom: 12px; opacity: 0.5;"></i>
+                <p>未命中本地知识卡，将以通用建议为主。</p>
             </div>
         `);
         $("#knowledgeCount").text("0");
@@ -674,27 +1284,27 @@ function renderKnowledgeCards(cards) {
     cards.forEach((card, idx) => {
         const pitfalls = (card.pitfalls || []).join("；");
         root.append(`
-            <div class="knowledge-card mb-3 p-3 rounded-xl bg-light-hover border-left-gradient">
-                <div class="d-flex align-items-center mb-2">
-                    <span class="rank-number top3 mr-2" style="width:28px;height:28px;font-size:12px;">${idx + 1}</span>
-                    <h6 class="m-0 font-weight-bold text-dark">${card.spot_name}</h6>
+            <div class="knowledge-card">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #feca57, #ff9f43); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">${idx + 1}</span>
+                    <h6 style="margin: 0; font-weight: 700; color: #1a202c;">${card.spot_name}</h6>
                 </div>
-                <div class="row">
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <small class="text-muted"><i class="fas fa-sun text-warning mr-1"></i>最佳时段</small>
-                        <p class="m-0 font-weight-500">${card.best_time || "-"}</p>
+                <div class="knowledge-grid">
+                    <div>
+                        <small><i class="fas fa-sun mr-1" style="color: #feca57;"></i>最佳时段</small>
+                        <p>${card.best_time || "-"}</p>
                     </div>
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <small class="text-muted"><i class="fas fa-ticket-alt text-info mr-1"></i>预约提示</small>
-                        <p class="m-0 font-weight-500">${card.booking_tip || "-"}</p>
+                    <div>
+                        <small><i class="fas fa-ticket-alt mr-1" style="color: #6bb3d9;"></i>预约提示</small>
+                        <p>${card.booking_tip || "-"}</p>
                     </div>
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <small class="text-muted"><i class="fas fa-bus text-success mr-1"></i>交通提示</small>
-                        <p class="m-0 font-weight-500">${card.transport_tip || "-"}</p>
+                    <div>
+                        <small><i class="fas fa-bus mr-1" style="color: #5dbea3;"></i>交通提示</small>
+                        <p>${card.transport_tip || "-"}</p>
                     </div>
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <small class="text-muted"><i class="fas fa-exclamation-triangle text-danger mr-1"></i>避坑点</small>
-                        <p class="m-0 font-weight-500">${pitfalls || "-"}</p>
+                    <div>
+                        <small><i class="fas fa-exclamation-triangle mr-1" style="color: #e07a7a;"></i>避坑点</small>
+                        <p>${pitfalls || "-"}</p>
                     </div>
                 </div>
             </div>
@@ -819,13 +1429,11 @@ function renderRecent(recentPlans) {
     const list = $("#recentList");
     list.empty();
     if (!recentPlans || !recentPlans.length) {
-        list.append('<p class="text-muted w-100"><i class="fas fa-inbox mr-2"></i>暂无缓存记录</p>');
+        list.append('<p style="color: #a0aec0; width: 100%;"><i class="fas fa-inbox mr-2"></i>暂无缓存记录</p>');
         return;
     }
     recentPlans.forEach(item => {
-        const line = `<span class="badge badge-recent mr-2 mb-2">` +
-            `<i class="fas fa-history mr-1"></i>${item.city} · ${item.season} · ${item.days}天 · 预算${item.budget}</span>`;
-        list.append(line);
+        list.append(`<span class="recent-tag"><i class="fas fa-history mr-1"></i>${item.city} · ${item.season} · ${item.days}天 · 预算${item.budget}</span>`);
     });
 }
 
@@ -833,68 +1441,59 @@ function renderTop3(options) {
     const container = $("#top3Options");
     container.empty();
     const gradients = [
-        { header: "bg-gradient-purple", text: "text-purple", btn: "btn-gradient-purple" },
-        { header: "bg-gradient-success", text: "text-success", btn: "btn-gradient-success" },
-        { header: "bg-gradient-info", text: "text-info", btn: "btn-gradient-info" }
+        { header: "linear-gradient(135deg, #8b7fd4, #6b5b95)", text: "#8b7fd4", btn: "#8b7fd4" },
+        { header: "linear-gradient(135deg, #5dbea3, #3d9970)", text: "#5dbea3", btn: "#5dbea3" },
+        { header: "linear-gradient(135deg, #6bb3d9, #2980b9)", text: "#6bb3d9", btn: "#6bb3d9" }
     ];
     options.forEach((option, idx) => {
         const g = gradients[idx % 3];
         const m = option.metrics || {};
         const e = option.explain || {};
         const card = `
-            <div class="col-lg-4 col-md-6 mb-3">
-                <div class="card h-100 shadow-sm border-0 rounded-xl overflow-hidden transform-hover">
-                    <div class="card-header ${g.header} text-white py-3">
-                        <div class="d-flex align-items-center">
-                            <span class="rank-number mr-2" style="background:white;color:#333;">${idx + 1}</span>
-                            <div>
-                                <h6 class="m-0 font-weight-bold">${option.title}</h6>
-                                <small class="text-white-50">${option.style}</small>
-                            </div>
-                        </div>
+            <div class="plan-card">
+                <div class="plan-card-header" style="background: ${g.header};">
+                    <span class="rank-num">${idx + 1}</span>
+                    <div>
+                        <h6 style="margin: 0; font-weight: 700;">${option.title}</h6>
+                        <small style="opacity: 0.8;">${option.style}</small>
                     </div>
-                    <div class="card-block p-4">
-                        <div class="mb-3 p-2 rounded-lg bg-light">
-                            <small class="text-muted">优势</small>
-                            <p class="m-0 font-weight-bold text-dark">${option.advantage || "-"}</p>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                <small class="text-muted">总花费</small>
-                                <p class="m-0 font-weight-bold text-gradient-danger">${metricValue(m.cost)} 元</p>
-                            </div>
-                            <div class="col-6">
-                                <small class="text-muted">总路程</small>
-                                <p class="m-0 font-weight-bold text-gradient-info">${metricValue(m.distance)} km</p>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                <small class="text-muted">平均评分</small>
-                                <p class="m-0 font-weight-bold text-gradient-warning">${metricValue(m.rating)}</p>
-                            </div>
-                            <div class="col-6">
-                                <small class="text-muted">平均热度</small>
-                                <p class="m-0 font-weight-bold text-gradient-purple">${metricValue(m.hotness)}</p>
-                            </div>
-                        </div>
-                        <hr class="my-2"/>
-                        <div class="d-flex justify-content-between mb-1">
-                            <small class="text-muted">预算利用率</small>
-                            <span class="badge badge-gradient-primary">${metricValue(e.budget_usage_pct,1)}%</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-1">
-                            <small class="text-muted">偏好匹配度</small>
-                            <span class="badge badge-gradient-success">${metricValue(e.preference_match_pct,1)}%</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <small class="text-muted">拥挤规避分</small>
-                            <span class="badge badge-gradient-info">${metricValue(e.crowd_avoid_score,1)}</span>
-                        </div>
-                        <button class="btn btn-primary btn-sm btn-block mt-2 select-plan-btn btn-login" data-option-id="${option.option_id}">
-                            <i class="fas fa-check-circle mr-1"></i>选择此方案并生成地图/AI报告
-                        </button>
+                </div>
+                <div class="plan-card-body">
+                    <div style="margin-bottom: 12px; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.03);">
+                        <small style="color: #a0aec0;">优势</small>
+                        <p style="margin: 4px 0 0; font-weight: 700; color: #1a202c; font-size: 14px;">${option.advantage || "-"}</p>
                     </div>
+                    <div class="plan-metric">
+                        <small>总花费</small>
+                        <span style="color: #e53e3e;">${metricValue(m.cost)} 元</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>总路程</small>
+                        <span style="color: #6bb3d9;">${metricValue(m.distance)} km</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>平均评分</small>
+                        <span style="color: #feca57;">${metricValue(m.rating)}</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>平均热度</small>
+                        <span style="color: #8b7fd4;">${metricValue(m.hotness)}</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>预算利用率</small>
+                        <span class="plan-badge badge-blue">${metricValue(e.budget_usage_pct,1)}%</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>偏好匹配度</small>
+                        <span class="plan-badge badge-green">${metricValue(e.preference_match_pct,1)}%</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>拥挤规避分</small>
+                        <span class="plan-badge badge-purple">${metricValue(e.crowd_avoid_score,1)}</span>
+                    </div>
+                    <button class="glass-btn glass-btn-primary select-plan-btn" data-option-id="${option.option_id}" style="width: 100%; margin-top: 12px;">
+                        <i class="fas fa-check-circle mr-1"></i>选择此方案并生成地图/AI报告
+                    </button>
                 </div>
             </div>`;
         container.append(card);
@@ -916,8 +1515,8 @@ function renderSelectedPlan(data, payload) {
     const useWiki = !!kb.use_wiki_knowledge;
     $("#wikiModeBadge")
         .text(useWiki ? "Wiki: 开启" : "Wiki: 关闭")
-        .removeClass("text-secondary text-success")
-        .addClass(useWiki ? "text-success" : "text-secondary");
+        .removeClass("badge-gray badge-green")
+        .addClass(useWiki ? "badge-green" : "badge-gray");
     $("#jsonHitBadge").text("JSON " + metricValue(kb.json_count || 0));
     $("#wikiHitBadge").text("Wiki " + metricValue(kb.wiki_count || 0));
     latestHtmlReport = data.ai_html_report || "";
@@ -1030,504 +1629,5 @@ $("#plannerForm").on("submit", function (e) {
     });
 });
 </script>
-
-<style>
-    /* ===== 渐变文字 ===== */
-    .text-gradient-purple {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-    }
-    .text-gradient-success {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-    }
-    .text-gradient-danger {
-        background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-    }
-    .text-gradient-info {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-    }
-    .text-gradient-warning {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-    }
-
-    /* ===== 渐变背景 ===== */
-    .bg-gradient-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .bg-gradient-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-    .bg-gradient-danger { background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%); }
-    .bg-gradient-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-    .bg-gradient-warning { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-    .bg-gradient-dark { background: linear-gradient(135deg, #434343 0%, #000000 100%); }
-    .bg-gradient-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-
-    /* ===== 圆角 ===== */
-    .rounded-xl { border-radius: 16px; }
-
-    /* ===== 图标容器 ===== */
-    .icon-circle {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        flex-shrink: 0;
-    }
-
-    /* ===== 卡片悬停 ===== */
-    .transform-hover {
-        transition: all 0.3s ease;
-    }
-    .transform-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.15) !important;
-    }
-
-    .bg-light-hover {
-        transition: all 0.3s ease;
-    }
-    .bg-light-hover:hover {
-        background-color: #e9ecef;
-        transform: translateX(3px);
-    }
-
-    /* ===== 页面头部 ===== */
-    .page-header {
-        background: linear-gradient(to right, #f8f9fa, #e9ecef);
-        border-radius: 12px;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-
-    /* ===== 输入框美化 ===== */
-    .input-group-icon {
-        position: relative;
-    }
-    .input-group-icon > i:first-child {
-        position: absolute;
-        left: 15px;
-        top: 38px;
-        color: #999;
-        transition: all 0.3s ease;
-        z-index: 10;
-    }
-    .input-group-icon .form-control {
-        padding-left: 42px;
-        height: 48px;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        background: #fafafa;
-    }
-    .input-group-icon .form-control:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        background: white;
-    }
-    .input-group-icon .form-control:focus + i,
-    .input-group-icon .form-control:focus ~ i {
-        color: #667eea;
-    }
-
-    /* ===== 滑块美化 ===== */
-    .slider-group {
-        background: #f8f9fa;
-        padding: 12px 16px;
-        border-radius: 12px;
-        border: 1px solid #e9ecef;
-    }
-    .custom-range {
-        -webkit-appearance: none;
-        width: 100%;
-        height: 6px;
-        border-radius: 5px;
-        background: #e0e0e0;
-        outline: none;
-        margin-top: 10px;
-    }
-    .custom-range::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        cursor: pointer;
-        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
-        transition: all 0.2s ease;
-    }
-    .custom-range::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
-    }
-    .custom-range::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        cursor: pointer;
-        border: none;
-        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
-    }
-
-    /* ===== 按钮渐变 ===== */
-    .btn-login {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        height: 48px;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
-        color: white !important;
-    }
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-    }
-    .btn-login:active {
-        transform: translateY(0);
-    }
-
-    .btn-gradient-purple {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        color: white !important;
-    }
-    .btn-gradient-success {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        border: none;
-        color: white !important;
-    }
-    .btn-gradient-info {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        border: none;
-        color: white !important;
-    }
-
-    /* ===== 徽章系统 ===== */
-    .badge-gradient-purple {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-    .badge-gradient-success {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        color: white;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-    .badge-gradient-danger {
-        background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
-        color: white;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-    .badge-gradient-info {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        color: white;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-    .badge-gradient-warning {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        color: white;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-    .badge-gradient-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-
-    .badge-area {
-        background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-        color: #2d3436;
-        font-weight: 500;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-    .badge-recent {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-        color: #495057;
-        font-weight: 500;
-        padding: 8px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        border: 1px solid #dee2e6;
-        transition: all 0.3s ease;
-    }
-    .badge-recent:hover {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-color: transparent;
-        transform: translateY(-2px);
-    }
-
-    /* ===== 排行数字 ===== */
-    .rank-number {
-        display: inline-flex;
-        width: 32px;
-        height: 32px;
-        background: #dfe6e9;
-        color: #636e72;
-        border-radius: 50%;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 14px;
-        flex-shrink: 0;
-    }
-    .rank-number.top3 {
-        background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-        color: white;
-        box-shadow: 0 2px 5px rgba(255, 170, 0, 0.4);
-    }
-
-    /* ===== 价格标签 ===== */
-    .price-tag {
-        color: #e74c3c;
-        font-weight: bold;
-        font-size: 15px;
-    }
-
-    /* ===== 标签云 ===== */
-    .tag-item {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-
-    /* ===== 表格样式 ===== */
-    .table th {
-        font-weight: 600;
-        color: #495057;
-        border-bottom: 2px solid #dee2e6;
-    }
-    .table td {
-        vertical-align: middle;
-    }
-    .transition-all {
-        transition: all 0.3s ease;
-    }
-    .transition-all:hover {
-        background-color: rgba(102, 126, 234, 0.05);
-    }
-
-    /* ===== 知识卡 ===== */
-    .knowledge-card {
-        background: white;
-        border: 1px solid #e9ecef;
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
-    }
-    .knowledge-card:hover {
-        border-left-color: #667eea;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        transform: translateX(3px);
-    }
-
-    /* ===== Alert 渐变 ===== */
-    .alert-gradient-info {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        color: white;
-        border: none;
-    }
-    .alert-gradient-danger {
-        background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
-        color: white;
-        border: none;
-    }
-
-    /* ===== 统计项 ===== */
-    .stat-item {
-        transition: all 0.3s ease;
-    }
-    .stat-item:hover {
-        background-color: #e9ecef;
-    }
-
-    /* ===== 面包屑 ===== */
-    .breadcrumb-item a {
-        transition: all 0.3s ease;
-    }
-    .breadcrumb-item a:hover {
-        text-decoration: none;
-        opacity: 0.8;
-    }
-
-    /* ===== 响应式 ===== */
-    @media (max-width: 768px) {
-        .icon-circle {
-            width: 40px;
-            height: 40px;
-        }
-        .rank-number {
-            width: 28px;
-            height: 28px;
-            font-size: 12px;
-        }
-    }
-
-    /* ===== 弹窗系统 ===== */
-    .modal-mask {
-        position: fixed;
-        inset: 0;
-        background: rgba(31, 41, 55, 0.55);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        backdrop-filter: blur(6px);
-    }
-    .modal-card {
-        max-width: 520px;
-        width: 100%;
-        background: #ffffff;
-        border-radius: 22px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
-        animation: modalIn 0.32s ease;
-    }
-    @keyframes modalIn {
-        from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .modal-header-gradient {
-        padding: 20px 24px 18px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #fff;
-    }
-    .modal-subtitle {
-        font-size: 13px;
-        opacity: 0.9;
-        line-height: 1.4;
-    }
-    .modal-close-btn {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 24px;
-        line-height: 1;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-    .modal-close-btn:hover {
-        background: rgba(255,255,255,0.2);
-        transform: rotate(90deg);
-    }
-    .modal-body {
-        padding: 24px 24px 22px;
-        background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-    }
-    .modal-tip-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 14px;
-        background: linear-gradient(135deg, #f3f5ff 0%, #eef7ff 100%);
-        border: 1px solid #e8ecff;
-    }
-    .modal-tip-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #667eea;
-        background: #ffffff;
-        box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
-        flex-shrink: 0;
-    }
-    .modal-label {
-        display: inline-flex;
-        align-items: center;
-        font-weight: 600;
-        color: #374151;
-    }
-    .modal-hint {
-        color: #6b7280;
-        font-size: 12px;
-    }
-    .modal-input {
-        height: 50px;
-        border: 2px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 10px 15px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        background: #ffffff;
-    }
-    .modal-input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        background: white;
-        outline: none;
-    }
-    .modal-actions .btn {
-        min-width: 118px;
-        height: 42px;
-        font-weight: 600;
-        letter-spacing: 0.2px;
-    }
-    .modal-btn-cancel {
-        border-color: #d1d5db;
-        color: #4b5563;
-        background: #fff;
-    }
-    .modal-btn-cancel:hover {
-        background: #f9fafb;
-        border-color: #9ca3af;
-    }
-    .modal-btn-confirm {
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.28);
-    }
-</style>
 
 {% endblock %}

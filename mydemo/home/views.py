@@ -109,12 +109,9 @@ def travel_list(request):
 
     content={
         'page_obj': page_obj,
-        'province': province,
-
+        'provinces': list(province),
         'search_name': search_name,
-        'selected_province': selected_province,
-
-
+        'search_province': selected_province,
     }
 
 
