@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>旅游数据分析平台</title>
+    <title>{% block title %}旅游数据分析平台{% endblock %}</title>
     {% load static %}
     <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -469,7 +469,6 @@
             background: rgba(0, 0, 0, 0.25);
         }
     </style>
-<base target="_blank">
 </head>
 
 <body>

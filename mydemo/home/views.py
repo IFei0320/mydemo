@@ -7,7 +7,7 @@ from urllib.error import HTTPError, URLError
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
-from numpy.core.multiarray import item
+# from numpy.core.multiarray import item
 from django.views.decorators.http import require_POST
 
 from ai.Get_Message import Get_DeepSeek

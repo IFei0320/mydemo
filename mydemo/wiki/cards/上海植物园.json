@@ -1,0 +1,20 @@
+{
+  "spot_name": "上海植物园",
+  "best_months": [],
+  "best_time": "白天错峰时段",
+  "booking_required": true,
+  "booking_tip": "建议提前查看官方渠道，节假日提前1-3天预约或购票。",
+  "transport_mode": "metro",
+  "transport_tip": "优先选择地铁，跨江或跨区可结合轮渡、步行或打车补充。",
+  "budget_level": "medium",
+  "crowd_level": "medium",
+  "crowd_tip": "节假日和傍晚热门时段人流较大，建议错峰到达。",
+  "duration_suggestion": "1-3小时",
+  "pitfalls": [
+    "**⚠️ 避雷指南与注意事项：**"
+  ],
+  "nearby": [],
+  "llm_note": "由本地规则从 魔都上海旅游景点深度攻略（文件二：自然、亲子与硬核艺术）.md 兜底生成，建议后续用 LLM 或人工校准。",
+  "_source": "魔都上海旅游景点深度攻略（文件二：自然、亲子与硬核艺术）.md",
+  "_updated_at": "2026-05-16 16:17:19"
+}

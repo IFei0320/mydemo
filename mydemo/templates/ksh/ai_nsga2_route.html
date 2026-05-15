@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}智能路线规划 - 旅游数据分析平台{% endblock %}
 {% block content %}
 {% load static %}
 
@@ -586,144 +587,176 @@
     .modal-mask {
         position: fixed;
         inset: 0;
-        background: rgba(31, 41, 55, 0.55);
+        background: linear-gradient(135deg, rgba(148, 163, 184, 0.24), rgba(15, 23, 42, 0.38));
         z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
-        backdrop-filter: blur(6px);
+        padding: 24px;
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
     }
     .modal-card {
-        max-width: 520px;
+        max-width: 560px;
         width: 100%;
-        background: #ffffff;
-        border-radius: 22px;
+        background: linear-gradient(145deg, rgba(255,255,255,0.72), rgba(255,255,255,0.58));
+        backdrop-filter: blur(26px) saturate(160%);
+        -webkit-backdrop-filter: blur(26px) saturate(160%);
+        border-radius: 28px;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        box-shadow: 0 28px 80px rgba(15, 23, 42, 0.24), inset 0 1px 0 rgba(255,255,255,0.72);
         animation: modalIn 0.32s ease;
+        position: relative;
+    }
+    .modal-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0.06));
+        pointer-events: none;
     }
     @keyframes modalIn {
         from { opacity: 0; transform: translateY(-20px) scale(0.95); }
         to { opacity: 1; transform: translateY(0) scale(1); }
     }
     .modal-header-gradient {
-        padding: 20px 24px 18px;
-        background: #4c6ef5;
+        position: relative;
+        z-index: 1;
+        padding: 24px 26px 18px;
+        background: linear-gradient(135deg, rgba(76, 110, 245, 0.92), rgba(117, 127, 214, 0.82));
         color: #fff;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
     }
     .modal-subtitle {
         font-size: 13px;
-        opacity: 0.9;
-        line-height: 1.4;
+        opacity: 0.92;
+        line-height: 1.55;
     }
     .modal-close-btn {
-        background: none;
-        border: none;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.18);
         color: #fff;
-        font-size: 24px;
+        font-size: 22px;
         line-height: 1;
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
         cursor: pointer;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
     }
     .modal-close-btn:hover {
-        background: rgba(255,255,255,0.2);
-        transform: rotate(90deg);
+        background: rgba(255,255,255,0.24);
+        transform: rotate(90deg) scale(1.04);
     }
     .modal-body {
-        padding: 24px 24px 22px;
-        background: #ffffff;
+        position: relative;
+        z-index: 1;
+        padding: 24px 26px 24px;
+        background: transparent;
     }
     .modal-tip-card {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 14px;
-        background: rgba(76, 110, 245, 0.05);
-        border: 1px solid rgba(76, 110, 245, 0.1);
-        margin-bottom: 16px;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.52);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.56);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 24px rgba(148, 163, 184, 0.14);
+        margin-bottom: 18px;
     }
     .modal-tip-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4c6ef5;
-        background: #ffffff;
-        box-shadow: 0 4px 10px rgba(76, 110, 245, 0.15);
+        background: rgba(255,255,255,0.85);
+        box-shadow: 0 8px 20px rgba(76, 110, 245, 0.14);
         flex-shrink: 0;
     }
     .modal-label {
         display: inline-flex;
         align-items: center;
-        font-weight: 600;
-        color: #374151;
+        font-weight: 700;
+        color: #334155;
         font-size: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     .modal-hint {
-        color: #6b7280;
+        color: #64748b;
         font-size: 12px;
+        line-height: 1.5;
     }
     .modal-input {
         width: 100%;
-        height: 50px;
-        border: 2px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 10px 15px;
+        height: 54px;
+        border: 1px solid rgba(255,255,255,0.65);
+        border-radius: 16px;
+        padding: 10px 16px;
         font-size: 15px;
         transition: all 0.3s ease;
-        background: #ffffff;
+        background: rgba(255,255,255,0.74);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         outline: none;
         font-family: inherit;
+        color: #1f2937;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 6px 16px rgba(148,163,184,0.12);
     }
     .modal-input:focus {
-        border-color: #4c6ef5;
-        box-shadow: 0 0 0 4px rgba(76, 110, 245, 0.1);
+        border-color: rgba(76, 110, 245, 0.45);
+        box-shadow: 0 0 0 4px rgba(76, 110, 245, 0.12), inset 0 1px 0 rgba(255,255,255,0.72);
+        background: rgba(255,255,255,0.9);
     }
     .modal-actions {
         display: flex;
         justify-content: flex-end;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 12px;
+        margin-top: 22px;
     }
     .modal-btn-cancel {
-        padding: 10px 20px;
-        border-radius: 10px;
-        border: 1px solid #d1d5db;
-        background: white;
-        color: #4b5563;
-        font-weight: 600;
+        padding: 11px 20px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.65);
+        background: rgba(255,255,255,0.66);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: #475569;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.76);
     }
     .modal-btn-cancel:hover {
-        background: #f9fafb;
-        border-color: #9ca3af;
+        background: rgba(255,255,255,0.88);
+        color: #1f2937;
+        transform: translateY(-1px);
     }
     .modal-btn-confirm {
-        padding: 10px 20px;
-        border-radius: 10px;
-        border: none;
-        background: #4c6ef5;
+        padding: 11px 22px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: linear-gradient(135deg, #4c6ef5, #6f8bff);
         color: white;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);
+        box-shadow: 0 10px 26px rgba(76, 110, 245, 0.3), inset 0 1px 0 rgba(255,255,255,0.18);
     }
     .modal-btn-confirm:hover {
-        background: #4263eb;
+        background: linear-gradient(135deg, #4263eb, #5f7cf8);
         transform: translateY(-2px);
     }
     .form-row {
@@ -1411,7 +1444,8 @@ $("#confirmDidaBtn").on("click", function () {
             const data = res.data || {};
             const created = data.created_count || 0;
             const failed = data.failed_count || 0;
-            alert(`已写入滴答：成功 ${created} 个任务，失败 ${failed} 个。`);
+            $("#errorText").text(`已写入滴答：成功 ${created} 个任务，失败 ${failed} 个。`);
+            $("#error").removeClass("glass-alert alert-danger").addClass("glass-alert alert-info").show();
         },
         error: function (xhr) {
             $("#loading").hide();
