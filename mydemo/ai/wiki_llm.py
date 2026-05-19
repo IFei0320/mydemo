@@ -1,6 +1,8 @@
 import json
 import re
 
+LLM_ERROR_PREFIX = "[LLM 调用异常:"
+
 try:
     from openai import OpenAI
 except ImportError:
@@ -26,6 +28,8 @@ class WikiLLM:
             )
 
     def _call(self, system_prompt: str, user_prompt: str, max_tokens: int = 2000) -> str:
+        if self.client is None:
+            return f"{LLM_ERROR_PREFIX} openai SDK 未安装或初始化失败]"
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -39,7 +43,7 @@ class WikiLLM:
             )
             return response.choices[0].message.content or ""
         except Exception as e:
-            return f"[LLM 调用异常: {e}]"
+            return f"{LLM_ERROR_PREFIX} {e}]"
 
     @staticmethod
     def _strip_code_fence(text: str) -> str:

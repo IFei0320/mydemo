@@ -22,7 +22,7 @@ from home.nsga2_trip_planner import (
     retrieve_knowledge_cards,
     run_nsga2,
 )
-from home.wiki_mvp import ingest_all_raw, lint_wiki, query_wiki, retrieve_wiki_knowledge_cards
+from home.wiki_service import ingest_all_raw, lint_wiki, query_wiki, retrieve_wiki_knowledge_cards
 from django.db.models import Q, Sum
 from untils import util
 from django.db.models import Count

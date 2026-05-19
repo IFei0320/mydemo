@@ -1,26 +1,33 @@
 @echo off
+echo ========================================
+echo   Starting Django Development Server
+echo ========================================
+
+:: 切换到项目目录
 cd /d D:\ass\mydemo
 
-REM 检查虚拟环境是否存在
-if not exist venv\Scripts\activate.bat (
-    echo 正在使用 Python 3.12 创建虚拟环境...
-    py -3.12 -m venv venv
-    if errorlevel 1 (
-        echo ❌ 创建失败！请确认 Python 3.12 已安装
-        pause
-        exit /b 1
-    )
+:: 激活虚拟环境
+call venv\Scripts\activate.bat
+
+:: 检查虚拟环境是否激活成功
+if "%VIRTUAL_ENV%"=="" (
+    echo [ERROR] Failed to activate virtual environment!
+    pause
+    exit /b 1
 )
 
-echo 激活虚拟环境...
-call venv\Scripts\activate
+echo [INFO] Virtual environment activated: %VIRTUAL_ENV%
+echo [INFO] Checking dependencies...
 
-echo 验证 Python 版本...
-python --version
+:: 检查关键依赖
+python -c "import cryptography" 2>nul
+if errorlevel 1 (
+    echo [WARNING] Installing missing dependency: cryptography
+    pip install cryptography
+)
 
-echo.
-echo 启动 Django 服务器...
-echo ========================================
+:: 运行 Django 服务器
+echo [INFO] Starting server at http://127.0.0.1:8000/
 python manage.py runserver
 
 pause
