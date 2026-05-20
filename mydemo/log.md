@@ -85,3 +85,5 @@
 - [2026-05-19 23:09:44] [INGEST] 上海热门旅游景点11个.md -> wiki/summary/上海热门旅游景点11个.md
 - [2026-05-19 23:10:12] [INGEST] 魔都上海旅游景点深度攻略（文件二：自然、亲子与硬核艺术）.md -> wiki/summary/魔都上海旅游景点深度攻略-文件二-自然-亲子与硬核艺术.md
 - [2026-05-19 23:10:53] [QUERY] 古镇 (city=上海) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md
+- [2026-05-19 23:44:03] [QUERY] 古镇 (city=上海) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md
+- [2026-05-20 10:22:29] [QUERY] 古镇 (city=上海) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md
