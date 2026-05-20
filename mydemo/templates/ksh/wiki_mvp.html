@@ -54,7 +54,6 @@
         left: 35%;
     }
 
-    /* ========== 玻璃卡片 ========== */
     .glass-card {
         background: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(20px);
@@ -97,7 +96,6 @@
         padding: 24px;
     }
 
-    /* ========== 新拟态图标 ========== */
     .neumorph-icon {
         width: 44px;
         height: 44px;
@@ -118,7 +116,6 @@
 
     .icon-purple { color: #8b7fd4; }
 
-    /* ========== 按钮 ========== */
     .glass-btn {
         padding: 12px 24px;
         border-radius: 14px;
@@ -177,7 +174,6 @@
         color: white;
     }
 
-    /* ========== 输入框 ========== */
     .glass-input {
         width: 100%;
         height: 48px;
@@ -223,7 +219,6 @@
         box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.08), inset 0 1px 2px rgba(0,0,0,0.03);
     }
 
-    /* ========== 表单组 ========== */
     .glass-form-group {
         margin-bottom: 20px;
     }
@@ -241,7 +236,6 @@
         margin-right: 4px;
     }
 
-    /* ========== 输出区域 ========== */
     .glass-output {
         background: rgba(255, 255, 255, 0.5);
         backdrop-filter: blur(10px);
@@ -249,10 +243,9 @@
         border-radius: 16px;
         padding: 20px;
         min-height: 220px;
-        font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-        font-size: 13px;
-        line-height: 1.6;
-        color: #4a4a6a;
+        font-size: 14px;
+        line-height: 1.8;
+        color: #334155;
         overflow-x: auto;
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -265,7 +258,6 @@
         font-style: italic;
     }
 
-    /* ========== 按钮组 ========== */
     .btn-group-glass {
         display: flex;
         gap: 12px;
@@ -273,7 +265,6 @@
         margin-bottom: 20px;
     }
 
-    /* ========== 分割线 ========== */
     .glass-divider {
         border: none;
         height: 1px;
@@ -281,7 +272,6 @@
         margin: 24px 0;
     }
 
-    /* ========== 标题装饰 ========== */
     .section-title {
         font-size: 14px;
         font-weight: 700;
@@ -296,7 +286,6 @@
         color: #5dbea3;
     }
 
-    /* ========== 滚动条美化 ========== */
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -318,7 +307,6 @@
 </style>
 
 <div class="glass-page">
-    <!-- 背景装饰 -->
     <div class="glass-bg-decoration">
         <div class="glass-bg-circle"></div>
         <div class="glass-bg-circle"></div>
@@ -339,7 +327,6 @@
                 </div>
             </div>
             <div class="glass-card-body">
-                <!-- 操作按钮组 -->
                 <div class="btn-group-glass">
                     <button id="btnIngest" class="glass-btn glass-btn-primary">
                         <i class="fas fa-database"></i>1) 摄入 raw 文档
@@ -349,7 +336,6 @@
                     </button>
                 </div>
 
-                <!-- 城市过滤 -->
                 <div class="glass-form-group">
                     <label for="city">
                         <i class="fas fa-city"></i>城市过滤（可选，例如：上海）
@@ -357,7 +343,6 @@
                     <input id="city" class="glass-input" placeholder="输入城市名称..." />
                 </div>
 
-                <!-- 问题输入 -->
                 <div class="glass-form-group">
                     <label for="question">
                         <i class="fas fa-question-circle"></i>问题（例如：上海夜景路线怎么安排）
@@ -365,14 +350,12 @@
                     <textarea id="question" class="glass-textarea" rows="3" placeholder="请输入您的问题..."></textarea>
                 </div>
 
-                <!-- 查询按钮 -->
                 <button id="btnQuery" class="glass-btn glass-btn-success" style="margin-bottom: 20px;">
                     <i class="fas fa-search"></i>3) 查询 Wiki
                 </button>
 
                 <hr class="glass-divider">
 
-                <!-- 执行结果 -->
                 <div class="section-title">
                     <i class="fas fa-terminal"></i>执行结果
                 </div>
@@ -390,6 +373,21 @@
       body: payload ? JSON.stringify(payload) : JSON.stringify({})
     });
     return res.json();
+  }
+
+  function formatQueryResult(res) {
+    const data = (res && res.data) || {};
+    const hits = Array.isArray(data.hits) ? data.hits : [];
+    const hitText = hits.length
+      ? hits.map((item, idx) => `${idx + 1}. ${item.page}`).join('\n')
+      : '无';
+
+    return [
+      data.answer || '暂无回答',
+      '',
+      '来源页面：',
+      hitText
+    ].join('\n');
   }
 
   const output = document.getElementById('output');
@@ -420,7 +418,7 @@
     output.textContent = '正在查询...';
     try {
       const data = await callApi('/mydemo/api/wiki/query', {question: question.value, city: city.value});
-      output.textContent = JSON.stringify(data, null, 2);
+      output.textContent = formatQueryResult(data);
     } catch (e) {
       output.textContent = '查询失败: ' + e;
     }

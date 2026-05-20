@@ -161,6 +161,36 @@ class WikiLLM:
         answer = self._call(system, user, max_tokens=2000)
         return {"answer": answer.strip(), "raw": answer}
 
+    def rewrite_answer_for_user(self, question: str, draft_answer: str, hits: list) -> dict:
+        system = (
+            "你是旅游助手中的答案润色器。你的任务不是重新检索，而是把已有的 Wiki 回答整理成更适合普通用户阅读的最终回答。\n"
+            "要求：\n"
+            "1. 只能基于给定草稿和命中来源整理，不要编造具体门票、开放时间、交通线路等事实\n"
+            "2. 可以补充非常轻量的通用建议，但不能伪装成来源事实\n"
+            "3. 面向普通用户，语气自然，不要说‘Wiki 页面’‘实体’‘结构化细节’这类术语\n"
+            "4. 不要输出 Markdown 标题、表格、脚注、文件路径、代码块\n"
+            "5. 尽量使用自然段和简短编号，输出 3 到 6 段\n"
+            "6. 如果资料不足，直接自然说明‘目前资料里能确认的主要是…’\n"
+            "7. 提到来源时使用《文件名》这种形式，去掉 raw/、wiki/ 和 .md 后缀"
+        )
+
+        source_lines = []
+        for hit in hits:
+            page = str(hit.get("page", "")).strip()
+            snippet = str(hit.get("snippet", "")).strip()
+            if not page and not snippet:
+                continue
+            source_lines.append(f"来源：{page}\n摘要：{snippet[:500]}")
+
+        user = (
+            f"用户问题：{question}\n\n"
+            f"第一版回答草稿：\n{draft_answer}\n\n"
+            f"命中来源摘要：\n" + "\n\n".join(source_lines) + "\n\n"
+            "请输出最终给用户看的自然中文回答。"
+        )
+        answer = self._call(system, user, max_tokens=1200)
+        return {"answer": (answer or "").strip(), "raw": answer}
+
     def lint_pages(self, pages: list) -> dict:
         system = (
             "你是一个 Wiki 健康检查助手。请检查提供的 Wiki 页面，发现问题。\n"
