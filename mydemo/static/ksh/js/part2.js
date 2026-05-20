@@ -102,7 +102,7 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                url: 'window.part2Config.urls.cityData',
+                url: window.part2Config.urls.cityData,
                 type: 'GET',
                 data: {"city": selectedCity},
                 dataType: 'json',
