@@ -23,7 +23,7 @@ from home.nsga2_trip_planner import (
 )
 # from home.wiki_service import retrieve_wiki_knowledge_cards
 from django.db.models import Q, Sum
-from untils import util
+from utils import util
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from user.models import UserInfo

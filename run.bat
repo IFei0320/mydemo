@@ -1,33 +1,36 @@
 @echo off
+setlocal
+
 echo ========================================
-echo   Starting Django Development Server
+echo   Django Development Server
 echo ========================================
 
-:: 切换到项目目录
 cd /d D:\ass\mydemo
-
-:: 激活虚拟环境
-call venv\Scripts\activate.bat
-
-:: 检查虚拟环境是否激活成功
-if "%VIRTUAL_ENV%"=="" (
-    echo [ERROR] Failed to activate virtual environment!
+if errorlevel 1 (
+    echo [ERROR] Cannot find project directory
     pause
     exit /b 1
 )
 
-echo [INFO] Virtual environment activated: %VIRTUAL_ENV%
-echo [INFO] Checking dependencies...
-
-:: 检查关键依赖
-python -c "import cryptography" 2>nul
-if errorlevel 1 (
-    echo [WARNING] Installing missing dependency: cryptography
-    pip install cryptography
+call venv\Scripts\activate.bat
+if "%VIRTUAL_ENV%"=="" (
+    echo [ERROR] Failed to activate venv
+    pause
+    exit /b 1
 )
 
-:: 运行 Django 服务器
-echo [INFO] Starting server at http://127.0.0.1:8000/
-python manage.py runserver
+echo [INFO] venv: %VIRTUAL_ENV%
+echo [INFO] Installing dependencies...
+venv\Scripts\python.exe -m pip install cryptography pymysql --quiet
 
+venv\Scripts\python.exe -c "import cryptography; import pymysql"
+if errorlevel 1 (
+    echo [ERROR] cryptography or pymysql missing
+    pause
+    exit /b 1
+)
+
+echo [INFO] Starting http://127.0.0.1:8000/
+echo ========================================
+python manage.py runserver
 pause

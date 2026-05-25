@@ -468,6 +468,8 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(0, 0, 0, 0.25);
         }
+
+        a[data-url] { cursor: pointer; }
     </style>
 </head>
 
@@ -544,13 +546,13 @@
             <div class="pcoded-navigation-label">布局</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class="active" data-menu="index">
-                    <a href="{% url 'home:index' %}">
+                    <a data-url="{% url 'home:index' %}">
                         <span class="pcoded-micon"><i class="ti-home"></i></span>
                         <span class="pcoded-mtext">首页</span>
                     </a>
                 </li>
                 <li data-menu="travel_list">
-                    <a href="{% url 'home:travel_list' %}">
+                    <a data-url="{% url 'home:travel_list' %}">
                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
                         <span class="pcoded-mtext">国内旅游景点</span>
                     </a>
@@ -561,25 +563,25 @@
             <div class="pcoded-navigation-label">数据分析 & 可视化</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li data-menu="part1">
-                    <a href="{% url 'ksh:part1' %}">
+                    <a data-url="{% url 'ksh:part1' %}">
                         <span class="pcoded-micon"><i class="ti-pie-chart"></i></span>
                         <span class="pcoded-mtext">景点评分信息</span>
                     </a>
                 </li>
                 <li data-menu="part2">
-                    <a href="{% url 'ksh:part2' %}">
+                    <a data-url="{% url 'ksh:part2' %}">
                         <span class="pcoded-micon"><i class="ti-layers"></i></span>
                         <span class="pcoded-mtext">景点热度分析</span>
                     </a>
                 </li>
                 <li data-menu="part3">
-                    <a href="{% url 'ksh:part3' %}">
+                    <a data-url="{% url 'ksh:part3' %}">
                         <span class="pcoded-micon"><i class="ti-line-dashed"></i></span>
                         <span class="pcoded-mtext">门票价格分析</span>
                     </a>
                 </li>
                 <li data-menu="part4">
-                    <a href="{% url 'ksh:part4' %}">
+                    <a data-url="{% url 'ksh:part4' %}">
                         <span class="pcoded-micon"><i class="ti-map"></i></span>
                         <span class="pcoded-mtext">景点地区分部</span>
                     </a>
@@ -590,19 +592,19 @@
             <div class="pcoded-navigation-label">智能出行</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li data-menu="travelRoute">
-                    <a href="{% url 'home:get_ai_travelRoute' %}">
+                    <a data-url="{% url 'home:get_ai_travelRoute' %}">
                         <span class="pcoded-micon"><i class="ti-rocket"></i></span>
                         <span class="pcoded-mtext">目的地速览</span>
                     </a>
                 </li>
                 <li data-menu="nsga2">
-                    <a href="{% url 'home:ai_nsga2_route' %}">
+                    <a data-url="{% url 'home:ai_nsga2_route' %}">
                         <span class="pcoded-micon"><i class="ti-stats-up"></i></span>
                         <span class="pcoded-mtext">智能路线规划</span>
                     </a>
                 </li>
                 <li data-menu="wiki">
-                    <a href="{% url 'home:wiki_mvp' %}">
+                    <a data-url="{% url 'home:wiki_mvp' %}">
                         <span class="pcoded-micon"><i class="ti-book"></i></span>
                         <span class="pcoded-mtext">LLM Wiki MVP</span>
                     </a>
@@ -698,6 +700,15 @@
             setTimeout(function() {
                 document.querySelector('.theme-loader').style.display = 'none';
             }, 500);
+        });
+
+        // 侧边栏 data-url 跳转（无 href，浏览器不显状态栏 URL）
+        document.querySelector('.pcoded-navbar').addEventListener('click', function(e) {
+            const link = e.target.closest('a[data-url]');
+            if (link) {
+                e.preventDefault();
+                window.location.href = link.dataset.url;
+            }
         });
     </script>
 </body>

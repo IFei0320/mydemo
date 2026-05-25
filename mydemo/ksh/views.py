@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
-from untils import util
+from utils import util
 
 from home.models import TravelInfo
 from home.nsga2_trip_planner import _parse_price
