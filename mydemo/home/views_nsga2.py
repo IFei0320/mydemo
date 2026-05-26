@@ -67,6 +67,18 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
         seen.add(route_key)
         unique.append(item)
 
+    # 去重后不足 3 个时，从 Pareto 前沿补选其他路线
+    fallback_styles = ["balanced", "experience", "economy"]
+    fallback_idx = 0
+    for sol in pareto_set:
+        if len(unique) >= 3:
+            break
+        route_key = tuple(sol["route"])
+        if route_key not in seen:
+            seen.add(route_key)
+            unique.append({"style": fallback_styles[fallback_idx % 3], "solution": sol})
+            fallback_idx += 1
+
     options = []
     for idx, item in enumerate(unique, start=1):
         solution = item["solution"]

@@ -4,22 +4,25 @@ import re
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
+from home.data_utils import (
+    SEASON_KEYWORDS,
+    CHINA_LON_MIN,
+    CHINA_LON_MAX,
+    CHINA_LAT_MIN,
+    CHINA_LAT_MAX,
+    _safe_float,
+    _parse_price,
+    _parse_distance_km,
+    _haversine_km,
+    _is_valid_china_coord,
+    _normalize_coord_pair,
+    _season_bonus,
+)
+
 # import family
 #
 # from home.nsga2_knowledge import retrieve_knowledge_cards
 # from home.nsga2_report import call_ai_html_report, call_ai_refiner
-
-
-SEASON_KEYWORDS = {
-    "spring": ["花", "樱", "桃", "杜鹃", "踏青"],
-    "summer": ["漂流", "避暑", "峡谷", "水", "海", "湖"],
-    "autumn": ["红叶", "银杏", "秋", "古镇", "层林"],
-    "winter": ["雪", "冰", "温泉", "滑雪", "雾凇"],
-}
-
-# 粗略中国经纬度边界，用于过滤异常点（例如 0,0）
-CHINA_LON_MIN, CHINA_LON_MAX = 73.0, 136.0
-CHINA_LAT_MIN, CHINA_LAT_MAX = 3.0, 54.0
 
 
 @dataclass
@@ -37,75 +40,6 @@ class ScenicSpot:
     center_distance_km: float
 
 
-def _safe_float(raw_value, default=0.0) -> float:
-    if raw_value is None:
-        return default
-    value = str(raw_value).strip()
-    if not value:
-        return default
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        digits = re.findall(r"-?\d+\.?\d*", value)
-        if digits:
-            try:
-                return float(digits[0])
-            except ValueError:
-                return default
-    return default
-
-
-def _parse_price(raw_value) -> float:
-    if raw_value is None:
-        return 0.0
-    value = str(raw_value).strip()
-    if not value or value == "免费":
-        return 0.0
-    return max(_safe_float(value, 0.0), 0.0)
-
-
-def _parse_distance_km(raw_value) -> float:
-    if raw_value is None:
-        return 0.0
-    value = str(raw_value).strip()
-    if not value:
-        return 0.0
-    km = _safe_float(value, 0.0)
-    if "m" in value and "km" not in value.lower():
-        km = km / 1000.0
-    return max(km, 0.0)
-
-
-def _haversine_km(lon1, lat1, lon2, lat2) -> float:
-    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
-    c = 2 * math.asin(math.sqrt(a))
-    return 6371 * c
-
-
-def _is_valid_china_coord(lon: float, lat: float) -> bool:
-    return CHINA_LON_MIN <= lon <= CHINA_LON_MAX and CHINA_LAT_MIN <= lat <= CHINA_LAT_MAX
-
-
-def _normalize_coord_pair(lon_raw, lat_raw) -> Tuple[float, float]:
-    lon = _safe_float(lon_raw, 0.0)
-    lat = _safe_float(lat_raw, 0.0)
-    if not lon or not lat:
-        return 0.0, 0.0
-
-
-    if _is_valid_china_coord(lon, lat):
-        return lon, lat
-
-
-    if _is_valid_china_coord(lat, lon):
-        return lat, lon
-
-    return 0.0, 0.0
-
-
 def _normalize(values: List[float]) -> List[float]:
     if not values:
         return []
@@ -116,15 +50,6 @@ def _normalize(values: List[float]) -> List[float]:
 
 
 
-
-
-def _season_bonus(tags: str, season: str) -> float:
-    keywords = SEASON_KEYWORDS.get(season, [])
-    if not keywords:
-        return 0.0
-    text = tags or ""
-    hits = sum(1 for item in keywords if item in text)
-    return min(hits * 0.1, 0.4)
 
 
 def build_candidates(queryset, city: str, season: str) -> List[ScenicSpot]:

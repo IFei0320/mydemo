@@ -43,13 +43,13 @@ function renderMap(route, selectedCity) {
     const points = [];
 
     let visibleIndex = 0;
-    route.forEach((item) => {
+    route.forEach((item, index) => {
         const lon = parseFloat(item.longitude);
         const lat = parseFloat(item.latitude);
         if (!Number.isFinite(lon) || !Number.isFinite(lat) || !isValidChinaCoord(lon, lat)) {
             return;
         }
-        visibleIndex += 1;
+        visibleIndex = index + 1;
         const dayMatch = (item.visit_time || "").match(/第(\d+)天/);
         const dayNo = dayMatch ? parseInt(dayMatch[1], 10) : 1;
         const point = new BMap.Point(lon, lat);

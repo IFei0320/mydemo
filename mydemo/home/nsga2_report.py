@@ -1,27 +1,17 @@
 import html
+import os
 import re
 from typing import Dict, List
-
 from openai import OpenAI
+from dotenv import load_dotenv
+from pathlib import Path
 
+from django.template.loader import render_to_string
 
-def _safe_float(raw_value, default=0.0) -> float:
-    if raw_value is None:
-        return default
-    value = str(raw_value).strip()
-    if not value:
-        return default
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        digits = re.findall(r"-?\d+\.?\d*", value)
-        if digits:
-            try:
-                return float(digits[0])
-            except ValueError:
-                return default
-    return default
+from home.data_utils import _safe_float
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 def call_ai_refiner(
     city: str,
@@ -49,8 +39,8 @@ def call_ai_refiner(
 
     try:
         client = OpenAI(
-            api_key="sk-d2e0034a6f264140a8017b1e98359312",
-            base_url="https://api.deepseek.com",
+            api_key=os.getenv('LLM_API_KEY'),
+            base_url=os.getenv('LLM_BASE_URL', 'https://api.deepseek.com'),
         )
         response = client.chat.completions.create(
             model="deepseek-chat",
@@ -142,120 +132,22 @@ def call_ai_html_report(
         else "<p class='muted'>本次未命中本地知识卡，建议以官方公告与地图App信息为准。</p>"
     )
 
-    return f"""<!doctype html>
-<html lang=\"zh-CN\">
-<head>
-  <meta charset=\"utf-8\" />
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-  <title>{html.escape(city)} 行程报告</title>
-  <style>
-    body {{ font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Arial,sans-serif; margin:0; background:#f5f7fb; color:#1f2937; }}
-    .wrap {{ max-width: 1080px; margin: 24px auto; padding: 0 16px; }}
-    .header {{ background:#fff; border-radius:12px; padding:18px 20px; box-shadow:0 2px 10px rgba(0,0,0,.06); }}
-    h1 {{ margin:0 0 8px; font-size:24px; }}
-    .sub {{ color:#6b7280; margin:0; }}
-    .grid {{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; margin-top:14px; }}
-    .card {{ background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 10px rgba(0,0,0,.05); }}
-    .k {{ color:#6b7280; font-size:13px; }}
-    .v {{ font-size:18px; font-weight:700; margin-top:4px; }}
-    .section {{ background:#fff; border-radius:12px; padding:16px; box-shadow:0 2px 10px rgba(0,0,0,.05); margin-top:14px; }}
-    .section h2 {{ margin:0 0 10px; font-size:19px; color:#1677ff; }}
-    .day-block {{ border:1px solid #e5e7eb; border-radius:10px; padding:12px; margin-top:10px; }}
-    .day-block h3 {{ margin:0 0 8px; font-size:17px; }}
-    .spot-grid {{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }}
-    .spot-card {{ border:1px solid #e5e7eb; border-radius:8px; padding:10px; background:#fafcff; }}
-    .spot-title {{ font-weight:700; margin-bottom:4px; }}
-    .spot-meta {{ color:#2563eb; font-size:13px; margin-bottom:6px; }}
-    .spot-desc {{ font-size:13px; margin-bottom:6px; }}
-    .spot-line {{ font-size:13px; color:#374151; }}
-    .day-summary {{ margin-top:8px; color:#374151; font-size:13px; }}
-    ul {{ margin:8px 0 0 18px; padding:0; }}
-    li {{ margin:6px 0; }}
-    table {{ width:100%; border-collapse:collapse; }}
-    th, td {{ border:1px solid #e5e7eb; padding:8px 10px; text-align:left; }}
-    th {{ background:#f3f4f6; }}
-    .risk-ok {{ color:#16a34a; font-weight:700; }}
-    .risk-warn {{ color:#dc2626; font-weight:700; }}
-    .knowledge-box {{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }}
-    .knowledge-item {{ border:1px solid #e5e7eb; border-radius:8px; padding:10px; background:#fffdf7; }}
-    .knowledge-title {{ font-weight:700; margin-bottom:4px; }}
-    .muted {{ color:#6b7280; }}
-    @media (max-width: 900px) {{ .grid, .spot-grid, .knowledge-box {{ grid-template-columns: 1fr; }} }}
-  </style>
-</head>
-<body>
-  <div class=\"wrap\">
-    <div class=\"header\">
-      <h1>{html.escape(city)} {html.escape(season)}出行报告</h1>
-      <p class=\"sub\">基于NSGA-II多目标优化 + 本地知识库RAG增强，适合答辩展示与落地执行。</p>
-      <div class=\"grid\">
-        <div class=\"card\"><div class=\"k\">城市</div><div class=\"v\">{html.escape(city)}</div></div>
-        <div class=\"card\"><div class=\"k\">季节</div><div class=\"v\">{html.escape(season)}</div></div>
-        <div class=\"card\"><div class=\"k\">天数</div><div class=\"v\">{days} 天</div></div>
-        <div class=\"card\"><div class=\"k\">预算</div><div class=\"v\">{budget:.2f} 元</div></div>
-        <div class=\"card\"><div class=\"k\">预计花费</div><div class=\"v\">{total_cost:.2f} 元</div></div>
-        <div class=\"card\"><div class=\"k\">景点数</div><div class=\"v\">{len(route_data)} 个</div></div>
-      </div>
-    </div>
+    risk_class = "risk-ok" if risk_text == "预算充足" else "risk-warn"
 
-    <div class=\"section\">
-      <h2>行程总览摘要</h2>
-      <p>策略：在预算约束下平衡评分、热度与路程，优先保证核心景点覆盖，再优化交通衔接与体验节奏。</p>
-      {''.join(day_cards_html)}
-    </div>
-
-    <div class=\"section\">
-      <h2>交通衔接建议</h2>
-      <ul>{traffic_html}</ul>
-    </div>
-
-    <div class=\"section\">
-      <h2>RAG本地知识卡（命中 {len(knowledge_cards)} 条）</h2>
-      {knowledge_section}
-    </div>
-
-    <div class=\"section\">
-      <h2>注意事项</h2>
-      <ul>
-        <li>天气与穿搭：春秋季昼夜温差较大，建议叠穿并备轻薄外套。</li>
-        <li>预约与排队：热门场馆优先预约，尽量错峰（早场/工作日）。</li>
-        <li>财物安全：在人流密集区域注意随身物品，手机与证件分开存放。</li>
-        <li>文明游览：遵守景区秩序，拍照时避免影响他人通行。</li>
-        <li>导航建议：交通与开放信息可能变化，出发前请以官方公告和地图App实时信息为准。</li>
-      </ul>
-    </div>
-
-    <div class=\"section\">
-      <h2>预算明细</h2>
-      <table>
-        <thead><tr><th>日期</th><th>预计花费</th></tr></thead>
-        <tbody>{''.join(day_budget_rows)}</tbody>
-      </table>
-      <p style=\"margin-top:10px;\">
-        总计：<b>{total_cost:.2f} 元</b>，
-        预算利用率：<b>{budget_usage:.1f}%</b>，
-        风险评估：<span class=\"{'risk-ok' if risk_text == '预算充足' else 'risk-warn'}\">{risk_text}</span>
-      </p>
-    </div>
-
-    <div class=\"section\">
-      <h2>应急与备选方案</h2>
-      <ul>
-        <li>雨天：优先博物馆/商圈/室内观景点，户外点顺延到次日。</li>
-        <li>拥堵：跨区移动改为地铁优先，压缩非核心打卡点。</li>
-        <li>超支：减少高票价项目，增加免费景点与步行线路。</li>
-      </ul>
-    </div>
-
-    <div class=\"section\">
-      <h2>出发前清单</h2>
-      <ul>
-        <li>证件：身份证、学生证/优惠证件</li>
-        <li>设备：充电宝、充电线、耳机</li>
-        <li>行前：门票预约截图、酒店/交通订单截图</li>
-        <li>工具：离线地图、应急联系人、常用药品</li>
-      </ul>
-    </div>
-  </div>
-</body>
-</html>"""
+    context = {
+        "city": city,
+        "season": season,
+        "days": days,
+        "budget": budget,
+        "total_cost": total_cost,
+        "spot_count": len(route_data),
+        "day_cards_html": "".join(day_cards_html),
+        "traffic_html": traffic_html,
+        "knowledge_count": len(knowledge_cards),
+        "knowledge_section": knowledge_section,
+        "day_budget_rows": "".join(day_budget_rows),
+        "budget_usage": budget_usage,
+        "risk_class": risk_class,
+        "risk_text": risk_text,
+    }
+    return render_to_string("ksh/nsga2_report.html", context)

@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class UserInfo(models.Model):
     username = models.CharField(max_length=20, verbose_name='用户名')
-    password = models.CharField(max_length=40, verbose_name='密码')
+    password = models.CharField(max_length=128, verbose_name='密码')
     uemail = models.CharField(max_length=40, verbose_name='邮箱')
     uaddress = models.CharField(max_length=30, verbose_name='地址', default='')
     uyoubian = models.CharField(max_length=30, verbose_name='邮编', default='')

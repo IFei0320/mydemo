@@ -1,5 +1,11 @@
 import json
+import os
 import re
+from dotenv import load_dotenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 LLM_ERROR_PREFIX = "[LLM 调用异常:"
 
@@ -23,8 +29,8 @@ class WikiLLM:
         self.client = None
         if OpenAI is not None:
             self.client = OpenAI(
-                api_key="sk-d2e0034a6f264140a8017b1e98359312",
-                base_url="https://api.deepseek.com",
+                api_key=os.getenv('LLM_API_KEY'),
+                base_url=os.getenv('LLM_BASE_URL', 'https://api.deepseek.com'),
             )
 
     def _call(self, system_prompt: str, user_prompt: str, max_tokens: int = 2000) -> str:

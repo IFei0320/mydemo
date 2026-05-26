@@ -1,9 +1,15 @@
 # Please install OpenAI SDK first: `pip3 install openai`
 import json
+import os
 import re
 
 import pandas as pd
 from openai import OpenAI
+from dotenv import load_dotenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 
 _SEASON_CN = {
@@ -18,7 +24,7 @@ class Get_DeepSeek:
     def __init__(self,model:str="deepseek-v4-flash"):
         self.model = model
         self.client = OpenAI(
-            api_key='sk-d2e0034a6f264140a8017b1e98359312',
+            api_key=os.getenv('LLM_API_KEY'),
             base_url="https://api.deepseek.com")
         self.system_prompt = """
         你是一个专业的导游，包括中国以及国外，你需要根据用户给出的信息来为用户制定一个完整的旅游路线，具体要求如下：
