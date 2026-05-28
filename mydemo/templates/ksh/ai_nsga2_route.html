@@ -6,6 +6,8 @@
 
 <link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
 
+<div id="toastMsg" class="toast-msg"></div>
+
 <div class="glass-page">
     <div class="glass-bg-decoration">
         <div class="glass-bg-circle"></div>
@@ -118,15 +120,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-
-        <!-- 状态提示 -->
-        <div id="loading" class="glass-alert alert-info" style="display:none;">
-            <div class="spinner-border spinner-border-sm" role="status" style="border-color: currentColor; border-right-color: transparent;"></div>
-            <span><i class="fas fa-cog fa-spin mr-2"></i>正在执行 NSGA-II 进化与 AI 润色，请稍候...</span>
-        </div>
-        <div id="error" class="glass-alert alert-danger" style="display:none;">
-            <i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span>
         </div>
 
         <!-- Top3 候选方案 -->
@@ -316,6 +309,15 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- 状态提示 -->
+<div id="loading" class="glass-alert alert-info" style="display:none; margin-top: 24px;">
+    <div class="spinner-border spinner-border-sm" role="status" style="border-color: currentColor; border-right-color: transparent;"></div>
+    <span><i class="fas fa-cog fa-spin mr-2"></i>正在执行 NSGA-II 进化与 AI 润色，请稍候...</span>
+</div>
+<div id="error" class="glass-alert alert-danger" style="display:none; margin-top: 24px;">
+    <i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span>
 </div>
 
 <!-- 滴答导出弹窗 -->

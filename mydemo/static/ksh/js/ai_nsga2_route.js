@@ -229,6 +229,16 @@ $("#downloadHtmlReportBtn").on("click", function () {
     downloadHtmlReport(latestHtmlReport, city);
 });
 
+var toastTimer = null;
+function showToast(msg, type) {
+    var $t = $('#toastMsg');
+    clearTimeout(toastTimer);
+    $t.removeClass('show error success').text(msg).addClass(type + ' show');
+    toastTimer = setTimeout(function() {
+        $t.removeClass('show');
+    }, 2800);
+}
+
 $("#exportDidaBtn").on("click", function () {
     if (!latestSelectedData) {
         $("#errorText").text("请先选择方案并生成结果");
@@ -250,12 +260,11 @@ $("#closeDidaModalBtn, #cancelDidaBtn").on("click", closeDidaModal);
 $("#confirmDidaBtn").on("click", function () {
     const departure = ($("#didaDepartureInput").val() || "").trim();
     if (!departure) {
-        alert("请先选择出发时间");
+        showToast("请先选择出发时间", "error");
         return;
     }
     closeDidaModal();
 
-    $("#error").hide();
     $("#loading").html(`
         <div class="d-flex align-items-center">
             <div class="spinner-border spinner-border-sm text-white mr-3" role="status"></div>
@@ -277,21 +286,25 @@ $("#confirmDidaBtn").on("click", function () {
         headers: { "X-CSRFToken": window.nsga2RouteConfig.csrfToken },
         success: function (res) {
             $("#loading").hide();
+            console.log("DIDA RESPONSE:", JSON.stringify(res));
             if (res.code !== 200) {
-                $("#errorText").text(res.message || "写入滴答失败");
-                $("#error").show();
+                showToast(res.message || "写入滴答失败", "error");
                 return;
             }
             const data = res.data || {};
             const created = data.created_count || 0;
             const failed = data.failed_count || 0;
-            $("#errorText").text(`已写入滴答：成功 ${created} 个任务，失败 ${failed} 个。`);
-            $("#error").removeClass("glass-alert alert-danger").addClass("glass-alert alert-info").show();
+            console.log("DIDA: created=" + created + " failed=" + failed);
+            if (created > 0) {
+                showToast(`已写入滴答清单：成功 ${created} 个任务` + (failed > 0 ? `，${failed} 个失败` : ""), "success");
+            } else {
+                showToast("写入失败，请稍后重试", "error");
+            }
         },
         error: function (xhr) {
             $("#loading").hide();
-            $("#errorText").text("请求失败：" + (xhr.responseText || xhr.statusText));
-            $("#error").show();
+            console.log("DIDA ERROR:", xhr.status, xhr.responseText);
+            showToast("请求失败，请稍后重试", "error");
         }
     });
 });
@@ -308,7 +321,26 @@ function renderRecent(recentPlans) {
         return;
     }
     recentPlans.forEach(item => {
-        list.append(`<span class="recent-tag"><i class="fas fa-history mr-1"></i>${item.city} · ${item.season} · ${item.days}天 · 预算${item.budget}</span>`);
+        const tag = $('<span class="recent-tag" title="点击加载此方案参数"></span>');
+        tag.html(`<i class="fas fa-history mr-1"></i>${item.city} · ${item.season} · ${item.days}天 · 预算${item.budget}`);
+        tag.data("plan", item);
+        tag.on("click", function() {
+            const p = $(this).data("plan");
+            $("#city").val(p.city);
+            $("#season").val(p.season);
+            $("#days").val(p.days);
+            $("#budget").val(p.budget);
+            if (typeof p.price_sensitivity !== "undefined") {
+                $("#priceSensitivity").val(p.price_sensitivity).trigger("input");
+                $("#distanceSensitivity").val(p.distance_sensitivity).trigger("input");
+                $("#hotnessPreference").val(p.hotness_preference).trigger("input");
+                $("#ratingPreference").val(p.rating_preference).trigger("input");
+                $("#crowdAvoidance").val(p.crowd_avoidance).trigger("input");
+            }
+            $("#resultPanel").hide();
+            showToast(`已加载：${p.city} · ${p.season} · ${p.days}天`, "success");
+        });
+        list.append(tag);
     });
 }
 

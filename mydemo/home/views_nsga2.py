@@ -234,6 +234,11 @@ def generate_ai_nsga2_route(request):
             "season": season,
             "days": days,
             "budget": budget,
+            "price_sensitivity": int(sensitivities["price"] * 100),
+            "distance_sensitivity": int(sensitivities["distance"] * 100),
+            "hotness_preference": int(sensitivities["hotness"] * 100),
+            "rating_preference": int(sensitivities["rating"] * 100),
+            "crowd_avoidance": int(sensitivities["crowd_avoid"] * 100),
             "created_at": int(now),
         },
     )

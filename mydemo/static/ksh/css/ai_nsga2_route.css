@@ -547,7 +547,7 @@
         font-size: 13px;
         font-weight: 500;
         transition: all 0.3s;
-        cursor: default;
+        cursor: pointer;
     }
     .recent-tag:hover {
         background: #4c6ef5;
@@ -606,19 +606,20 @@
         position: relative;
         z-index: 1;
         padding: 24px 26px 18px;
-        background: linear-gradient(135deg, rgba(76, 110, 245, 0.92), rgba(117, 127, 214, 0.82));
-        color: #fff;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px);
+        color: #1a202c;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     .modal-subtitle {
         font-size: 13px;
-        opacity: 0.92;
+        color: #718096;
         line-height: 1.55;
     }
     .modal-close-btn {
-        background: rgba(255,255,255,0.16);
-        border: 1px solid rgba(255,255,255,0.18);
-        color: #fff;
+        background: rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.08);
+        color: #4a5568;
         font-size: 22px;
         line-height: 1;
         width: 38px;
@@ -629,12 +630,10 @@
         justify-content: center;
         transition: all 0.3s ease;
         cursor: pointer;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
     }
     .modal-close-btn:hover {
-        background: rgba(255,255,255,0.24);
+        background: rgba(0,0,0,0.10);
+        color: #1a202c;
         transform: rotate(90deg) scale(1.04);
     }
     .modal-body {
@@ -729,16 +728,16 @@
     .modal-btn-confirm {
         padding: 11px 22px;
         border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.2);
-        background: linear-gradient(135deg, #4c6ef5, #6f8bff);
+        border: none;
+        background: #4c6ef5;
         color: white;
         font-weight: 700;
         cursor: pointer;
         transition: all 0.3s;
-        box-shadow: 0 10px 26px rgba(76, 110, 245, 0.3), inset 0 1px 0 rgba(255,255,255,0.18);
+        box-shadow: 0 4px 15px rgba(76, 110, 245, 0.25);
     }
     .modal-btn-confirm:hover {
-        background: linear-gradient(135deg, #4263eb, #5f7cf8);
+        background: #4263eb;
         transform: translateY(-2px);
     }
     .form-row {
@@ -780,4 +779,37 @@
         .slider-row-2 { grid-template-columns: 1fr; }
         .stat-grid { grid-template-columns: 1fr; }
         .knowledge-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Toast 通知 */
+    .toast-msg {
+        position: fixed;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-120px);
+        padding: 14px 28px;
+        border-radius: 14px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        z-index: 99999;
+        opacity: 0;
+        transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        pointer-events: none;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 0.5px solid rgba(255,255,255,0.5);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .toast-msg.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    .toast-msg.error {
+        background: rgba(255, 59, 48, 0.15);
+        color: #c0392b;
+    }
+    .toast-msg.success {
+        background: rgba(52, 199, 89, 0.15);
+        color: #1e7e34;
     }
