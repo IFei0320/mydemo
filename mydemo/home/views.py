@@ -11,16 +11,27 @@ from home.nsga2_trip_planner import (
    
 )
 # from home.wiki_service import retrieve_wiki_knowledge_cards
-from django.db.models import Q, Sum
-from utils import util
-from django.db.models import Count
+from django.db.models import Q, Sum, Count
 from django.db.models.functions import TruncDate
+from utils import util
 from user.models import UserInfo
 
 PLAN_CACHE_TTL_SECONDS = 600
 PLAN_CACHE = {}
 RECENT_PLANS = []
 RECENT_PLAN_LIMIT = 12
+
+
+def _dedup_by_name(queryset):
+    """按 name 去重，保留排在前面的那条（先 order_by 再用此函数）"""
+    seen = set()
+    result = []
+    for obj in queryset:
+        if obj.name not in seen:
+            seen.add(obj.name)
+            result.append(obj)
+    return result
+
 
 # Create your views here.
 def index(request):
@@ -37,10 +48,12 @@ def index(request):
     sql = 'select * from part6'
     res=util.query(sql)
     mapData = [{"name":i[0],"value":i[1]} for i in res]
-    top_5_travel = TravelInfo.objects.all().order_by('-popularity_score')[:5]
 
+    all_by_hot = TravelInfo.objects.order_by('-popularity_score', '-review_count')
+    top_5_travel = _dedup_by_name(all_by_hot)[:5]
 
-    top_10_travel = TravelInfo.objects.all().order_by('-review_count')[:5]
+    all_by_review = TravelInfo.objects.order_by('-review_count', '-popularity_score')
+    top_10_travel = _dedup_by_name(all_by_review)[:5]
 
     daily_users = UserInfo.objects.annotate(
         date=TruncDate('created_at')
@@ -69,16 +82,16 @@ def index(request):
 # ... existing code ...
 def travel_list(request):
     province = TravelInfo.objects.exclude(province__isnull=True).values_list('province', flat=True).distinct()
-    travels = TravelInfo.objects.all()
     search_name = request.GET.get('search_name', '')
     selected_province = request.GET.get('province', '')
+
+    travels_qs = TravelInfo.objects.order_by('-popularity_score', '-review_count')
     if search_name:
-        travels = travels.filter(Q(name__icontains=search_name))
-
+        travels_qs = travels_qs.filter(Q(name__icontains=search_name))
     if selected_province:
-        travels = travels.filter(province=selected_province)
+        travels_qs = travels_qs.filter(province=selected_province)
 
-    travels = travels.order_by('-popularity_score')
+    travels = _dedup_by_name(travels_qs)
 
     paginator = Paginator(travels, 10)
 
