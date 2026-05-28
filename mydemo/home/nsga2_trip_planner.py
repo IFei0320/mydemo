@@ -81,6 +81,13 @@ def build_candidates(queryset, city: str, season: str) -> List[ScenicSpot]:
                 center_distance_km=_parse_distance_km(row.distance_from_center),
             )
         )
+
+    # 按 name 去重：同名保留 rating 最高的那一条
+    seen = {}
+    for s in spots:
+        if s.name not in seen or s.rating > seen[s.name].rating:
+            seen[s.name] = s
+    spots = list(seen.values())
     return spots
 
 

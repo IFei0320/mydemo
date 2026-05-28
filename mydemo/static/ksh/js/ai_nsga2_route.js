@@ -477,8 +477,7 @@ $(document).on("click", ".select-plan-btn", function () {
     });
 });
 
-$("#plannerForm").on("submit", function (e) {
-    e.preventDefault();
+$("#generateBtn").on("click", function () {
     $("#error").hide();
     $("#resultPanel").hide();
     $("#top3Panel").hide();
