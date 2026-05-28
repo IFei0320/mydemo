@@ -30,6 +30,21 @@
             </div>
         </div>
 
+        <!-- 最近方案记录 -->
+        <div id="recentPanel" style="display:none;">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-history" style="color: #a0aec0;"></i>最近方案记录</h5>
+                        <small>10分钟缓存可复现，点击直接恢复</small>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div id="recentList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- 参数设置卡片 -->
         <div class="glass-card">
             <div class="glass-card-header">
@@ -133,21 +148,6 @@
                 </div>
                 <div class="glass-card-body">
                     <div class="top3-grid" id="top3Options"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 最近方案记录 -->
-        <div id="recentPanel" style="display:none;">
-            <div class="glass-card">
-                <div class="glass-card-header">
-                    <div>
-                        <h5><i class="fas fa-history" style="color: #a0aec0;"></i>最近方案记录</h5>
-                        <small>10分钟缓存可复现</small>
-                    </div>
-                </div>
-                <div class="glass-card-body">
-                    <div id="recentList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                 </div>
             </div>
         </div>
@@ -368,7 +368,8 @@ window.nsga2RouteConfig = {
         generate: '{% url "home:generate_ai_nsga2_route" %}',
         select: '{% url "home:select_ai_nsga2_plan" %}',
         recall: '{% url "home:recall_ai_nsga2_plan" %}',
-        exportDida: '{% url "home:export_to_dida_checklist" %}'
+        exportDida: '{% url "home:export_to_dida_checklist" %}',
+        recentPlans: '{% url "home:get_recent_plans" %}'
     },
     csrfToken: '{{ csrf_token }}'
 };

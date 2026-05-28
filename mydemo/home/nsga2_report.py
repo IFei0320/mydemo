@@ -48,7 +48,7 @@ def call_ai_refiner(
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": str(user_content)},
             ],
-            max_tokens=1200,
+            max_tokens=3200,
             stream=False,
             extra_body={"thinking": {"type": "disabled"}},
         )

@@ -562,3 +562,18 @@ $("#generateBtn").on("click", function () {
         }
     });
 });
+
+// 页面加载时获取缓存列表
+$(function() {
+    if (window.nsga2RouteConfig && window.nsga2RouteConfig.urls.recentPlans) {
+        $.getJSON({
+            url: window.nsga2RouteConfig.urls.recentPlans,
+            success: function(res) {
+                if (res.code === 200 && res.data && res.data.recent_plans && res.data.recent_plans.length > 0) {
+                    renderRecent(res.data.recent_plans);
+                    $("#recentPanel").show();
+                }
+            }
+        });
+    }
+});

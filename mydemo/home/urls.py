@@ -10,6 +10,7 @@ urlpatterns = [
     path('travel_list',views.travel_list,name='travel_list'),
     path('get_ai_travelRoute',views.get_ai_travelRoute,name='get_ai_travelRoute'),
     path('ai_nsga2_route', views_nsga2.ai_nsga2_route_page, name='ai_nsga2_route'),
+    path('api/get_recent_plans', views_nsga2.get_recent_plans, name='get_recent_plans'),
     path('api/generate_ai_nsga2_route', views_nsga2.generate_ai_nsga2_route, name='generate_ai_nsga2_route'),
     path('api/recall_ai_nsga2_plan', views_nsga2.recall_ai_nsga2_plan, name='recall_ai_nsga2_plan'),
     path('api/select_ai_nsga2_plan', views_nsga2.select_ai_nsga2_plan, name='select_ai_nsga2_plan'),

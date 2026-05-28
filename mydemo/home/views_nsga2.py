@@ -27,6 +27,12 @@ def ai_nsga2_route_page(request):
     return render(request, 'ksh/ai_nsga2_route.html')
 
 
+def get_recent_plans(request):
+    """页面加载时获取缓存列表"""
+    _cleanup_plan_cache()
+    return JsonResponse({"code": 200, "data": {"recent_plans": RECENT_PLANS[:6]}})
+
+
 def _cleanup_plan_cache():
     now = time.time()
     expired = [token for token, value in PLAN_CACHE.items() if value.get("expires_at", 0) < now]
