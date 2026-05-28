@@ -367,6 +367,7 @@ window.nsga2RouteConfig = {
     urls: {
         generate: '{% url "home:generate_ai_nsga2_route" %}',
         select: '{% url "home:select_ai_nsga2_plan" %}',
+        recall: '{% url "home:recall_ai_nsga2_plan" %}',
         exportDida: '{% url "home:export_to_dida_checklist" %}'
     },
     csrfToken: '{{ csrf_token }}'

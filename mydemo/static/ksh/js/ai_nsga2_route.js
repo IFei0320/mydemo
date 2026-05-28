@@ -326,20 +326,48 @@ function renderRecent(recentPlans) {
         tag.data("plan", item);
         tag.on("click", function() {
             const p = $(this).data("plan");
+            if (!p.token) {
+                showToast("缓存记录不完整，请重新生成", "error");
+                return;
+            }
+            $("#loading").show();
+            $.ajax({
+                url: window.nsga2RouteConfig.urls.recall,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ token: p.token }),
+                headers: { "X-CSRFToken": window.nsga2RouteConfig.csrfToken },
+                success: function(res) {
+                    $("#loading").hide();
+                    if (res.code === 200 && res.data && res.data.options && res.data.options.length > 0) {
+                        currentRequestToken = res.data.request_token || p.token;
+                        renderTop3(res.data.options);
+                        renderRecent(res.data.recent_plans || []);
+                        $("#top3Panel").show();
+                        $("#recentPanel").show();
+                        $("#resultPanel").hide();
+                        showToast(`已恢复：${p.city} · ${p.season} · ${p.days}天`, "success");
+                    } else {
+                        // 缓存过期，填表让用户重新生成
+                        showToast("缓存已过期，请手动点\"生成路线\"", "error");
+                        fillFormFromPlan(p);
+                    }
+                },
+                error: function() {
+                    $("#loading").hide();
+                    showToast("网络异常，请重试", "error");
+                }
+            });
+        });
+
+        function fillFormFromPlan(p) {
             $("#city").val(p.city);
             $("#season").val(p.season);
             $("#days").val(p.days);
             $("#budget").val(p.budget);
-            if (typeof p.price_sensitivity !== "undefined") {
-                $("#priceSensitivity").val(p.price_sensitivity).trigger("input");
-                $("#distanceSensitivity").val(p.distance_sensitivity).trigger("input");
-                $("#hotnessPreference").val(p.hotness_preference).trigger("input");
-                $("#ratingPreference").val(p.rating_preference).trigger("input");
-                $("#crowdAvoidance").val(p.crowd_avoidance).trigger("input");
-            }
             $("#resultPanel").hide();
-            showToast(`已加载：${p.city} · ${p.season} · ${p.days}天`, "success");
-        });
+            $("#top3Panel").hide();
+        }
         list.append(tag);
     });
 }

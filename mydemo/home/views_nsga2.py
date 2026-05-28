@@ -264,6 +264,31 @@ def generate_ai_nsga2_route(request):
 
 
 @require_POST
+def recall_ai_nsga2_plan(request):
+    """用缓存 token 直接取回 Top3 方案（不重新计算）"""
+    _cleanup_plan_cache()
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except json.JSONDecodeError:
+        return JsonResponse({"code": 400, "message": "无效的 json 数据", "data": None})
+    token = str(data.get("token", "")).strip()
+    if not token:
+        return JsonResponse({"code": 400, "message": "token 缺失", "data": None})
+    cache_item = PLAN_CACHE.get(token)
+    if not cache_item:
+        return JsonResponse({"code": 410, "message": "缓存已过期，请重新生成", "data": None})
+    return JsonResponse({
+        "code": 200,
+        "message": "命中缓存，直接恢复方案",
+        "data": {
+            "request_token": token,
+            "options": cache_item.get("options_preview", []),
+            "recent_plans": RECENT_PLANS[:6],
+        },
+    })
+
+
+@require_POST
 def select_ai_nsga2_plan(request):
     _cleanup_plan_cache()
     try:

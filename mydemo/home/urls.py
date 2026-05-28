@@ -11,6 +11,7 @@ urlpatterns = [
     path('get_ai_travelRoute',views.get_ai_travelRoute,name='get_ai_travelRoute'),
     path('ai_nsga2_route', views_nsga2.ai_nsga2_route_page, name='ai_nsga2_route'),
     path('api/generate_ai_nsga2_route', views_nsga2.generate_ai_nsga2_route, name='generate_ai_nsga2_route'),
+    path('api/recall_ai_nsga2_plan', views_nsga2.recall_ai_nsga2_plan, name='recall_ai_nsga2_plan'),
     path('api/select_ai_nsga2_plan', views_nsga2.select_ai_nsga2_plan, name='select_ai_nsga2_plan'),
     path('api/export_to_dida_checklist', views_dida.export_to_dida_checklist, name='export_to_dida_checklist'),
     path('wiki_mvp', views_wiki.wiki_mvp_page, name='wiki_mvp'),
