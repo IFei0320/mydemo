@@ -1,0 +1,59 @@
+/* part3.html 独有样式 */
+
+.stat-amber { background: linear-gradient(135deg, #f0d78c, #d4a017); color: #1a202c; }
+
+.stat-sky { background: linear-gradient(135deg, #6bb3d9, #2980b9); color: white; }
+
+.tag-rose {
+        background: rgba(224, 169, 109, 0.15);
+        color: #c0392b;
+    }
+
+.tag-amber {
+        background: rgba(240, 215, 140, 0.2);
+        color: #b8860b;
+    }
+
+.tag-teal {
+        background: rgba(93, 190, 163, 0.15);
+        color: #38a169;
+    }
+
+/* ========== 表格 ========== */
+    .glass-table-wrap {
+        overflow: hidden;
+        border-radius: 16px;
+    }
+
+.table-rank {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #A0B4F0 0%, #BB9AB1 100%);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(160, 180, 240, 0.3);
+    }
+
+.spot-name {
+        font-weight: 600;
+        color: #1a202c;
+    }
+
+.price-value {
+        color: #e53e3e;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+/* ========== 布局 ========== */
+    .glass-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 24px;
+    }

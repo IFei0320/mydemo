@@ -1,0 +1,836 @@
+{% extends "base.html" %}
+{% block title %}个人信息 - 旅游数据分析平台{% endblock %}
+{% block content %}
+{% load static %}
+
+<!-- Page-header start - 重新设计为毛玻璃风格 -->
+<div class="page-header glass-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">
+                        <i class="fas fa-user-circle mr-2"></i>个人信息管理
+                    </h5>
+                    <p class="m-b-0">
+                        <i class="fas fa-id-card mr-1"></i>管理您的个人资料和账户信息
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home:index' %}" class="breadcrumb-link">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!" class="breadcrumb-link">个人中心</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <span>信息管理</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-header end -->
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+
+                        <!-- 消息提示容器 - 毛玻璃风格 -->
+                        <div id="messageContainer">
+                            {% if success %}
+                            <div class="alert alert-glass-success alert-dismissible fade show" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle fa-lg mr-3"></i>
+                                    <div>
+                                        <strong>操作成功！</strong>
+                                        <p class="mb-0">{{ success }}</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endif %}
+
+                            {% if error %}
+                            <div class="alert alert-glass-danger alert-dismissible fade show" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-circle fa-lg mr-3"></i>
+                                    <div>
+                                        <strong>操作失败！</strong>
+                                        <p class="mb-0">{{ error }}</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 主卡片 - 毛玻璃效果 -->
+                        <div class="card glass-card">
+                            <div class="card-header glass-card-header">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-circle glass-icon-circle mr-3">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="m-0 font-weight-bold">个人资料设置</h5>
+                                            <small class="header-subtitle">更新您的个人信息和头像</small>
+                                        </div>
+                                    </div>
+                                    <span class="glass-badge">
+                                        <i class="fas fa-shield-alt mr-1"></i>安全中心
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="row no-gutters">
+                                    <!-- 左侧：头像上传区域 - 毛玻璃风格 -->
+                                    <div class="col-lg-4 glass-sidebar">
+                                        <div class="p-4 text-center">
+                                            <h6 class="section-title mb-4">
+                                                <i class="fas fa-camera mr-2"></i>头像设置
+                                            </h6>
+
+                                            <div class="avatar-wrapper mb-4">
+                                                <div class="avatar-preview-container position-relative mx-auto" style="width: 160px; height: 160px;">
+                                                    <img id="avatarPreview"
+                                                         src="{% if user.avatar %}{{ user.avatar }}{% else %}{% static 'assets/images/default-avatar.svg' %}{% endif %}"
+                                                         alt="头像预览"
+                                                         class="avatar-preview-img">
+                                                    <label for="avatarInput" class="avatar-overlay">
+                                                        <i class="fas fa-camera fa-2x"></i>
+                                                    </label>
+                                                    <div class="avatar-status online"></div>
+                                                </div>
+                                            </div>
+
+                                            <input type="file" id="avatarInput" class="avatar-file-input" accept="image/*">
+
+                                            <label for="avatarInput" class="glass-btn glass-btn-primary mb-3 avatar-upload-btn">
+                                                <i class="fas fa-cloud-upload-alt mr-2"></i>上传新头像
+                                            </label>
+
+                                            <p class="hint-text">
+                                                <i class="fas fa-info-circle mr-1"></i>
+                                                支持 JPG、PNG、GIF 格式，不超过 2MB
+                                            </p>
+
+                                            <div class="info-divider"></div>
+
+                                            <div class="text-left">
+                                                <h6 class="section-title-small mb-3">账户信息</h6>
+                                                <div class="info-row">
+                                                    <span class="info-label">注册时间</span>
+                                                    <span class="info-value">{{ user.created_at|date:"Y-m-d H:i" }}</span>
+                                                </div>
+                                                <div class="info-row">
+                                                    <span class="info-label">用户ID</span>
+                                                    <span class="info-value">#{{ user.id }}</span>
+                                                </div>
+                                                <div class="info-row">
+                                                    <span class="info-label">账户状态</span>
+                                                    <span class="status-badge">正常</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 右侧：个人信息表单 - 毛玻璃风格 -->
+                                    <div class="col-lg-8">
+                                        <div class="p-4 p-lg-5">
+                                            <h6 class="section-title mb-4 pb-2 border-bottom-light">
+                                                <i class="fas fa-edit mr-2"></i>基本信息编辑
+                                            </h6>
+
+                                            <form method="post" id="profileForm" class="needs-validation" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label">
+                                                                <i class="fas fa-user mr-2"></i>用户名
+                                                            </label>
+                                                            <div class="glass-input-wrapper">
+                                                                <span class="glass-input-icon">
+                                                                    <i class="fas fa-id-badge"></i>
+                                                                </span>
+                                                                <input type="text"
+                                                                       class="glass-input"
+                                                                       name="username"
+                                                                       value="{{ user.username }}"
+                                                                       required
+                                                                       placeholder="请输入用户名">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label">
+                                                                <i class="fas fa-envelope mr-2"></i>电子邮箱
+                                                            </label>
+                                                            <div class="glass-input-wrapper">
+                                                                <span class="glass-input-icon">
+                                                                    <i class="fas fa-at"></i>
+                                                                </span>
+                                                                <input type="email"
+                                                                       class="glass-input"
+                                                                       name="email"
+                                                                       value="{{ user.uemail }}"
+                                                                       required
+                                                                       placeholder="example@email.com">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label">
+                                                                <i class="fas fa-phone mr-2"></i>手机号码
+                                                            </label>
+                                                            <div class="glass-input-wrapper">
+                                                                <span class="glass-input-icon">
+                                                                    <i class="fas fa-mobile-alt"></i>
+                                                                </span>
+                                                                <input type="tel"
+                                                                       class="glass-input"
+                                                                       name="phone"
+                                                                       value="{{ user.uphone }}"
+                                                                       required
+                                                                       placeholder="请输入手机号">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label">
+                                                                <i class="fas fa-mail-bulk mr-2"></i>邮政编码
+                                                            </label>
+                                                            <div class="glass-input-wrapper">
+                                                                <span class="glass-input-icon">
+                                                                    <i class="fas fa-hashtag"></i>
+                                                                </span>
+                                                                <input type="text"
+                                                                       class="glass-input"
+                                                                       name="youbian"
+                                                                       value="{{ user.uyoubian }}"
+                                                                       required
+                                                                       placeholder="6位邮政编码">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 mb-4">
+                                                        <div class="form-group mb-0">
+                                                            <label class="form-label">
+                                                                <i class="fas fa-map-marker-alt mr-2"></i>详细地址
+                                                            </label>
+                                                            <div class="glass-input-wrapper">
+                                                                <span class="glass-input-icon">
+                                                                    <i class="fas fa-home"></i>
+                                                                </span>
+                                                                <input type="text"
+                                                                       class="glass-input"
+                                                                       name="address"
+                                                                       value="{{ user.uaddress }}"
+                                                                       required
+                                                                       placeholder="请输入您的详细地址">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-4 pt-3 border-top-light">
+                                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                                        <button type="button" class="glass-btn glass-btn-secondary" onclick="history.back()">
+                                                            <i class="fas fa-arrow-left mr-2"></i>返回
+                                                        </button>
+                                                        <button type="submit" class="glass-btn glass-btn-primary glass-btn-large">
+                                                            <i class="fas fa-save mr-2"></i>保存修改
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="styleSelector"></div>
+</div>
+
+<style>
+/* ========== 苹果风格毛玻璃样式 ========== */
+/* 整体背景 - 苹果灰 */
+body {
+    background: #f5f5f7 !important;
+}
+
+/* 覆盖可能的外部容器背景 */
+.pcoded-content,
+.pcoded-main-container,
+.main-body,
+.page-wrapper {
+    background: #f5f5f7 !important;
+}
+
+/* 页面头部 - 毛玻璃效果 */
+.glass-header {
+    background: rgba(255, 255, 255, 0.72) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    border: 0.5px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.glass-header .page-header-title h5 {
+    color: #1d1d1f;
+    font-weight: 600;
+    font-size: 1.35rem;
+}
+
+.glass-header .page-header-title p {
+    color: #6e6e73;
+    font-size: 0.85rem;
+}
+
+.breadcrumb-title .breadcrumb-item a,
+.breadcrumb-title .breadcrumb-item span {
+    color: #6e6e73;
+    font-size: 0.85rem;
+}
+
+.breadcrumb-title .breadcrumb-item.active span {
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+/* 主卡片 - 毛玻璃 */
+.glass-card {
+    background: rgba(255, 255, 255, 0.72) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 0.5px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.glass-card-header {
+    background: rgba(255, 255, 255, 0.5) !important;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+    padding: 20px 28px;
+}
+
+.glass-card-header h5 {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.header-subtitle {
+    color: #6e6e73;
+    font-size: 0.8rem;
+}
+
+/* 毛玻璃图标圆环 */
+.glass-icon-circle {
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #007aff;
+    transition: all 0.3s ease;
+}
+
+.glass-badge {
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(4px);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    color: #1d1d1f;
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+}
+
+/* 左侧边栏 */
+.glass-sidebar {
+    background: rgba(0, 0, 0, 0.02);
+    border-right: 0.5px solid rgba(0, 0, 0, 0.06);
+}
+
+.section-title {
+    color: #1d1d1f;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.section-title-small {
+    color: #1d1d1f;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* 头像样式 */
+.avatar-preview-container {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.avatar-preview-container:hover {
+    transform: scale(1.02);
+}
+
+.avatar-preview-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.avatar-preview-container:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.avatar-status {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    background: #34c759;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+/* 隐藏文件上传input */
+.avatar-file-input {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    opacity: 0 !important;
+}
+
+/* 提示文字 */
+.hint-text {
+    font-size: 0.7rem;
+    color: #6e6e73;
+    margin-bottom: 0;
+}
+
+.info-divider {
+    margin: 20px 0;
+    height: 0.5px;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.info-label {
+    color: #6e6e73;
+    font-size: 0.8rem;
+}
+
+.info-value {
+    color: #1d1d1f;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.status-badge {
+    background: #34c759;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* 表单样式 */
+.form-label {
+    color: #1d1d1f;
+    font-weight: 500;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.glass-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    border: 0.5px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.glass-input-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+.glass-input-icon {
+    padding: 0 12px;
+    color: #8e8e93;
+    font-size: 0.9rem;
+}
+
+.glass-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 12px 12px 0;
+    font-size: 0.9rem;
+    color: #1d1d1f;
+    outline: none;
+}
+
+.glass-input::placeholder {
+    color: #c6c6c8;
+}
+
+/* 毛玻璃按钮 - 完全半透明 */
+.glass-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(0, 0, 0, 0.08);
+    border-radius: 40px;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.glass-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.glass-btn-primary {
+    background: rgba(0, 122, 255, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: none;
+}
+
+.glass-btn-primary:hover {
+    background: #007aff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.glass-btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    color: #007aff;
+}
+
+.glass-btn-secondary:hover {
+    background: rgba(0, 122, 255, 0.1);
+    color: #007aff;
+}
+
+.glass-btn-large {
+    padding: 10px 32px;
+    font-size: 0.9rem;
+}
+
+.glass-btn:disabled {
+    opacity: 0.6;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* 边框分割线 */
+.border-bottom-light {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
+}
+
+.border-top-light {
+    border-top: 0.5px solid rgba(0, 0, 0, 0.06);
+}
+
+/* 毛玻璃风格提示框 */
+.alert-glass-success {
+    background: rgba(52, 199, 89, 0.12);
+    backdrop-filter: blur(12px);
+    border: 0.5px solid rgba(52, 199, 89, 0.3);
+    border-radius: 16px;
+    color: #1d1d1f;
+}
+
+.alert-glass-success strong {
+    color: #2c6e2f;
+}
+
+.alert-glass-danger {
+    background: rgba(255, 59, 48, 0.1);
+    backdrop-filter: blur(12px);
+    border: 0.5px solid rgba(255, 59, 48, 0.25);
+    border-radius: 16px;
+    color: #1d1d1f;
+}
+
+.alert-glass-danger strong {
+    color: #ff3b30;
+}
+
+/* 响应式调整 */
+@media (max-width: 991px) {
+    .glass-sidebar {
+        border-right: none;
+        border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .glass-header {
+        padding: 16px 20px;
+    }
+
+    .glass-card-header {
+        padding: 16px 20px;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.glass-card,
+.alert-glass-success,
+.alert-glass-danger {
+    animation: fadeInUp 0.35s ease-out;
+}
+
+/* 表单验证样式 */
+.was-validated .glass-input:invalid,
+.glass-input:invalid {
+    border-color: #ff3b30;
+}
+
+.was-validated .glass-input:valid,
+.glass-input:valid {
+    border-color: #34c759;
+}
+</style>
+
+<script>
+// 纯原生JavaScript实现（不依赖jQuery）
+(function() {
+    // 等待DOM加载完成
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const uploadBtn = document.querySelector('.avatar-upload-btn');
+        const profileForm = document.getElementById('profileForm');
+        const messageContainer = document.getElementById('messageContainer');
+
+        // 显示消息函数
+        function showMessage(message, type) {
+            if (!messageContainer) return;
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const alertClass = type === 'success' ? 'alert-glass-success' : 'alert-glass-danger';
+            const title = type === 'success' ? '操作成功！' : '操作失败！';
+
+            messageContainer.innerHTML = `
+                <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas ${icon} fa-lg mr-3"></i>
+                        <div>
+                            <strong>${title}</strong>
+                            <p class="mb-0">${message}</p>
+                        </div>
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `;
+
+            // 5秒后自动隐藏（如果有jQuery的alert功能则兼容）
+            setTimeout(() => {
+                const alertDiv = messageContainer.querySelector('.alert');
+                if (alertDiv) {
+                    alertDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        if (alertDiv.parentNode) alertDiv.remove();
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // 头像上传处理
+        if (avatarInput) {
+            avatarInput.addEventListener('change', function(e) {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+
+                // 验证文件类型
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    showMessage('请上传 JPG、PNG 或 GIF 格式的图片', 'error');
+                    return;
+                }
+
+                // 验证文件大小 (2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    showMessage('图片大小不能超过 2MB', 'error');
+                    return;
+                }
+
+                // 预览图片
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    if (avatarPreview) avatarPreview.src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // 上传文件
+                const formData = new FormData();
+                formData.append('avatar', file);
+                formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+                // 显示加载状态
+                const originalText = uploadBtn ? uploadBtn.innerHTML : '';
+                if (uploadBtn) {
+                    uploadBtn.classList.add('disabled');
+                    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>上传中...';
+                }
+
+                fetch('{% url "user:upload_avatar" %}', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(async (resp) => {
+                    let json = {};
+                    try {
+                        json = await resp.json();
+                    } catch (err) {}
+                    if (!resp.ok || !json || json.code !== 200) {
+                        const msg = (json && json.msg) ? json.msg : `上传失败(${resp.status})`;
+                        showMessage(msg, 'error');
+                        throw new Error(msg);
+                    }
+                    showMessage(json.msg || '头像上传成功', 'success');
+                    if (json.avatar_url && avatarPreview) avatarPreview.src = json.avatar_url;
+                })
+                .catch(() => {})
+                .finally(() => {
+                    if (uploadBtn) {
+                        uploadBtn.classList.remove('disabled');
+                        uploadBtn.innerHTML = originalText;
+                    }
+                    if (avatarInput) avatarInput.value = '';
+                });
+            });
+        }
+
+        // 表单提交验证
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                if (!profileForm.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showMessage('请填写所有必填项', 'error');
+                }
+                profileForm.classList.add('was-validated');
+            });
+        }
+    });
+})();
+
+// 如果jQuery存在，也保留一些兼容（但不依赖）
+if (typeof jQuery !== 'undefined') {
+    $(document).ready(function() {
+        // 确保关闭按钮正常工作
+        $(document).on('click', '.alert .close', function() {
+            $(this).closest('.alert').fadeOut(300, function() {
+                $(this).remove();
+            });
+        });
+    });
+}
+</script>
+
+{% endblock %}

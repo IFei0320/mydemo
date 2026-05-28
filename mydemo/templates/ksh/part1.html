@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}数据概览分析 - 旅游数据分析平台
+
+
+{% endblock %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/part_shared.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/part1.css' %}">
+
+<div class="glass-page">
+    <!-- 背景装饰 -->
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <!-- Page-header -->
+        <div class="glass-page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5><i class="fas fa-star" style="color: #f4b942;"></i>景区评分系统</h5>
+                    <p><i class="fas fa-chart-pie mr-1"></i>景区评分可视化分析平台</p>
+                </div>
+                <ul class="glass-breadcrumb">
+                    <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#!">数据分析可视化</a></li>
+                    <li><span class="active">景点评分信息</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="glass-grid-2">
+            <!-- Pie Chart -->
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="neumorph-icon icon-purple">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h5>景点评分分布</h5>
+                            <small>点击扇区可高亮显示，支持多选对比</small>
+                        </div>
+                    </div>
+                    <span class="live-badge">实时</span>
+                </div>
+                <div class="glass-card-body" style="position: relative; padding: 20px 24px 0;">
+                    <div id="part1" style="width: 100%; height: 600px;"></div>
+                    <div class="chart-overlay">
+                        <div class="glass-btn-group">
+                            <button class="glass-tool-btn" onclick="myChart1.dispatchAction({type: 'restore'})" title="还原">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="glass-tool-btn" onclick="myChart1.dispatchAction({type: 'saveAsImage'})" title="保存图片">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card-footer">
+                    <span class="footer-text">
+                        <i class="fas fa-info-circle mr-1"></i>点击扇区可高亮显示，支持多选对比
+                    </span>
+                </div>
+            </div>
+
+            <!-- Mixed Chart -->
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="neumorph-icon icon-rose">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div>
+                            <h5>各省份景点平均评分</h5>
+                            <small>数量与质量双维度分析</small>
+                        </div>
+                    </div>
+                    <span class="live-badge" style="background: rgba(224, 169, 109, 0.15); color: #c0392b;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #e0a96d; display: inline-block; margin-right: 6px;"></span>
+                        双轴分析
+                    </span>
+                </div>
+                <div class="glass-card-body" style="padding: 20px 24px 0;">
+                    <div id="part8" style="width: 100%; height: 600px;"></div>
+                </div>
+                <div class="glass-card-footer">
+                    <div style="display: flex; text-align: center;">
+                        <div style="flex: 1;" class="footer-divider">
+                            <span class="footer-label">柱状图</span>
+                            <span class="footer-value" style="color: #7B8CDE;">景点数量</span>
+                        </div>
+                        <div style="flex: 1;">
+                            <span class="footer-label">折线图</span>
+                            <span class="footer-value" style="color: #E8A0BF;">平均评分</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>
+
+<script>
+window.part1Config = {
+    dataList: {{ data_list|safe }},
+    nameList: {{ name_list|safe }},
+    travelNumList: {{ travel_num_list|safe }},
+    avgScoreList: {{ avg_score_list|safe }}
+};
+</script>
+<script src="{% static 'ksh/js/part1.js' %}"></script>
+
+{% endblock %}

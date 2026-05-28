@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}AI 旅游路线生成 - 旅游数据分析平台{% endblock %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/get_ai_travelRoute.css' %}">
+
+<div class="glass-page">
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <!-- Page-header -->
+        <div class="glass-page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5><i class="fas fa-compass" style="color: #4c6ef5;"></i>目的地速览</h5>
+                    <p><i class="fas fa-map-marked-alt mr-1"></i>城市概况、出行参考与景点分布</p>
+                </div>
+                <ul class="glass-breadcrumb">
+                    <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
+                    <li><span class="active">目的地速览</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 表单卡片 -->
+        <div class="glass-card">
+            <div class="glass-card-header">
+                <div>
+                    <h5><i class="fas fa-map-marked-alt" style="color: #4c6ef5;"></i>出行参考</h5>
+                    <small>填写目的地与行程偏好</small>
+                </div>
+            </div>
+            <div class="glass-card-body">
+                <form id="travelForm">
+                    <div class="form-row">
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-city mr-1" style="color: #4c6ef5;"></i>目的地城市</label>
+                            <i class="fas fa-map-marker-alt input-icon"></i>
+                            <input type="text" class="glass-input" id="city" placeholder="例如：北京、上海、西安..." required>
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-calendar-alt mr-1" style="color: #5dbea3;"></i>旅行季节</label>
+                            <select class="glass-select" id="season" required>
+                                <option value="" disabled selected>请选择季节</option>
+                                <option value="spring">春季（3-5月）赏花踏青</option>
+                                <option value="summer">夏季（6-8月）避暑玩水</option>
+                                <option value="autumn">秋季（9-11月）观赏红叶</option>
+                                <option value="winter">冬季（12-2月）冰雪温泉</option>
+                            </select>
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-clock mr-1" style="color: #feca57;"></i>行程天数</label>
+                            <input type="number" class="glass-input" id="days" min="1" max="14" value="3" required style="padding-left: 16px; text-align: center;">
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-yen-sign mr-1" style="color: #e07a7a;"></i>总预算</label>
+                            <input type="number" class="glass-input" id="budget" min="0" value="0" style="padding-left: 16px; text-align: center;">
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 24px;">
+                        <button type="submit" class="glass-btn glass-btn-primary glass-btn-lg" id="submitBtn">
+                            <i class="fas fa-paper-plane mr-2"></i>生成目的地速览
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 加载状态 -->
+        <div id="loadingContainer" style="display: none;">
+            <div class="loading-card">
+                <div class="loading-dots">
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                </div>
+                <h4 style="font-weight: 700; margin-bottom: 8px;"><i class="fas fa-book-reader mr-2"></i>正在生成</h4>
+                <p style="opacity: 0.8; margin: 0;">正在生成内容，请稍候...</p>
+            </div>
+        </div>
+
+        <!-- 错误提示 -->
+        <div id="errorContainer" style="display: none;">
+            <div class="glass-alert alert-danger">
+                <i class="fas fa-exclamation-triangle" style="font-size: 20px;"></i>
+                <div>
+                    <strong style="display: block; margin-bottom: 4px;">生成失败</strong>
+                    <span id="errorMessage"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果展示 -->
+        <div id="resultContainer" style="display: none;">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-map" style="color: #5dbea3;"></i>速览与地图</h5>
+                        <small>文字说明与景点位置参考</small>
+                    </div>
+                    <span class="plan-badge badge-green"><i class="fas fa-check mr-1"></i>已生成</span>
+                </div>
+                <div class="glass-card-body" style="padding: 0;">
+                    <div id="parseNoteBox" class="glass-alert alert-info" style="display:none; margin: 20px 20px 0;"></div>
+
+                    <div style="padding: 20px;">
+                        <!-- 概况 -->
+                        <div class="result-section">
+                            <h6><i class="fas fa-info-circle mr-1" style="color: #4c6ef5;"></i>概况</h6>
+                            <p class="result-text" id="citySummary"></p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <!-- 玩法要点 -->
+                            <div class="result-section">
+                                <h6><i class="fas fa-th-large mr-1" style="color: #4c6ef5;"></i>大致能玩什么 / 主题方向</h6>
+                                <ul class="result-list" id="whatToSeeList"></ul>
+                            </div>
+                            <!-- 注意事项 -->
+                            <div class="result-section">
+                                <h6><i class="fas fa-exclamation-circle mr-1" style="color: #feca57;"></i>行前注意什么</h6>
+                                <ul class="result-list" id="watchoutsList"></ul>
+                            </div>
+                        </div>
+
+                        <!-- 片区提示 -->
+                        <div class="result-section">
+                            <h6><i class="fas fa-map-signs mr-1" style="color: #6bb3d9;"></i>片区 / 主题提示</h6>
+                            <div id="regionsBox"></div>
+                        </div>
+                    </div>
+
+                    <!-- 地图 -->
+                    <div style="padding: 0 20px 20px;">
+                        <h6 style="font-size: 13px; font-weight: 600; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+                            <i class="fas fa-map-marked-alt mr-1"></i>地图分布
+                        </h6>
+                        <div id="map" class="map-container"></div>
+                        <p class="text-muted small" id="mapEmptyHint" style="display:none; margin-top: 8px;">当前条件下暂无可用景点坐标。</p>
+                    </div>
+
+                    <!-- 统计 -->
+                    <div style="padding: 16px 20px; border-top: 1px solid rgba(0,0,0,0.05);">
+                        <div class="stat-bar">
+                            <div class="stat-bar-item">
+                                <small>地图点数</small>
+                                <span id="mapSpotCount" style="color: #4c6ef5;">-</span>
+                            </div>
+                            <div class="stat-bar-item">
+                                <small>玩法要点条数</small>
+                                <span id="highlightCount" style="color: #5dbea3;">-</span>
+                            </div>
+                            <div class="stat-bar-item">
+                                <small>注意事项条数</small>
+                                <span id="watchoutCount" style="color: #feca57;">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/echarts/echarts5.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=cfETvEepoN8AZZADHeRsFDymt6Lu55Er"></script>
+
+<script>
+window.travelRouteConfig = {
+    urls: {
+        generate: '{% url "home:get_ai_travelRoute" %}'
+    },
+    csrfToken: '{{ csrf_token }}'
+};
+</script>
+<script src="{% static 'ksh/js/get_ai_travelRoute.js' %}"></script>
+
+{% endblock %}

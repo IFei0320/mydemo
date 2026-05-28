@@ -1,0 +1,158 @@
+/* part1-4 共享样式（跨多页面复用） */
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+/* ========== 新拟态图标 ========== */
+    .neumorph-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+        background: linear-gradient(145deg, #f0f0f5, #ffffff);
+        box-shadow: 4px 4px 10px rgba(174, 174, 192, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 1px 1px 1px rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+    }
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+.footer-text {
+        color: #a0aec0;
+        font-size: 12px;
+    }
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+@media (max-width: 1200px) {
+        .glass-grid-2 { grid-template-columns: 1fr; }
+    }
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+/* ========== 滚动条美化 ========== */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+    }
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+::-webkit-scrollbar-thumb {
+        background: rgba(160, 174, 192, 0.5);
+        border-radius: 4px;
+    }
+
+/* [part1.html, part2.html, part3.html, part4.html] */
+::-webkit-scrollbar-thumb:hover {
+        background: rgba(160, 174, 192, 0.7);
+    }
+
+/* [part1.html, part2.html, part3.html] */
+.icon-purple { color: #8b7fd4; }
+
+/* [part1.html, part2.html] */
+@keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+/* [part1.html, part3.html] */
+.icon-rose { color: #e0a96d; }
+
+/* [part1.html, part2.html] */
+/* ========== 布局 ========== */
+    .glass-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+/* [part3.html, part4.html] */
+/* ========== 统计迷你卡片 ========== */
+    .stat-mini {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all 0.3s ease;
+    }
+
+/* [part3.html, part4.html] */
+.stat-mini:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    }
+
+/* [part3.html, part4.html] */
+.stat-mini-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+/* [part3.html, part4.html] */
+.stat-mini-info h6 {
+        font-size: 12px;
+        color: #a0aec0;
+        margin-bottom: 4px;
+        font-weight: 500;
+    }
+
+/* [part3.html, part4.html] */
+.stat-mini-info h4 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a202c;
+        margin: 0;
+    }
+
+/* [part3.html, part4.html] */
+.stat-rose { background: linear-gradient(135deg, #e0a96d, #c0392b); color: white; }
+
+/* [part3.html, part4.html] */
+.stat-teal { background: linear-gradient(135deg, #5dbea3, #3d9970); color: white; }
+
+/* [part3.html, part4.html] */
+/* ========== 标签 ========== */
+    .table-tag {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+/* [part3.html, part4.html] */
+/* ========== 空状态 ========== */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #a0aec0;
+    }
+
+/* [part3.html, part4.html] */
+.empty-state i {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+    }
+
+/* [part3.html, part4.html] */
+@media (max-width: 768px) {
+        .glass-grid-4 { grid-template-columns: 1fr; }
+    }

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}城市热度分析 - 旅游数据分析平台
+
+
+{% endblock %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/part_shared.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/part2.css' %}">
+
+<div class="glass-page">
+    <!-- 背景装饰 -->
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <!-- Page-header -->
+        <div class="glass-page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5><i class="fas fa-fire-alt" style="color: #e0a96d;"></i>景点热度信息</h5>
+                    <p><i class="fas fa-chart-line mr-1"></i>景点热度可视化分析</p>
+                </div>
+                <ul class="glass-breadcrumb">
+                    <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#!">数据分析可视化</a></li>
+                    <li><span class="active">景点热度信息</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="glass-grid-2">
+            <!-- Funnel Chart -->
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="neumorph-icon icon-purple">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div>
+                            <h5>景区评论数排行</h5>
+                            <small>数据更新时间：刚刚</small>
+                        </div>
+                    </div>
+                    <span class="live-badge">实时数据</span>
+                </div>
+                <div class="glass-card-body" style="padding: 20px 24px 0;">
+                    <div id="part2" style="width: 100%; height: 600px;"></div>
+                </div>
+                <div class="glass-card-footer">
+                    <span class="footer-text">
+                        <i class="fas fa-info-circle mr-1"></i>数据更新时间：刚刚
+                    </span>
+                </div>
+            </div>
+
+            <!-- Bar Chart with Filter -->
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="neumorph-icon icon-teal">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div>
+                            <h5>各省份景点平均评分</h5>
+                            <small>选择城市查看详细数据</small>
+                        </div>
+                    </div>
+                    <div class="glass-select-wrapper">
+                        <i class="fas fa-map-marker-alt filter-icon"></i>
+                        <select class="glass-select" id="provinceFilter">
+                            {% for city in select_list %}
+                            <option value="{{ city }}">{{ city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="glass-card-body" style="padding: 20px 24px 0;">
+                    <div id="part4" style="width: 100%; height: 600px;"></div>
+                </div>
+                <div class="glass-card-footer">
+                    <span class="footer-text">
+                        <i class="fas fa-mouse-pointer mr-1"></i>选择城市查看详细数据
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+
+<script>
+window.part2Config = {
+    nameList: {{ name_list|safe }},
+    dataList: {{ data_list|safe }},
+    urls: {
+        cityData: '{% url "ksh:get_cityData" %}'
+    }
+};
+</script>
+<script src="{% static 'ksh/js/part2.js' %}"></script>
+
+{% endblock %}

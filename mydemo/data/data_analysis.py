@@ -148,6 +148,9 @@ def part6():
     conn.commit()
 
 
+
+
+
 def part7():
     city_travel_rank = df.sort_values('热度评分', ascending=False).groupby('城市名称').head(10)
     rank_data = city_travel_rank[['城市名称', '景点名称', '热度评分']]
@@ -162,8 +165,11 @@ def part7():
 
     # 将分析结果写入表
     for index, row in rank_data.iterrows():
-        cursor.execute(sql, (row['城市名称'], row['景点名称'], row['热度评分']))
+        if pd.notna(row['城市名称']) and pd.notna(row['景点名称']) and pd.notna(row['热度评分']):
+            cursor.execute(sql, (row['城市名称'], row['景点名称'], row['热度评分']))
     conn.commit()
+
+
 
 
 def part8():

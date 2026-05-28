@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+{% block title %}智能路线规划 - 旅游数据分析平台{% endblock %}
+{% block content %}
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
+
+<div class="glass-page">
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <!-- Page-header -->
+        <div class="glass-page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5><i class="fas fa-dna" style="color: #8b7fd4;"></i>NSGA-II 算法 + AI 智能路线</h5>
+                    <p><i class="fas fa-robot mr-1"></i>多目标优化生成路线，并由 AI 生成详细攻略</p>
+                </div>
+                <ul class="glass-breadcrumb">
+                    <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
+                    <li><span class="active">智能路线规划</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 参数设置卡片 -->
+        <div class="glass-card">
+            <div class="glass-card-header">
+                <div>
+                    <h5><i class="fas fa-sliders-h" style="color: #4c6ef5;"></i>参数设置</h5>
+                    <small>配置城市、预算与偏好权重</small>
+                </div>
+            </div>
+            <div class="glass-card-body">
+                <form id="plannerForm">
+                    <div class="form-row">
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-city mr-1" style="color: #4c6ef5;"></i>城市</label>
+                            <i class="fas fa-city input-icon"></i>
+                            <input id="city" class="glass-input" placeholder="例如：上海" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-leaf mr-1" style="color: #5dbea3;"></i>季节</label>
+                            <select id="season" class="glass-select" required>
+                                <option value="spring">春</option>
+                                <option value="summer">夏</option>
+                                <option value="autumn">秋</option>
+                                <option value="winter">冬</option>
+                            </select>
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-wallet mr-1" style="color: #e07a7a;"></i>预算(元)</label>
+                            <i class="fas fa-wallet input-icon"></i>
+                            <input id="budget" type="number" min="0" value="2000" class="glass-input">
+                        </div>
+                        <div class="input-wrapper">
+                            <label class="glass-label"><i class="fas fa-calendar-alt mr-1" style="color: #6bb3d9;"></i>天数(上限)</label>
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                            <input id="days" type="number" min="1" max="10" value="3" class="glass-input">
+                        </div>
+                        <div>
+                            <button type="submit" class="glass-btn glass-btn-primary" style="width: 100%;">
+                                <i class="fas fa-magic mr-1"></i>生成算法路线
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin: 16px 0;">
+                        <label class="glass-check">
+                            <input type="checkbox" id="useWikiKnowledge">
+                            <span class="check-box"><i class="fas fa-check check-icon"></i></span>
+                            <span>启用 Wiki 知识增强（默认关闭，保持原 JSON 逻辑）</span>
+                        </label>
+                    </div>
+
+                    <div class="slider-row">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-tag mr-1" style="color: #8b7fd4;"></i>价格敏感度</span>
+                                <span id="priceVal" class="slider-val">50</span>
+                            </div>
+                            <input id="priceSensitivity" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-route mr-1" style="color: #5dbea3;"></i>路程敏感度</span>
+                                <span id="distanceVal" class="slider-val">50</span>
+                            </div>
+                            <input id="distanceSensitivity" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-fire mr-1" style="color: #e07a7a;"></i>热度偏好</span>
+                                <span id="hotnessVal" class="slider-val">50</span>
+                            </div>
+                            <input id="hotnessPreference" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                    </div>
+
+                    <div class="slider-row-2" style="margin-top: 16px;">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-star mr-1" style="color: #6bb3d9;"></i>评分偏好</span>
+                                <span id="ratingVal" class="slider-val">50</span>
+                            </div>
+                            <input id="ratingPreference" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><i class="fas fa-users mr-1" style="color: #e0a96d;"></i>拥挤规避</span>
+                                <span id="crowdVal" class="slider-val">50</span>
+                            </div>
+                            <input id="crowdAvoidance" type="range" min="0" max="100" value="50" class="glass-range">
+                        </div>
+                        <div></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 状态提示 -->
+        <div id="loading" class="glass-alert alert-info" style="display:none;">
+            <div class="spinner-border spinner-border-sm" role="status" style="border-color: currentColor; border-right-color: transparent;"></div>
+            <span><i class="fas fa-cog fa-spin mr-2"></i>正在执行 NSGA-II 进化与 AI 润色，请稍候...</span>
+        </div>
+        <div id="error" class="glass-alert alert-danger" style="display:none;">
+            <i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span>
+        </div>
+
+        <!-- Top3 候选方案 -->
+        <div id="top3Panel" style="display:none;">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-trophy" style="color: #feca57;"></i>Top3 候选方案</h5>
+                        <small>先选方案，再生成地图与AI报告</small>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div class="top3-grid" id="top3Options"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近方案记录 -->
+        <div id="recentPanel" style="display:none;">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-history" style="color: #a0aec0;"></i>最近方案记录</h5>
+                        <small>10分钟缓存可复现</small>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div id="recentList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果面板 -->
+        <div id="resultPanel" style="display:none;">
+            <div class="result-grid">
+                <!-- 路线地图 -->
+                <div class="glass-card">
+                    <div class="glass-card-header">
+                        <div>
+                            <h5><i class="fas fa-map-marked-alt" style="color: #4c6ef5;"></i>路线地图</h5>
+                            <small>按天分色 + 连线导航</small>
+                        </div>
+                        <span class="live-badge">实时渲染</span>
+                    </div>
+                    <div style="padding: 0;">
+                        <div id="routeMap" style="height: 520px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    </div>
+                </div>
+
+                <!-- 算法统计 -->
+                <div class="glass-card">
+                    <div class="glass-card-header">
+                        <div>
+                            <h5><i class="fas fa-chart-pie" style="color: #6bb3d9;"></i>算法统计</h5>
+                            <small>NSGA-II 多目标优化指标</small>
+                        </div>
+                    </div>
+                    <div class="glass-card-body">
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-blue"><i class="fas fa-calendar-check"></i></div>
+                                <div class="stat-info">
+                                    <small>使用天数</small>
+                                    <h5 id="usedDays">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-green"><i class="fas fa-project-diagram"></i></div>
+                                <div class="stat-info">
+                                    <small>Pareto 解集规模</small>
+                                    <h5 id="paretoSize">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-coins"></i></div>
+                                <div class="stat-info">
+                                    <small>总花费</small>
+                                    <h5 id="totalCost">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-purple"><i class="fas fa-road"></i></div>
+                                <div class="stat-info">
+                                    <small>路线距离指标</small>
+                                    <h5 id="totalDistance">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-yellow"><i class="fas fa-star"></i></div>
+                                <div class="stat-info">
+                                    <small>方案优势</small>
+                                    <h5 id="selectedAdvantage" style="font-size: 13px;">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-orange"><i class="fas fa-percentage"></i></div>
+                                <div class="stat-info">
+                                    <small>预算利用率</small>
+                                    <h5 id="budgetUsagePct">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-green"><i class="fas fa-bullseye"></i></div>
+                                <div class="stat-info">
+                                    <small>偏好匹配度</small>
+                                    <h5 id="prefMatchPct">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-user-shield"></i></div>
+                                <div class="stat-info">
+                                    <small>拥挤规避分</small>
+                                    <h5 id="crowdAvoidScore">-</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI 详细攻略 -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-robot" style="color: #4c6ef5;"></i>AI 详细攻略</h5>
+                        <small>基于大模型的智能行程分析与建议</small>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="previewHtmlReportBtn" type="button" class="glass-btn glass-btn-sm" disabled>
+                            <i class="fas fa-eye mr-1"></i>预览HTML报告
+                        </button>
+                        <button id="downloadHtmlReportBtn" type="button" class="glass-btn glass-btn-sm glass-btn-primary" disabled>
+                            <i class="fas fa-download mr-1"></i>下载HTML报告
+                        </button>
+                        <button id="exportDidaBtn" type="button" class="glass-btn glass-btn-sm" style="background: #feca57; color: #744210;" disabled>
+                            <i class="fas fa-list-check mr-1"></i>添加到滴答清单
+                        </button>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <pre id="aiSummary" class="ai-summary"></pre>
+                </div>
+            </div>
+
+            <!-- RAG本地知识卡命中 -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="glass-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <div>
+                            <h5><i class="fas fa-database" style="color: #5dbea3;"></i>RAG本地知识卡命中</h5>
+                            <small>本地知识增强生成（JSON基线 + Wiki可选增强）</small>
+                        </div>
+                        <span id="wikiModeBadge" class="plan-badge badge-gray">Wiki: 关闭</span>
+                        <span id="jsonHitBadge" class="plan-badge badge-blue">JSON 0</span>
+                        <span id="wikiHitBadge" class="plan-badge badge-green">Wiki 0</span>
+                        <span class="plan-badge badge-purple">命中 <b id="knowledgeCount">0</b> 条</span>
+                    </div>
+                </div>
+                <div class="glass-card-body">
+                    <div id="knowledgeList"></div>
+                </div>
+            </div>
+
+            <!-- 路线明细表格 -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="glass-card-header">
+                    <div>
+                        <h5><i class="fas fa-list-ol" style="color: #6bb3d9;"></i>路线明细</h5>
+                        <small>逐景点详细行程数据</small>
+                    </div>
+                </div>
+                <div class="glass-table-wrap">
+                    <table class="glass-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>景点</th>
+                                <th>时间</th>
+                                <th>特点</th>
+                                <th>花费</th>
+                                <th>经纬度</th>
+                            </tr>
+                        </thead>
+                        <tbody id="routeBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 滴答导出弹窗 -->
+<div id="didaModalMask" class="modal-mask" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-header-gradient">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h5 style="margin: 0; font-weight: 700;"><i class="fas fa-list-check mr-2"></i>添加到滴答清单</h5>
+                <button id="closeDidaModalBtn" type="button" class="modal-close-btn">&times;</button>
+            </div>
+            <p class="modal-subtitle">
+                <i class="far fa-clock mr-1"></i>设置出发时间后，将自动生成按天分段的待办任务
+            </p>
+        </div>
+        <div class="modal-body">
+            <div class="modal-tip-card">
+                <div class="modal-tip-icon"><i class="fas fa-bolt"></i></div>
+                <div>
+                    <div style="font-weight: 700; color: #1a202c;">智能提醒说明</div>
+                    <small style="color: #a0aec0;">系统会根据你选择的出发时间，自动生成每个景点的执行时段。</small>
+                </div>
+            </div>
+
+            <label class="modal-label" for="didaDepartureInput">
+                <i class="far fa-calendar-alt mr-1"></i>请选择你的出发时间
+            </label>
+            <input id="didaDepartureInput" type="datetime-local" class="modal-input" />
+            <small class="modal-hint d-block" style="margin-bottom: 20px;"><i class="fas fa-info-circle mr-1"></i>任务将写入固定清单"旅游规划"。</small>
+
+            <div class="modal-actions">
+                <button id="cancelDidaBtn" type="button" class="modal-btn-cancel">取消</button>
+                <button id="confirmDidaBtn" type="button" class="modal-btn-confirm">
+                    <i class="fas fa-cloud-upload-alt mr-1"></i>确认添加
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=cfETvEepoN8AZZADHeRsFDymt6Lu55Er"></script>
+
+<script>
+window.nsga2RouteConfig = {
+    urls: {
+        generate: '{% url "home:generate_ai_nsga2_route" %}',
+        select: '{% url "home:select_ai_nsga2_plan" %}',
+        exportDida: '{% url "home:export_to_dida_checklist" %}'
+    },
+    csrfToken: '{{ csrf_token }}'
+};
+</script>
+<script src="{% static 'ksh/js/ai_nsga2_route.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+# coding=utf8
+
+
+import os
+from os.path import dirname, abspath, curdir
+from fabric.state import env
+from fabric.api import task, cd, execute
+from fabric.colors import green, white, red
+from fabric.contrib.project import rsync_project
+from fabric.operations import run, local
+
+BASE_DIR = dirname(abspath(__file__))
+TARGET_DIR = dirname(dirname(__file__))
+APP_NAME = BASE_DIR.split('/')[-1]
+
+@task
+def rsync():
+    rsync_project(local_dir=BASE_DIR, remote_dir=TARGET_DIR)
+    print green('Sent local file (%s) to remote directory (work@%s:%s)' % (BASE_DIR, env.host, TARGET_DIR))
+    rsync_project(local_dir='supervisor.ini', remote_dir='/etc/supervisord.d/%s.ini' % APP_NAME)
+    print red('Sent supervisor file')
+
+@task
+def deploy():
+    print white(run('mkdir -p /data/logs/%s' % APP_NAME))
+    print white(run('sudo supervisorctl reread'))
+    print white(run('sudo supervisorctl update %s' % APP_NAME))
+    print white(run('sudo supervisorctl restart %s' % APP_NAME))
+
+@task
+def update():
+    local('git pull')
+    local('source .venv/bin/activate')
+    local('pip install -r requirements.txt -i http://pypi.zenlogic.net/simple/ --trusted-host pypi.zenlogic.net')
+    local('pip install -U .')

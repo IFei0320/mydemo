@@ -1,0 +1,13 @@
+# coding=utf8
+
+import simplejson as json
+
+
+class JSONResponseMiddleware(object):
+
+    def process_request(self, req, resp):
+        pass
+
+    def process_response(self, req, resp, resource):
+        resp.content_type = 'application/json'
+        resp.body = json.dumps(resp.body)

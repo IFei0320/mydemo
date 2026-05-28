@@ -1,0 +1,31 @@
+{
+  "spot_name": "综合避坑大全",
+  "best_months": [
+    "4月",
+    "5月",
+    "11月"
+  ],
+  "best_time": "白天错峰时段",
+  "booking_required": false,
+  "booking_tip": "通常无需强制预约，出行前仍建议查看官方公告。",
+  "transport_mode": "taxi",
+  "transport_tip": "优先选择地铁，跨江或跨区可结合轮渡、步行或打车补充。",
+  "budget_level": "low",
+  "crowd_level": "low",
+  "crowd_tip": "节假日和傍晚热门时段人流较大，建议错峰到达。",
+  "duration_suggestion": "1-3小时",
+  "pitfalls": [
+    "### 美食避坑",
+    "**不要盲目追求网红餐厅**，街边小吃往往更地道[^7^]。",
+    "## 四、综合避坑大全"
+  ],
+  "nearby": [
+    "觅食街区",
+    "美食避坑",
+    "景点类",
+    "外滩观光隧道（50元）性价比"
+  ],
+  "llm_note": "由本地规则从 上海热门旅游景点11个.md 兜底生成，建议后续用 LLM 或人工校准。",
+  "_source": "上海热门旅游景点11个.md",
+  "_updated_at": "2026-05-16 16:17:19"
+}

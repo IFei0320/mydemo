@@ -1,0 +1,2784 @@
+{
+  "meta": {
+    "version": "v1",
+    "updated_at": "2026-04-25",
+    "source": "公开旅游信息整理",
+    "note": "建议出行前核实官方最新公告"
+  },
+  "items": [
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "东方明珠",
+        "东方明珠广播电视塔",
+        "东方明珠塔"
+      ],
+      "best_time": "17:00-20:00，白天+夜景都能看到",
+      "booking_tip": "节假日建议提前1-2天预约",
+      "transport_tip": "地铁2号线陆家嘴站步行可达",
+      "pitfalls": [
+        "节假日排队时间长",
+        "观景层风大，注意保暖",
+        "透明走廊恐高者慎入"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "外滩",
+        "外滩万国建筑群",
+        "中山东一路"
+      ],
+      "best_time": "18:00-22:00，亮灯后夜景最佳",
+      "booking_tip": "无需预约，免费开放",
+      "transport_tip": "地铁2号线/10号线南京东路站，步行10分钟",
+      "pitfalls": [
+        "节假日人流量极大",
+        "冬季江风寒冷，需备外套",
+        "亮灯时间随季节调整，建议提前确认"
+      ],
+      "crowd_level": "极高",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海迪士尼",
+        "上海迪士尼乐园",
+        "迪士尼度假区"
+      ],
+      "best_time": "工作日周二至周四，开园即入",
+      "booking_tip": "提前7天预约购票，早享卡可提前1小时入园",
+      "transport_tip": "地铁11号线迪士尼站1号口直达",
+      "pitfalls": [
+        "周末及节假日排队时间极长",
+        "园区面积大，需穿舒适运动鞋",
+        "烟花秀结束离场拥挤，建议提前规划路线"
+      ],
+      "crowd_level": "极高",
+      "duration_suggestion": "全天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "豫园",
+        "城隍庙",
+        "豫园商城",
+        "九曲桥"
+      ],
+      "best_time": "工作日上午，或灯会期间傍晚",
+      "booking_tip": "豫园园林需购票，城隍庙免费开放",
+      "transport_tip": "地铁10号线/14号线豫园站",
+      "pitfalls": [
+        "周边小吃价格偏高",
+        "九曲桥节假日拥挤",
+        "灯会期间门票需提前购买"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "南京路步行街",
+        "南京路",
+        "南京东路"
+      ],
+      "best_time": "工作日晚间，氛围好且相对不拥挤",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁2号线/10号线南京东路站",
+      "pitfalls": [
+        "部分餐饮价格偏高，先看菜单",
+        "注意保管随身物品",
+        "节假日人流密集"
+      ],
+      "crowd_level": "中高",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海博物馆",
+        "上博",
+        "上海博物馆人民广场馆"
+      ],
+      "best_time": "工作日上午，避开周末",
+      "booking_tip": "免费，需提前在官方渠道预约",
+      "transport_tip": "地铁1号线/2号线/8号线人民广场站",
+      "pitfalls": [
+        "周一闭馆",
+        "热门特展排队久",
+        "馆内无餐饮，需自备饮水"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海海昌海洋公园",
+        "海昌海洋公园",
+        "海昌"
+      ],
+      "best_time": "工作日，避开寒暑假",
+      "booking_tip": "提前1-2天线上购票，常有限时优惠",
+      "transport_tip": "地铁16号线临港大道站，换乘公交或打车",
+      "pitfalls": [
+        "距离市区远，单程约1.5小时",
+        "园内餐饮价格较高",
+        "部分演出时间固定，需提前占位"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "全天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海野生动物园",
+        "野生动物园",
+        "上野"
+      ],
+      "best_time": "春秋季节，上午动物活跃期",
+      "booking_tip": "提前线上购票，投喂项目需另付费",
+      "transport_tip": "地铁16号线野生动物园站，换乘短驳公交",
+      "pitfalls": [
+        "园区面积大，需穿舒适鞋",
+        "夏季暴晒，需做好防晒",
+        "部分动物展区气味较重"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "4-5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海乐高乐园",
+        "乐高乐园",
+        "LEGOLAND"
+      ],
+      "best_time": "工作日，避开暑期和节假日",
+      "booking_tip": "建议提前3天以上预约购票",
+      "transport_tip": "金山铁路或自驾，距离市区约50公里",
+      "pitfalls": [
+        "距离市区较远",
+        "新开园设施磨合期，建议以官方公告为准",
+        "部分项目有身高限制"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "全天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海海洋水族馆",
+        "海洋水族馆",
+        "陆家嘴水族馆"
+      ],
+      "best_time": "工作日上午，避开亲子高峰",
+      "booking_tip": "提前线上购票，比现场便宜",
+      "transport_tip": "地铁2号线陆家嘴站，东方明珠旁",
+      "pitfalls": [
+        "海底隧道单向通行，不能走回头路",
+        "馆内光线暗，拍照需调参数",
+        "节假日儿童较多，较为喧闹"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海天文馆",
+        "天文馆",
+        "临港天文馆"
+      ],
+      "best_time": "工作日上午，互动体验时间充裕",
+      "booking_tip": "提前3天在官方渠道抢票，周末极难预约",
+      "transport_tip": "地铁16号线滴水湖站，步行约15分钟",
+      "pitfalls": [
+        "周末及节假日票源紧张",
+        "距离市区远，建议搭配滴水湖一并游览",
+        "部分影院项目需单独预约"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "3-4小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "武康路",
+        "武康大楼",
+        "武康路历史文化名街"
+      ],
+      "best_time": "工作日上午或傍晚，光线适合拍照",
+      "booking_tip": "无需预约，免费开放",
+      "transport_tip": "地铁10号线/11号线交通大学站",
+      "pitfalls": [
+        "网红打卡点人流量大",
+        "周边咖啡餐饮价格偏高",
+        "老洋房内部多为私宅，勿擅自进入"
+      ],
+      "crowd_level": "中高",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海中心大厦",
+        "上海之巅",
+        "上海中心观光厅",
+        "上海中心118层"
+      ],
+      "best_time": "日落前1小时，兼顾日景与夜景",
+      "booking_tip": "提前线上购票，选择非高峰时段",
+      "transport_tip": "地铁2号线/14号线陆家嘴站",
+      "pitfalls": [
+        "观光厅禁止携带三脚架",
+        "天气不佳时视野受限",
+        "电梯上升速度快，耳压敏感者需注意"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "金茂大厦",
+        "金茂大厦88层观光厅",
+        "金茂观光厅"
+      ],
+      "best_time": "傍晚或夜间，俯瞰外滩亮灯",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁2号线/14号线陆家嘴站",
+      "pitfalls": [
+        "观光厅面积较小",
+        "玻璃地板恐高者慎入",
+        "节假日排队时间长"
+      ],
+      "crowd_level": "中高",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海环球金融中心",
+        "环球金融中心",
+        "环球金融中心观光厅",
+        "开瓶器"
+      ],
+      "best_time": "夜间，俯瞰陆家嘴夜景",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁2号线/14号线陆家嘴站",
+      "pitfalls": [
+        "观光厅游客相对较少",
+        "100层玻璃地板恐高者慎入",
+        "周边高楼遮挡部分视野"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "田子坊",
+        "田子坊创意园区"
+      ],
+      "best_time": "工作日下午，避开周末人流",
+      "booking_tip": "无需预约，免费开放",
+      "transport_tip": "地铁9号线打浦桥站1号口",
+      "pitfalls": [
+        "商业化程度高，纪念品溢价严重",
+        "巷道狭窄，节假日拥挤",
+        "拍照注意避让居民生活区"
+      ],
+      "crowd_level": "中高",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海欢乐谷",
+        "欢乐谷",
+        "松江欢乐谷"
+      ],
+      "best_time": "工作日，避开暑期和万圣节",
+      "booking_tip": "提前线上购票，关注夜场票优惠",
+      "transport_tip": "地铁9号线佘山站，换乘免费短驳车",
+      "pitfalls": [
+        "大型游乐设施受天气影响大",
+        "节假日排队时间极长",
+        "部分项目有身高和健康限制"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "全天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "黄浦江游览",
+        "黄浦江夜游",
+        "浦江游览",
+        "轮渡"
+      ],
+      "best_time": "日落前后，19:00-21:00",
+      "booking_tip": "游船提前线上购票，2元轮渡无需预约",
+      "transport_tip": "外滩或陆家嘴码头乘船，地铁2号线可达",
+      "pitfalls": [
+        "游船票价差异大，注意区分航线",
+        "顶层甲板风大，注意保暖",
+        "节假日码头拥挤"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "朱家角古镇",
+        "朱家角",
+        "角里"
+      ],
+      "best_time": "春秋季节，工作日",
+      "booking_tip": "古镇免费开放，小景点联票可线上购买",
+      "transport_tip": "地铁17号线朱家角站，换乘公交或步行",
+      "pitfalls": [
+        "周末及节假日人流密集",
+        "手摇船需议价，先谈好价格",
+        "古镇石板路不平，建议穿平底鞋"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "半天至1天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "新天地",
+        "上海新天地",
+        "石库门新天地"
+      ],
+      "best_time": "傍晚至夜间，氛围最佳",
+      "booking_tip": "无需预约，部分餐厅建议提前订位",
+      "transport_tip": "地铁1号线黄陂南路站，或10号线/13号线新天地站",
+      "pitfalls": [
+        "消费偏高，餐饮人均较高",
+        "夜间酒吧区喧闹",
+        "一大会址需身份证入场"
+      ],
+      "crowd_level": "中高",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "静安寺",
+        "静安古寺"
+      ],
+      "best_time": "周五、周六18:00-22:00亮灯期间",
+      "booking_tip": "门票50元，无需提前预约",
+      "transport_tip": "地铁2号线/7号线/14号线静安寺站",
+      "pitfalls": [
+        "门票仅收现金或特定支付方式，建议提前确认",
+        "寺内禁止大声喧哗",
+        "周边交通高峰期拥堵"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "徐家汇天主堂",
+        "徐家汇教堂",
+        "圣依纳爵堂"
+      ],
+      "best_time": "工作日下午，光线柔和适合拍照",
+      "booking_tip": "免费开放，内部参观需保持安静",
+      "transport_tip": "地铁1号线/9号线/11号线徐家汇站",
+      "pitfalls": [
+        "宗教场所，需穿着得体",
+        "举办婚礼或弥撒时暂停参观",
+        "周边商圈人流密集"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "苏州河",
+        "苏州河游船",
+        "苏州河步道"
+      ],
+      "best_time": "傍晚，沿岸建筑亮灯后",
+      "booking_tip": "游船需提前购票，步道免费开放",
+      "transport_tip": "地铁10号线/12号线天潼路站，或沿线多站点可达",
+      "pitfalls": [
+        "部分河段施工围挡，影响观景",
+        "夜间步道照明不均",
+        "游船班次有限，建议提前查时刻表"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "龙华寺",
+        "龙华古寺",
+        "龙华烈士陵园"
+      ],
+      "best_time": "上午，香火较旺时段",
+      "booking_tip": "免费开放，素斋可现场购买",
+      "transport_tip": "地铁11号线/12号线龙华站",
+      "pitfalls": [
+        "农历初一十五人流极大",
+        "周边道路狭窄，停车困难",
+        "寺内猫咪为流浪猫，投喂需谨慎"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "玉佛寺",
+        "玉佛禅寺"
+      ],
+      "best_time": "上午，避开农历初一十五",
+      "booking_tip": "免费开放，部分法会期间需预约",
+      "transport_tip": "地铁13号线江宁路站",
+      "pitfalls": [
+        "周边道路狭窄，停车不便",
+        "寺内禁止外香进入",
+        "素面供应时段有限，建议中午前到达"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "思南路",
+        "思南公馆",
+        "孙中山故居"
+      ],
+      "best_time": "工作日下午，梧桐树荫下漫步",
+      "booking_tip": "街道免费开放，故居需购票",
+      "transport_tip": "地铁10号线/13号线新天地站，步行可达",
+      "pitfalls": [
+        "部分老洋房为私宅或办公区，勿擅入",
+        "周边餐饮消费偏高",
+        "周末网红店排队久"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海千古情",
+        "宋城千古情",
+        "上海宋城"
+      ],
+      "best_time": "周末下午场次，演出+园区游玩",
+      "booking_tip": "提前线上选座，VIP席位视野更佳",
+      "transport_tip": "地铁13号线世博大道站",
+      "pitfalls": [
+        "演出时间固定，迟到不能入场",
+        "园区内部分项目另收费",
+        "周末场次票源紧张"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "3-4小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海城市规划展示馆",
+        "城市规划馆",
+        "人民广场规划馆"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，建议提前在官方渠道预约",
+      "transport_tip": "地铁1号线/2号线/8号线人民广场站",
+      "pitfalls": [
+        "周一闭馆",
+        "部分互动设备维护中",
+        "建议以官方公告为准"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "北外滩",
+        "北外滩滨江",
+        "白玉兰广场"
+      ],
+      "best_time": "傍晚至夜间，拍摄陆家嘴角度佳",
+      "booking_tip": "无需预约，免费开放",
+      "transport_tip": "地铁12号线国际客运中心站",
+      "pitfalls": [
+        "部分区域仍在建设中",
+        "夜间风大，注意保暖",
+        "周边餐饮选择相对外滩较少"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海自然博物馆",
+        "自然博物馆",
+        "静安自然博物馆"
+      ],
+      "best_time": "工作日上午，亲子项目体验时间充裕",
+      "booking_tip": "免费，需提前在官方渠道预约",
+      "transport_tip": "地铁13号线自然博物馆站",
+      "pitfalls": [
+        "周一闭馆",
+        "节假日儿童极多，较为喧闹",
+        "4D影院需单独购票"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "朵云书院",
+        "朵云书院旗舰店",
+        "上海中心52层"
+      ],
+      "best_time": "工作日下午，靠窗位置需早到",
+      "booking_tip": "免费，需在官方渠道预约入场时段",
+      "transport_tip": "地铁2号线/14号线陆家嘴站",
+      "pitfalls": [
+        "观景区域需消费入座",
+        "预约名额紧张，建议提前3天以上",
+        "高峰时段电梯等待时间长"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海邮政博物馆",
+        "邮政博物馆",
+        "北苏州路邮政局"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，建议以官方公告为准",
+      "transport_tip": "地铁10号线/12号线天潼路站",
+      "pitfalls": [
+        "部分展厅维护中，建议提前确认",
+        "周一闭馆",
+        "周边道路狭窄"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "四行仓库",
+        "四行仓库抗战纪念馆",
+        "八百壮士"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，需提前在官方渠道预约",
+      "transport_tip": "地铁8号线/12号线曲阜路站",
+      "pitfalls": [
+        "周一闭馆",
+        "纪念馆内禁止大声喧哗",
+        "周边停车困难"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海共青森林公园",
+        "共青森林公园",
+        "共青公园"
+      ],
+      "best_time": "春秋季节，上午或傍晚",
+      "booking_tip": "门票便宜，现场购买即可",
+      "transport_tip": "地铁8号线市光路站，换乘公交或骑行",
+      "pitfalls": [
+        "距离市区较远",
+        "夏季蚊虫多，需备驱蚊用品",
+        "周末亲子游客多"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海科技馆",
+        "科技馆",
+        "上海科技馆自然分馆"
+      ],
+      "best_time": "工作日上午，避开寒暑假",
+      "booking_tip": "建议以官方公告为准，闭馆改造中",
+      "transport_tip": "地铁2号线上海科技馆站",
+      "pitfalls": [
+        "目前闭馆改造，建议以官方公告为准",
+        "改造前部分展品陈旧",
+        "周边餐饮选择有限"
+      ],
+      "crowd_level": "建议以官方公告为准",
+      "duration_suggestion": "建议以官方公告为准"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "中华艺术宫",
+        "中国馆",
+        "上海世博园中国馆"
+      ],
+      "best_time": "工作日上午，避开周末",
+      "booking_tip": "免费，部分特展需购票",
+      "transport_tip": "地铁8号线中华艺术宫站",
+      "pitfalls": [
+        "场馆面积大，需预留充足时间",
+        "部分展厅空调温度低",
+        "清明上河图展厅需另购票"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海辰山植物园",
+        "辰山植物园",
+        "辰山"
+      ],
+      "best_time": "春季樱花季或秋季，工作日",
+      "booking_tip": "提前线上购票，比现场便宜",
+      "transport_tip": "地铁9号线佘山站，换乘公交或打车",
+      "pitfalls": [
+        "距离市区远，单程约1小时",
+        "园区面积极大，需穿舒适鞋",
+        "矿坑花园部分路段湿滑"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "3-4小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "广富林文化遗址",
+        "广富林",
+        "广富林遗址公园"
+      ],
+      "best_time": "春秋季节，工作日",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁9号线松江大学城站，换乘公交",
+      "pitfalls": [
+        "距离市区远，建议搭配松江景点一并游览",
+        "水下博物馆光线暗",
+        "园区餐饮选择有限"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海影视乐园",
+        "车墩影视基地",
+        "车墩"
+      ],
+      "best_time": "工作日上午，避开剧组拍摄日",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁1号线莲花路站，换乘公交或打车",
+      "pitfalls": [
+        "距离市区较远",
+        "部分区域因剧组拍摄临时封闭",
+        "建议以官方公告为准"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海玻璃博物馆",
+        "玻璃博物馆",
+        "宝山玻璃博物馆"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "提前线上购票，常有联票优惠",
+      "transport_tip": "地铁3号线长江南路站，换乘公交或打车",
+      "pitfalls": [
+        "距离市区较远",
+        "部分互动项目需另收费",
+        "儿童需在成人陪同下参与热玻璃体验"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海杜莎夫人蜡像馆",
+        "杜莎夫人蜡像馆",
+        "南京西路蜡像馆"
+      ],
+      "best_time": "工作日上午，避开周末亲子高峰",
+      "booking_tip": "提前线上购票，比现场便宜",
+      "transport_tip": "地铁1号线/2号线/8号线人民广场站",
+      "pitfalls": [
+        "蜡像逼真，夜间场景可能惊吓儿童",
+        "馆内拍照光线复杂",
+        "出口处纪念品商店绕行较长"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "浦东美术馆",
+        "浦东美术馆MAP",
+        "陆家嘴美术馆"
+      ],
+      "best_time": "工作日下午，日落前镜厅光线最佳",
+      "booking_tip": "提前线上购票，夜场票性价比高",
+      "transport_tip": "地铁2号线陆家嘴站，步行至滨江大道",
+      "pitfalls": [
+        "特展期间人流大",
+        "镜厅强光刺眼，需备墨镜",
+        "馆内餐饮选择少且贵"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海图书馆东馆",
+        "上图东馆",
+        "上海图书馆新馆"
+      ],
+      "best_time": "工作日上午，避开周末学生自习高峰",
+      "booking_tip": "无需预约，部分活动需报名",
+      "transport_tip": "地铁2号线上海科技馆站，或18号线迎春路站",
+      "pitfalls": [
+        "周末及节假日座位紧张",
+        "部分楼层需刷卡进入",
+        "馆内保持安静，禁止大声交谈"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海大剧院",
+        "大剧院",
+        "人民广场大剧院"
+      ],
+      "best_time": "演出日提前30分钟到场",
+      "booking_tip": "演出票提前在官方渠道购买",
+      "transport_tip": "地铁1号线/2号线/8号线人民广场站",
+      "pitfalls": [
+        "迟到需等幕间才能入场",
+        "演出期间禁止拍照录像",
+        "周边停车困难且贵"
+      ],
+      "crowd_level": "视演出而定",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海音乐厅",
+        "音乐厅",
+        "延安东路音乐厅"
+      ],
+      "best_time": "演出日提前30分钟到场",
+      "booking_tip": "演出票提前在官方渠道购买",
+      "transport_tip": "地铁8号线大世界站",
+      "pitfalls": [
+        "迟到需等幕间才能入场",
+        "演出期间手机需静音",
+        "厅内座位间距较小"
+      ],
+      "crowd_level": "视演出而定",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海当代艺术博物馆",
+        "当代艺术博物馆",
+        "PSA",
+        "南市发电厂"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "免费，部分特展需购票",
+      "transport_tip": "地铁4号线/8号线西藏南路站",
+      "pitfalls": [
+        "部分展品内容抽象，理解门槛高",
+        "场馆前身为发电厂，部分区域保留工业设施",
+        "周边餐饮选择有限"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海大世界",
+        "大世界",
+        "延安东路大世界"
+      ],
+      "best_time": "工作日下午，非遗演出时段",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁8号线大世界站",
+      "pitfalls": [
+        "部分演出时间固定，需提前查时刻表",
+        "建筑年代久远，楼梯较陡",
+        "周末中老年游客较多"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海鲁迅公园",
+        "鲁迅公园",
+        "虹口公园"
+      ],
+      "best_time": "春季樱花季或秋季",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁3号线/8号线虹口足球场站",
+      "pitfalls": [
+        "周末及节假日人流大",
+        "园内老年人活动多，较为喧闹",
+        "鲁迅纪念馆周一闭馆"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海植物园",
+        "植物园",
+        "龙吴路植物园"
+      ],
+      "best_time": "春季花展期间",
+      "booking_tip": "门票便宜，现场购买即可",
+      "transport_tip": "地铁3号线石龙路站，步行约15分钟",
+      "pitfalls": [
+        "部分区域无遮阳，夏季暴晒",
+        "园区面积较大，建议穿舒适鞋",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海动物园",
+        "西郊动物园",
+        "虹桥动物园"
+      ],
+      "best_time": "工作日上午，动物活跃期",
+      "booking_tip": "门票便宜，现场购买即可",
+      "transport_tip": "地铁10号线上海动物园站",
+      "pitfalls": [
+        "园区面积大，需穿舒适鞋",
+        "部分笼舍年代较久",
+        "节假日亲子游客极多"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "3-4小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海衡山路",
+        "衡山路",
+        "衡山坊"
+      ],
+      "best_time": "傍晚至夜间，酒吧街氛围佳",
+      "booking_tip": "无需预约，部分酒吧建议提前订位",
+      "transport_tip": "地铁1号线衡山路站",
+      "pitfalls": [
+        "夜间酒后注意安全",
+        "部分酒吧有最低消费",
+        "周边道路夜间噪音较大"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海安福路",
+        "安福路",
+        "安福路街拍"
+      ],
+      "best_time": "工作日下午，避开周末网红高峰",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁1号线/7号线常熟路站",
+      "pitfalls": [
+        "周末人流量极大",
+        "部分店铺排队时间长",
+        "街拍注意尊重他人隐私"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海愚园路",
+        "愚园路",
+        "愚园路历史风貌区"
+      ],
+      "best_time": "工作日下午，老洋房光线柔和",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁2号线/11号线江苏路站",
+      "pitfalls": [
+        "部分老洋房为私宅，勿擅入",
+        "网红店周末排队久",
+        "街道较窄，注意来往车辆"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海淮海中路",
+        "淮海中路",
+        "淮海路"
+      ],
+      "best_time": "工作日下午或晚间",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁1号线/10号线/12号线陕西南路站",
+      "pitfalls": [
+        "高端商场消费偏高",
+        "节假日人流密集",
+        "部分历史建筑不对外开放"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海外滩源",
+        "外滩源",
+        "圆明园路外滩源"
+      ],
+      "best_time": "傍晚，建筑亮灯后",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁2号线/10号线南京东路站，步行可达",
+      "pitfalls": [
+        "部分区域为办公区，勿擅入",
+        "周边餐饮选择少且贵",
+        "夜间照明不足，注意脚下"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海陆家嘴滨江大道",
+        "滨江大道",
+        "陆家嘴滨江"
+      ],
+      "best_time": "傍晚至夜间，对岸外滩亮灯",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁2号线/14号线陆家嘴站",
+      "pitfalls": [
+        "夜间风大，注意保暖",
+        "部分路段施工围挡",
+        "节假日人流密集"
+      ],
+      "crowd_level": "中高",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海1933老场坊",
+        "1933老场坊",
+        "虹口老场坊"
+      ],
+      "best_time": "工作日下午，建筑光影佳",
+      "booking_tip": "无需预约，免费开放",
+      "transport_tip": "地铁4号线/10号线海伦路站",
+      "pitfalls": [
+        "建筑结构复杂，容易迷路",
+        "部分楼层无电梯",
+        "内部餐饮选择少"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海M50创意园",
+        "M50",
+        "莫干山路M50"
+      ],
+      "best_time": "工作日下午，画廊开放时段",
+      "booking_tip": "无需预约，免费开放",
+      "transport_tip": "地铁13号线江宁路站，步行约10分钟",
+      "pitfalls": [
+        "部分画廊周一闭馆",
+        "园区较小，1小时内可逛完",
+        "周边在拆迁改造，环境一般"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海油罐艺术中心",
+        "油罐艺术中心",
+        "西岸油罐"
+      ],
+      "best_time": "工作日下午，日落前光线佳",
+      "booking_tip": "部分展览需购票，建议提前查询",
+      "transport_tip": "地铁11号线云锦路站",
+      "pitfalls": [
+        "周边餐饮选择少",
+        "部分户外区域无遮阳",
+        "展览更新快，建议提前确认展期"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海西岸美术馆",
+        "西岸美术馆",
+        "West Bund"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "部分展览免费，特展需购票",
+      "transport_tip": "地铁11号线云锦路站",
+      "pitfalls": [
+        "周边餐饮选择有限",
+        "部分展览内容抽象",
+        "距离地铁站步行约10分钟"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海宋庆龄故居",
+        "宋庆龄故居",
+        "淮海中路故居"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "门票20元，现场购买",
+      "transport_tip": "地铁1号线/7号线常熟路站",
+      "pitfalls": [
+        "周一闭馆",
+        "馆内禁止拍照",
+        "周边停车困难"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海孙中山故居",
+        "孙中山故居",
+        "思南路故居"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "门票20元，现场购买",
+      "transport_tip": "地铁10号线/13号线新天地站",
+      "pitfalls": [
+        "周一闭馆",
+        "馆内禁止拍照",
+        "老洋房楼梯较陡"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海周公馆",
+        "周公馆",
+        "中共代表团驻沪办事处"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，需身份证登记",
+      "transport_tip": "地铁10号线/13号线新天地站",
+      "pitfalls": [
+        "周一闭馆",
+        "馆内禁止拍照",
+        "周边道路狭窄"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "0.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海一大会址",
+        "中共一大会址",
+        "新天地一大会址"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，需提前在官方渠道预约",
+      "transport_tip": "地铁1号线黄陂南路站，或10号线/13号线新天地站",
+      "pitfalls": [
+        "周一闭馆",
+        "需安检，禁止携带违禁品",
+        "节假日团队游客多"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海中国证券博物馆",
+        "证券博物馆",
+        "浦江饭店"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，建议以官方公告为准",
+      "transport_tip": "地铁10号线/12号线天潼路站",
+      "pitfalls": [
+        "周一闭馆",
+        "部分展厅维护中",
+        "建筑年代久远，楼梯较陡"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海铁路博物馆",
+        "铁路博物馆",
+        "老北站"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "门票10元，现场购买",
+      "transport_tip": "地铁3号线/4号线宝山路站",
+      "pitfalls": [
+        "周一闭馆",
+        "馆区较小",
+        "周边在改造，环境一般"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海儿童博物馆",
+        "儿童博物馆",
+        "长宁儿童博物馆"
+      ],
+      "best_time": "工作日上午，避开周末亲子高峰",
+      "booking_tip": "免费，部分互动项目另收费",
+      "transport_tip": "地铁10号线宋园路站",
+      "pitfalls": [
+        "周末及节假日儿童极多",
+        "部分设施老旧",
+        "周边停车困难"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海昆虫博物馆",
+        "昆虫博物馆",
+        "枫林路昆虫馆"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "门票15元，现场购买",
+      "transport_tip": "地铁4号线/7号线东安路站",
+      "pitfalls": [
+        "馆区较小",
+        "部分标本年代久远",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海琉璃艺术博物馆",
+        "琉璃博物馆",
+        "泰康路琉璃馆"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "门票45元，现场或线上购买",
+      "transport_tip": "地铁9号线打浦桥站",
+      "pitfalls": [
+        "馆区较小",
+        "部分展品易碎，勿触碰",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海观复博物馆",
+        "观复博物馆",
+        "上海中心观复"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "门票100元，建议提前购票",
+      "transport_tip": "地铁2号线/14号线陆家嘴站，上海中心37层",
+      "pitfalls": [
+        "票价较高",
+        "上海中心电梯需排队",
+        "馆内禁止拍照"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海震旦博物馆",
+        "震旦博物馆",
+        "震旦大厦博物馆"
+      ],
+      "best_time": "工作日下午，周五延长至21:00",
+      "booking_tip": "门票60元，建议提前购票",
+      "transport_tip": "地铁2号线/14号线陆家嘴站",
+      "pitfalls": [
+        "票价较高",
+        "部分展品为高仿",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海韩天衡美术馆",
+        "韩天衡美术馆",
+        "嘉定韩天衡"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费，建议以官方公告为准",
+      "transport_tip": "地铁11号线嘉定西站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "周一闭馆",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海嘉北郊野公园",
+        "嘉北郊野公园",
+        "嘉定郊野公园"
+      ],
+      "best_time": "春秋季节，工作日",
+      "booking_tip": "免费，部分活动另收费",
+      "transport_tip": "地铁11号线嘉定西站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "夏季蚊虫多",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海浦江郊野公园",
+        "浦江郊野公园",
+        "闵行郊野公园"
+      ],
+      "best_time": "春秋季节，花展期间",
+      "booking_tip": "免费，部分园区另收费",
+      "transport_tip": "地铁8号线沈杜公路站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区面积极大",
+        "夏季暴晒，需备防晒"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海长兴岛郊野公园",
+        "长兴岛郊野公园",
+        "长兴岛公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费，部分活动另收费",
+      "transport_tip": "建议自驾，或地铁5号线转公交至长兴岛",
+      "pitfalls": [
+        "距离市区极远",
+        "公共交通不便",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "半天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海海湾国家森林公园",
+        "海湾森林公园",
+        "奉贤海湾公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或地铁5号线转公交",
+      "pitfalls": [
+        "距离市区极远",
+        "公共交通不便",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "半天至1天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海东平国家森林公园",
+        "东平森林公园",
+        "崇明东平公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或公交至崇明岛",
+      "pitfalls": [
+        "距离市区极远，需过长江",
+        "公共交通耗时久",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "半天至1天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海东滩湿地公园",
+        "东滩湿地",
+        "崇明东滩"
+      ],
+      "best_time": "春秋候鸟迁徙季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或公交至崇明岛",
+      "pitfalls": [
+        "距离市区极远",
+        "冬季风大寒冷",
+        "观鸟需备望远镜"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海明珠湖公园",
+        "明珠湖公园",
+        "崇明明珠湖"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或公交至崇明岛",
+      "pitfalls": [
+        "距离市区极远",
+        "园内餐饮选择少",
+        "夏季蚊虫多"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海鲜花港",
+        "鲜花港",
+        "南汇鲜花港"
+      ],
+      "best_time": "春季郁金香花展期间",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁16号线临港大道站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "花展期间门票涨价",
+        "非花展期间景观一般"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海南翔古镇",
+        "南翔古镇",
+        "南翔老街"
+      ],
+      "best_time": "工作日上午，避开周末",
+      "booking_tip": "古镇免费，古猗园需购票",
+      "transport_tip": "地铁11号线南翔站",
+      "pitfalls": [
+        "周末人流密集",
+        "小笼包店排队时间长",
+        "古镇商业化程度高"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海七宝古镇",
+        "七宝古镇",
+        "七宝老街"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "古镇免费",
+      "transport_tip": "地铁9号线七宝站",
+      "pitfalls": [
+        "周末及节假日人流极大",
+        "小吃价格偏高",
+        "古镇面积小，1小时可逛完"
+      ],
+      "crowd_level": "高",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海枫泾古镇",
+        "枫泾古镇",
+        "金山枫泾"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "古镇免费，部分景点联票需购票",
+      "transport_tip": "建议自驾，或地铁1号线至锦江乐园转枫梅线",
+      "pitfalls": [
+        "距离市区远",
+        "公共交通耗时久",
+        "夏季蚊虫多"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "半天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海新场古镇",
+        "新场古镇",
+        "浦东新场"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "古镇免费",
+      "transport_tip": "地铁16号线新场站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "公共交通不便",
+        "古镇商业化程度低，餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海金泽古镇",
+        "金泽古镇",
+        "青浦金泽"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "古镇免费",
+      "transport_tip": "建议自驾，或地铁17号线转公交",
+      "pitfalls": [
+        "距离市区极远",
+        "公共交通不便",
+        "餐饮选择极少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海大观园",
+        "大观园",
+        "青浦大观园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或地铁17号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "部分建筑为仿古建筑",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海曲水园",
+        "曲水园",
+        "青浦曲水园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "门票5元，现场购买",
+      "transport_tip": "地铁17号线青浦新城站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海醉白池",
+        "醉白池",
+        "松江醉白池"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "门票12元，现场购买",
+      "transport_tip": "地铁9号线醉白池站",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海方塔园",
+        "方塔园",
+        "松江方塔"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "门票12元，现场购买",
+      "transport_tip": "地铁9号线松江大学城站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海古猗园",
+        "古猗园",
+        "南翔古猗园"
+      ],
+      "best_time": "春夏季节，荷花盛开期",
+      "booking_tip": "门票12元，现场购买",
+      "transport_tip": "地铁11号线南翔站，换乘公交",
+      "pitfalls": [
+        "夏季蚊虫多",
+        "园区较小",
+        "节假日周边交通拥堵"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海秋霞圃",
+        "秋霞圃",
+        "嘉定秋霞圃"
+      ],
+      "best_time": "秋季红枫期",
+      "booking_tip": "门票10元，现场购买",
+      "transport_tip": "地铁11号线嘉定北站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "秋季赏枫期人流大"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海汇龙潭公园",
+        "汇龙潭",
+        "嘉定汇龙潭"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "门票5元，现场购买",
+      "transport_tip": "地铁11号线嘉定北站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海州桥老街",
+        "州桥老街",
+        "嘉定州桥"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁11号线嘉定北站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海汽车博览公园",
+        "汽车博览公园",
+        "嘉定汽车公园"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁11号线上海汽车城站",
+      "pitfalls": [
+        "距离市区远",
+        "部分设施老旧",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海国际赛车场",
+        "上赛",
+        "嘉定赛车场"
+      ],
+      "best_time": "赛事期间",
+      "booking_tip": "赛事票提前购买，平时参观需预约",
+      "transport_tip": "地铁11号线上海赛车场站",
+      "pitfalls": [
+        "距离市区远",
+        "非赛事期间参观内容有限",
+        "赛事期间周边交通拥堵"
+      ],
+      "crowd_level": "视赛事而定",
+      "duration_suggestion": "2-4小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海保利大剧院",
+        "保利大剧院",
+        "嘉定保利剧院"
+      ],
+      "best_time": "演出日",
+      "booking_tip": "演出票提前购买",
+      "transport_tip": "地铁11号线嘉定新城站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "周边餐饮选择少",
+        "非演出日仅外观参观"
+      ],
+      "crowd_level": "视演出而定",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海美兰湖",
+        "美兰湖",
+        "宝山美兰湖"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁7号线美兰湖站",
+      "pitfalls": [
+        "距离市区远",
+        "周边餐饮选择少",
+        "景区较小"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海顾村公园",
+        "顾村公园",
+        "宝山顾村"
+      ],
+      "best_time": "春季樱花节期间",
+      "booking_tip": "樱花节期间提前线上购票",
+      "transport_tip": "地铁7号线/15号线顾村公园站",
+      "pitfalls": [
+        "樱花节期间人流极大",
+        "非花期景观一般",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "花期极高",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海吴淞炮台湾湿地森林公园",
+        "炮台湾公园",
+        "宝山炮台湾"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费，建议以官方公告为准",
+      "transport_tip": "地铁3号线水产路站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "冬季风大",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海淞南公园",
+        "淞南公园",
+        "宝山淞南"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁3号线淞发路站",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海大宁灵石公园",
+        "大宁公园",
+        "大宁灵石公园"
+      ],
+      "best_time": "春季郁金香花期",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁1号线上海马戏城站",
+      "pitfalls": [
+        "花期人流大",
+        "夏季暴晒",
+        "周边停车困难"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1.5-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海静安雕塑公园",
+        "静安雕塑公园",
+        "雕塑公园"
+      ],
+      "best_time": "春季樱花季",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁13号线自然博物馆站",
+      "pitfalls": [
+        "园区较小",
+        "周末人流大",
+        "周边停车困难"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海中山公园",
+        "中山公园",
+        "长宁中山公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁2号线/3号线/4号线中山公园站",
+      "pitfalls": [
+        "周末人流大",
+        "周边在改造，部分区域围挡",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海长风公园",
+        "长风公园",
+        "长风海洋世界"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "公园免费，海洋世界需购票",
+      "transport_tip": "地铁15号线长风公园站",
+      "pitfalls": [
+        "海洋世界设施老旧",
+        "周末亲子游客多",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海和平公园",
+        "和平公园",
+        "虹口和平公园"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁8号线/10号线四平路站",
+      "pitfalls": [
+        "园区较小",
+        "周边在改造",
+        "园内无大型游乐设施"
+      ],
+      "crowd_level": "中低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海复兴公园",
+        "复兴公园",
+        "卢湾复兴公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁10号线/13号线新天地站",
+      "pitfalls": [
+        "园区较小",
+        "周边餐饮消费高",
+        "夜间部分区域照明不足"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海襄阳公园",
+        "襄阳公园",
+        "徐汇襄阳公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁1号线/10号线/12号线陕西南路站",
+      "pitfalls": [
+        "园区较小",
+        "周边在改造",
+        "周末人流大"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海徐家汇公园",
+        "徐家汇公园",
+        "徐汇公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁1号线/9号线/11号线徐家汇站",
+      "pitfalls": [
+        "园区较小",
+        "周边商圈人流大",
+        "周末拥挤"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "0.5-1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海世纪公园",
+        "世纪公园",
+        "浦东世纪公园"
+      ],
+      "best_time": "春秋季节，花展期间",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁2号线世纪公园站",
+      "pitfalls": [
+        "园区面积极大，需穿舒适鞋",
+        "夏季暴晒",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海滨江森林公园",
+        "滨江森林公园",
+        "浦东滨江公园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁10号线双江路站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "公共交通不便",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海高东生态园",
+        "高东生态园",
+        "浦东高东"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁6号线洲海路站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-1.5小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海金海湿地公园",
+        "金海湿地",
+        "浦东金海"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线金海路站",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边在改造"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海张衡公园",
+        "张衡公园",
+        "浦东张衡"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁2号线张江高科站",
+      "pitfalls": [
+        "园区较小",
+        "周边餐饮选择少",
+        "周末亲子游客多"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海华夏公园",
+        "华夏公园",
+        "浦东华夏"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁2号线华夏东路站",
+      "pitfalls": [
+        "园区较小",
+        "周边餐饮选择少",
+        "设施老旧"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海川沙公园",
+        "川沙公园",
+        "浦东川沙"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁2号线川沙站",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海滴水湖",
+        "滴水湖",
+        "临港滴水湖"
+      ],
+      "best_time": "春秋季节，傍晚环湖骑行",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁16号线滴水湖站",
+      "pitfalls": [
+        "距离市区极远",
+        "风大，注意保暖",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海航海博物馆",
+        "航海博物馆",
+        "临港航海馆"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁16号线滴水湖站",
+      "pitfalls": [
+        "距离市区极远",
+        "周一闭馆",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海鲜花港",
+        "鲜花港",
+        "南汇鲜花港"
+      ],
+      "best_time": "春季郁金香花展",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁16号线临港大道站",
+      "pitfalls": [
+        "距离市区远",
+        "非花期景观一般",
+        "花期门票涨价"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海滨海森林公园",
+        "滨海森林公园",
+        "南汇滨海"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁16号线惠南站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "公共交通不便",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海书院人家",
+        "书院人家",
+        "浦东书院"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "无需预约",
+      "transport_tip": "地铁16号线书院站",
+      "pitfalls": [
+        "距离市区极远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海大团桃园",
+        "大团桃园",
+        "浦东大团"
+      ],
+      "best_time": "春季桃花期",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁16号线惠南站，换乘公交",
+      "pitfalls": [
+        "距离市区极远",
+        "非花期无景观",
+        "公共交通不便"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海南汇桃花村",
+        "南汇桃花村",
+        "桃花村"
+      ],
+      "best_time": "春季桃花期",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁16号线惠南站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "花期极短",
+        "公共交通不便"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海多利农庄",
+        "多利农庄",
+        "大团多利"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "建议以官方公告为准",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "公共交通不便",
+        "建议以官方公告为准"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海海湾园",
+        "海湾园",
+        "奉贤海湾园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "建议以官方公告为准",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "建议以官方公告为准",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海都市菜园",
+        "都市菜园",
+        "奉贤都市菜园"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或地铁5号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "夏季暴晒",
+        "园内餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海碧海金沙",
+        "碧海金沙",
+        "奉贤碧海金沙"
+      ],
+      "best_time": "夏季",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾，或地铁5号线转公交",
+      "pitfalls": [
+        "夏季暴晒",
+        "海水水质一般",
+        "节假日人流大"
+      ],
+      "crowd_level": "夏季高",
+      "duration_suggestion": "半天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海渔人码头",
+        "渔人码头",
+        "奉贤渔人码头"
+      ],
+      "best_time": "傍晚",
+      "booking_tip": "无需预约",
+      "transport_tip": "建议自驾，或地铁5号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "餐饮价格偏高",
+        "夜间交通不便"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海青溪古镇",
+        "青溪古镇",
+        "奉贤青溪"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾，或地铁5号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海庄行古镇",
+        "庄行古镇",
+        "奉贤庄行"
+      ],
+      "best_time": "春季油菜花季",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾，或地铁5号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "非花期景观一般",
+        "公共交通不便"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海花米庄行",
+        "花米庄行",
+        "庄行花米"
+      ],
+      "best_time": "春季油菜花季",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区远",
+        "花期短",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海申隆生态园",
+        "申隆生态园",
+        "奉贤申隆"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区远",
+        "设施老旧",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海古华公园",
+        "古华公园",
+        "奉贤古华"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁5号线奉贤新城站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海奉浦四季生态园",
+        "奉浦四季生态园",
+        "奉贤奉浦"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁5号线奉浦大道站",
+      "pitfalls": [
+        "距离市区远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海上海之鱼",
+        "上海之鱼",
+        "奉贤上海之鱼"
+      ],
+      "best_time": "春秋季节，傍晚",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁5号线金海湖站",
+      "pitfalls": [
+        "距离市区远",
+        "周边在开发中",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海九棵树未来艺术中心",
+        "九棵树",
+        "奉贤九棵树"
+      ],
+      "best_time": "演出日",
+      "booking_tip": "演出票提前购买",
+      "transport_tip": "地铁5号线金海湖站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "周边餐饮选择少",
+        "非演出日仅外观参观"
+      ],
+      "crowd_level": "视演出而定",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海金山城市沙滩",
+        "城市沙滩",
+        "金山沙滩"
+      ],
+      "best_time": "夏季",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁1号线至锦江乐园，换乘金山铁路",
+      "pitfalls": [
+        "夏季暴晒",
+        "海水水质一般",
+        "节假日人流大"
+      ],
+      "crowd_level": "夏季高",
+      "duration_suggestion": "半天"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海金山嘴渔村",
+        "金山嘴渔村",
+        "金山渔村"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁1号线至锦江乐园，换乘金山铁路",
+      "pitfalls": [
+        "距离市区远",
+        "海鲜价格偏高",
+        "节假日交通拥堵"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海廊下郊野公园",
+        "廊下郊野公园",
+        "金山廊下"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "公共交通不便",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海花开海上生态园",
+        "花开海上",
+        "金山花开海上"
+      ],
+      "best_time": "春秋花季",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "非花期景观一般",
+        "公共交通不便"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海吕巷水果公园",
+        "吕巷水果公园",
+        "金山吕巷"
+      ],
+      "best_time": "水果成熟季节",
+      "booking_tip": "提前确认采摘时间",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "季节性极强",
+        "公共交通不便"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海漕泾水库村",
+        "水库村",
+        "金山漕泾"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "无需预约",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海亭林遗址公园",
+        "亭林遗址",
+        "金山亭林"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区极远",
+        "园区较小",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海松南郊野公园",
+        "松南郊野公园",
+        "松江松南"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区远",
+        "设施不完善",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海广富林郊野公园",
+        "广富林郊野公园",
+        "松江广富林郊野"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线松江大学城站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "与广富林文化遗址相邻但分开",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海佘山国家森林公园",
+        "佘山森林公园",
+        "佘山"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线佘山站",
+      "pitfalls": [
+        "山海拔低，景观有限",
+        "周末人流大",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海天马山",
+        "天马山",
+        "松江天马山"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "门票10元，现场购买",
+      "transport_tip": "建议自驾，或地铁9号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "山海拔低",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海小昆山",
+        "小昆山",
+        "松江小昆山"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "门票6元，现场购买",
+      "transport_tip": "建议自驾，或地铁9号线转公交",
+      "pitfalls": [
+        "距离市区远",
+        "山海拔低",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海横山",
+        "横山",
+        "松江横山"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "免费开放",
+      "transport_tip": "建议自驾",
+      "pitfalls": [
+        "距离市区远",
+        "未完全开发",
+        "建议以官方公告为准"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海辰山植物园",
+        "辰山植物园",
+        "松江辰山"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁9号线佘山站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "园区面积极大",
+        "夏季暴晒"
+      ],
+      "crowd_level": "中",
+      "duration_suggestion": "3-4小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海月湖雕塑公园",
+        "月湖雕塑公园",
+        "松江月湖"
+      ],
+      "best_time": "春秋季节",
+      "booking_tip": "提前线上购票",
+      "transport_tip": "地铁9号线佘山站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "门票较贵",
+        "周边餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "2-3小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海泰晤士小镇",
+        "泰晤士小镇",
+        "松江泰晤士"
+      ],
+      "best_time": "工作日下午",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线松江大学城站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "商业化程度高",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海泗泾古镇",
+        "泗泾古镇",
+        "松江泗泾"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线泗泾站",
+      "pitfalls": [
+        "距离市区远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1-2小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海仓城老街",
+        "仓城老街",
+        "松江仓城"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线松江体育中心站，换乘公交",
+      "pitfalls": [
+        "距离市区远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    },
+    {
+      "city": "上海",
+      "spot_keywords": [
+        "上海泗泾下塘",
+        "泗泾下塘",
+        "松江泗泾下塘"
+      ],
+      "best_time": "工作日上午",
+      "booking_tip": "免费开放",
+      "transport_tip": "地铁9号线泗泾站",
+      "pitfalls": [
+        "距离市区远",
+        "商业化程度低",
+        "餐饮选择少"
+      ],
+      "crowd_level": "低",
+      "duration_suggestion": "1小时"
+    }
+  ]
+}

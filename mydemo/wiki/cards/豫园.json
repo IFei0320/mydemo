@@ -1,0 +1,24 @@
+{
+  "spot_name": "豫园",
+  "best_months": [
+    "4月",
+    "5月",
+    "11月"
+  ],
+  "best_time": "白天错峰时段",
+  "booking_required": true,
+  "booking_tip": "建议提前查看官方渠道，节假日提前1-3天预约或购票。",
+  "transport_mode": "mixed",
+  "transport_tip": "优先选择地铁，跨江或跨区可结合轮渡、步行或打车补充。",
+  "budget_level": "low",
+  "crowd_level": "high",
+  "crowd_tip": "节假日和傍晚热门时段人流较大，建议错峰到达。",
+  "duration_suggestion": "1-3小时",
+  "pitfalls": [
+    "**必备APP**：下载「迪士尼度假区」APP查看实时排队时间、演出时间、地图[^1^]。"
+  ],
+  "nearby": [],
+  "llm_note": "由本地规则从 上海热门旅游景点11个.md 兜底生成，建议后续用 LLM 或人工校准。",
+  "_source": "上海热门旅游景点11个.md",
+  "_updated_at": "2026-05-16 16:17:19"
+}

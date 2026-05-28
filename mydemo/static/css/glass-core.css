@@ -1,0 +1,270 @@
+/* ========== glass-core.css — 共享玻璃拟态基础样式 ==========
+   用于 index.html / travel_list.html 等继承 base.html 的仪表盘页面 */
+
+/* ---- 页面底色 & 背景装饰 ---- */
+.glass-page {
+    background: #e8ecf1;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding: 28px;
+}
+
+.glass-bg-decoration {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glass-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.3;
+}
+
+.glass-bg-circle:nth-child(1) {
+    width: 600px;
+    height: 600px;
+    background: #a0aec0;
+    top: -15%;
+    right: -10%;
+}
+
+.glass-bg-circle:nth-child(2) {
+    width: 500px;
+    height: 500px;
+    background: #cbd5e0;
+    bottom: -15%;
+    left: -10%;
+}
+
+.glass-bg-circle:nth-child(3) {
+    width: 400px;
+    height: 400px;
+    background: #b8c5d6;
+    top: 45%;
+    left: 35%;
+}
+
+/* ---- 玻璃卡片 ---- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.glass-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.glass-card-header h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glass-card-header small {
+    color: #a0aec0;
+    font-size: 12px;
+    display: block;
+    margin-top: 2px;
+}
+
+.glass-card-body {
+    padding: 24px;
+}
+
+/* ---- 玻璃按钮 ---- */
+.glass-btn {
+    padding: 10px 24px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    color: #4c6ef5;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: #3b5bdb;
+}
+
+.glass-btn-primary {
+    background: #4c6ef5;
+    color: white;
+    border: none;
+}
+
+.glass-btn-primary:hover {
+    background: #4263eb;
+    color: white;
+}
+
+/* ---- 面包屑 ---- */
+.glass-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.glass-breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glass-breadcrumb li:not(:last-child)::after {
+    content: '/';
+    color: #a0aec0;
+    font-size: 12px;
+}
+
+.glass-breadcrumb a {
+    color: #4c6ef5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.glass-breadcrumb a:hover {
+    color: #3b5bdb;
+}
+
+.glass-breadcrumb .active {
+    color: #1a202c;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ---- 页面头部 ---- */
+.glass-page-header {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 20px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.glass-page-header h5 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glass-page-header p {
+    color: #a0aec0;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* ---- 玻璃表格 ---- */
+.glass-table-wrap {
+    overflow: hidden;
+}
+
+.glass-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.glass-table thead th {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.glass-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.glass-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.glass-table tbody td {
+    padding: 14px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+/* ---- 布局网格 ---- */
+.glass-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.glass-grid-2 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.glass-grid-2-reverse {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 1200px) {
+    .glass-grid { grid-template-columns: repeat(2, 1fr); }
+    .glass-grid-2,
+    .glass-grid-2-reverse { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .glass-grid { grid-template-columns: 1fr; }
+}

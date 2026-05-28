@@ -1,0 +1,28 @@
+# coding=utf8
+
+
+
+import os
+import falcon
+import settings
+import logging
+import traceback
+
+from raven import Client as SentryClient
+
+if settings.SENTRY_PATH:
+    client = SentryClient(settings.SENTRY_PATH)
+else:
+    client = None
+
+def sentry_exception_handler(ex, req, resp, params):
+    resp.status = falcon.HTTP_400
+    resp.body = falcon.HTTPError(
+            falcon.HTTP_400,
+            code=1004,
+            title='Server Internal Error',
+            description=(str(ex.message))).to_dict()
+
+    traceback.print_exc()
+    if client:
+        client.captureException()

@@ -1,0 +1,27 @@
+# coding=utf8
+
+
+
+import os
+
+DEBUG = False
+SENTRY_PATH = ''
+
+
+
+
+
+
+
+
+
+# put your settings here
+
+
+
+
+
+
+
+if os.path.exists('{{package}}/local_settings.py'):
+    from local_settings import *

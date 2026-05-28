@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}出行方式分析 - 旅游数据分析平台
+
+
+{% endblock %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/part_shared.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/part4.css' %}">
+
+<div class="glass-page">
+    <!-- 背景装饰 -->
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <!-- Page-header -->
+        <div class="glass-page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5><i class="fas fa-map-marked-alt" style="color: #5dbea3;"></i>景点位置信息</h5>
+                    <p><i class="fas fa-chart-pie mr-1"></i>景点区域分布可视化分析</p>
+                </div>
+                <ul class="glass-breadcrumb">
+                    <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#!">数据分析可视化</a></li>
+                    <li><span class="active">景点区域分析</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="glass-grid-3">
+            <div class="stat-mini">
+                <div class="stat-mini-icon stat-purple">
+                    <i class="fas fa-map"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h6>区域总数</h6>
+                    <h4 id="totalAreas">-</h4>
+                </div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-icon stat-teal">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h6>景点总数</h6>
+                    <h4 id="totalSpots">-</h4>
+                </div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-icon stat-rose">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h6>最大区域</h6>
+                    <h4 id="maxArea">-</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主图表 -->
+        <div class="glass-card">
+            <div class="glass-card-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="neumorph-icon icon-slate">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h5>各区域景点数量</h5>
+                        <small>横向条形：越长表示该区域收录的景点越多；颜色仅作区分</small>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="glass-btn" onclick="refreshChart()">
+                        <i class="fas fa-sync-alt mr-1"></i>刷新
+                    </button>
+                    <button class="glass-btn glass-btn-primary" onclick="downloadChart()">
+                        <i class="fas fa-download mr-1"></i>导出
+                    </button>
+                </div>
+            </div>
+            {% if chart_note %}
+            <div style="padding: 10px 24px; background: rgba(159, 180, 204, 0.08); color: #6b7c8e; font-size: 13px; border-bottom: 1px solid rgba(0,0,0,0.03);">
+                <i class="fas fa-info-circle mr-1"></i>{{ chart_note }}
+            </div>
+            {% endif %}
+            <div class="glass-card-body" style="position: relative; padding: 20px 24px 0;">
+                <div id="part4" style="width: 100%; min-height: 480px; height: 560px;"></div>
+
+                <div id="chartLoading" class="d-none" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <div class="spinner-glass" role="status">
+                        <span class="sr-only">加载中...</span>
+                    </div>
+                </div>
+
+                <div id="noDataAlert" class="d-none" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>暂无数据</p>
+                        <p style="font-size: 12px;">请检查数据源或稍后重试</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card-footer">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <span class="footer-text">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        区域多时页面可向下滚动查看；悬停条形可看数量与占比
+                    </span>
+                    <span class="table-tag tag-slate">条形长度 = 该分类下景点条数</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery/jquery.min.js' %}"></script>
+
+<script>
+window.part4Config = {
+    dataList: {{ data_list_json }}
+};
+</script>
+<script src="{% static 'ksh/js/part4.js' %}"></script>
+
+{% endblock %}

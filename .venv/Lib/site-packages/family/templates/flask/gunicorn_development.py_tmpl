@@ -1,0 +1,27 @@
+# gunicorn config file
+
+daemon = False
+debug = True
+preload = True
+
+loglevel = 'info'
+workers = 4
+keepalive = 10
+timeout = 600
+bind = '0.0.0.0:19010'
+pidfile = '/tmp/{{package}}.pid'
+accesslog = '/tmp/{{package}}-access.log'
+errorlog = '/tmp/{{package}}-error.log'
+
+
+def on_starting(server):
+    def _reg():
+        print 'register'
+
+    _reg()
+
+def on_exit(server):
+    def _unreg():
+        print 'unregister'
+
+    _unreg()

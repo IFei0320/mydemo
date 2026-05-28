@@ -1,0 +1,13 @@
+cython
+falcon
+requests
+simplejson
+PasteScript
+gunicorn
+ipython==4.0.0
+SQLAlchemy
+alembic
+gevent
+raven
+fabric
+MySQL-python==1.2.5

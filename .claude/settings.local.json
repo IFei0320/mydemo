@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python manage.py check --deploy)",
+      "Bash(pip show *)",
+      "Bash(python manage.py test home.tests_algorithms -v 2)",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import matplotlib.font_manager; fonts = [f.name for f in matplotlib.font_manager.fontManager.ttflist]; print\\('\\\\n'.join\\(sorted\\(set\\(fonts\\)\\)\\)\\)\")",
+      "Bash(python -c \"import matplotlib.font_manager; fonts = [\\(f.name, f.fname\\) for f in matplotlib.font_manager.fontManager.ttflist if any\\(k in f.name.lower\\(\\) for k in ['hei', 'yahei', 'song', 'kai', 'ming', 'cjk', 'chinese', 'microsoft']\\)]; [print\\(f'{n}: {p}'\\) for n,p in fonts]\")",
+      "Bash(cd /d d:\\\\ass\\\\mydemo)",
+      "Bash(mkdir -p docx_temp)",
+      "Bash(unzip -o 李恩壮.docx -d docx_temp)",
+      "Bash(mkdir -p /tmp/docx_extract)",
+      "Bash(unzip -o \"mydemo/李恩壮.docx\" -d /tmp/docx_extract)",
+      "Bash(ls -la /tmp/docx_extract/word/)",
+      "Read(//tmp/docx_extract/**)",
+      "Bash(read id *)",
+      "Bash(grep -A1 'w:styleId=\"__TRACKED_VAR__\"' /tmp/docx_extract/word/styles.xml)",
+      "Bash(python -c \"print\\('hello'\\)\")",
+      "Bash(cygpath -w /tmp/docx_extract/word/styles.xml)",
+      "Bash(python -c \"import sys, xml.etree.ElementTree as ET; content = sys.stdin.read\\(\\); root = ET.fromstring\\(content\\); ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}; [print\\(f'Style ID: {s.get\\(\\\\\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}styleId\\\\\"\\)}, Name: {s.find\\(\\\\\"w:name\\\\\", ns\\).get\\(\\\\\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\\\\\"\\) if s.find\\(\\\\\"w:name\\\\\", ns\\) is not None else \\\\\"N/A\\\\\"}, Type: {s.get\\(\\\\\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\\\\\"\\)}'\\) for s in root.findall\\('.//w:style', ns\\)]\")",
+      "Bash(git -C d:/ass log --oneline -10)"
+    ]
+  }
+}

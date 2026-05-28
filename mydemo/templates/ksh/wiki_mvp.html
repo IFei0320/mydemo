@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'ksh/css/ai_nsga2_route.css' %}">
+<link rel="stylesheet" href="{% static 'ksh/css/wiki_mvp.css' %}">
+
+<div class="glass-page">
+    <div class="glass-bg-decoration">
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+        <div class="glass-bg-circle"></div>
+    </div>
+
+    <div style="position: relative; z-index: 1;">
+        <div class="glass-card">
+            <div class="glass-card-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="neumorph-icon icon-purple">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h5>LLM Wiki MVP</h5>
+                        <span>摄入、查询、检查</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card-body">
+                <div class="btn-group-glass">
+                    <button id="btnIngest" class="glass-btn glass-btn-primary">
+                        <i class="fas fa-database"></i>1) 摄入 raw 文档
+                    </button>
+                    <button id="btnLint" class="glass-btn glass-btn-warning">
+                        <i class="fas fa-stethoscope"></i>2) 健康检查
+                    </button>
+                </div>
+
+                <div class="glass-form-group">
+                    <label for="city">
+                        <i class="fas fa-city"></i>城市过滤（可选，例如：上海）
+                    </label>
+                    <input id="city" class="glass-input" placeholder="输入城市名称..." />
+                </div>
+
+                <div class="glass-form-group">
+                    <label for="question">
+                        <i class="fas fa-question-circle"></i>问题（例如：上海夜景路线怎么安排）
+                    </label>
+                    <textarea id="question" class="glass-textarea" rows="3" placeholder="请输入您的问题..."></textarea>
+                </div>
+
+                <button id="btnQuery" class="glass-btn glass-btn-success" style="margin-bottom: 20px;">
+                    <i class="fas fa-search"></i>3) 查询 Wiki
+                </button>
+
+                <hr class="glass-divider">
+
+                <div class="section-title">
+                    <i class="fas fa-terminal"></i>执行结果
+                </div>
+                <pre id="output" class="glass-output"></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'ksh/js/wiki_mvp.js' %}"></script>
+
+{% endblock %}
