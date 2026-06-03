@@ -8,6 +8,7 @@ from urllib.error import HTTPError, URLError
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
+from utils.decorators import login_required_custom
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -57,6 +58,7 @@ def _resolve_dida_project_id(access_token: str, project_input: str) -> str:
 
 
 @require_POST
+@login_required_custom
 def export_to_dida_checklist(request):
     try:
         data = json.loads(request.body.decode("utf-8"))

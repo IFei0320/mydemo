@@ -14,6 +14,7 @@ from home.nsga2_trip_planner import (
 from django.db.models import Q, Sum, Count
 from django.db.models.functions import TruncDate
 from utils import util
+from utils.decorators import login_required_custom
 from user.models import UserInfo
 
 PLAN_CACHE_TTL_SECONDS = 600
@@ -34,6 +35,7 @@ def _dedup_by_name(queryset):
 
 
 # Create your views here.
+@login_required_custom
 def index(request):
     non_free_count = TravelInfo.objects.exclude(
         Q(actual_price='免费') | Q(actual_price__isnull=True)
@@ -79,7 +81,7 @@ def index(request):
     return render(request, 'index.html', content)  # 确保 context 是 content
 
 
-# ... existing code ...
+@login_required_custom
 def travel_list(request):
     province = TravelInfo.objects.exclude(province__isnull=True).values_list('province', flat=True).distinct()
     search_name = request.GET.get('search_name', '')
@@ -110,6 +112,7 @@ def travel_list(request):
     return render(request, 'travel_list.html', content)
 
 
+@login_required_custom
 def get_ai_travelRoute(request):
     if request.method == 'POST':
         try:

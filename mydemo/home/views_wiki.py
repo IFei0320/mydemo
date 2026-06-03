@@ -6,8 +6,10 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from home.wiki_service import ingest_all_raw, lint_wiki, query_wiki
+from utils.decorators import login_required_custom
 
 
+@login_required_custom
 def wiki_mvp_page(request):
     return render(request, "ksh/wiki_mvp.html")
 
@@ -19,6 +21,7 @@ def wiki_ingest(request):
     return JsonResponse({"code": 200 if result.get("ok") else 500, "message": "摄入完成", "data": result})
 
 
+@login_required_custom
 @require_POST
 def wiki_query(request):
     try:

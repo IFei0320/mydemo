@@ -16,6 +16,7 @@ from home.nsga2_trip_planner import (
     run_nsga2,
 )
 from home.wiki_service import retrieve_wiki_knowledge_cards
+from utils.decorators import login_required_custom
 
 PLAN_CACHE_TTL_SECONDS = 600
 PLAN_CACHE = {}
@@ -23,10 +24,12 @@ RECENT_PLANS = []
 RECENT_PLAN_LIMIT = 12
 
 
+@login_required_custom
 def ai_nsga2_route_page(request):
     return render(request, 'ksh/ai_nsga2_route.html')
 
 
+@login_required_custom
 def get_recent_plans(request):
     """页面加载时获取缓存列表"""
     _cleanup_plan_cache()
@@ -147,6 +150,7 @@ def _as_bool(raw_value, default=False):
     return default
 
 
+@login_required_custom
 @require_POST
 def generate_ai_nsga2_route(request):
     _cleanup_plan_cache()
@@ -269,6 +273,7 @@ def generate_ai_nsga2_route(request):
     )
 
 
+@login_required_custom
 @require_POST
 def recall_ai_nsga2_plan(request):
     """用缓存 token 直接取回 Top3 方案（不重新计算）"""
@@ -294,6 +299,7 @@ def recall_ai_nsga2_plan(request):
     })
 
 
+@login_required_custom
 @require_POST
 def select_ai_nsga2_plan(request):
     _cleanup_plan_cache()

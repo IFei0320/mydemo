@@ -5,11 +5,13 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
 from utils import util
+from utils.decorators import login_required_custom
 
 from home.models import TravelInfo
 from home.nsga2_trip_planner import _parse_price
 
 
+@login_required_custom
 def part1(request):
     sql1 = 'select * from part1'
     res = util.query(sql1)
@@ -29,8 +31,7 @@ def part1(request):
     }
     return render(request, 'ksh/part1.html', content)
 
-# ... existing code ...
-
+@login_required_custom
 def part2(request):
     sql1 = 'select * from part2'
     res = util.query(sql1)
@@ -47,6 +48,7 @@ def part2(request):
     return render(request, 'ksh/part2.html', content)
 
 
+@login_required_custom
 def get_cityData(request):
     city = request.GET.get('city', '')
 
@@ -63,6 +65,7 @@ def get_cityData(request):
     return JsonResponse({"data": content})
 
 
+@login_required_custom
 def part3(request):
     """
     门票价格页：展示各景点名称与解析后的票价。
@@ -143,6 +146,7 @@ def part3(request):
 #     }
 #     return render(request, 'ksh/part4.html', content)
 
+@login_required_custom
 def part4(request):
     """
     区域分布：优先用 TravelInfo 聚合。
