@@ -143,3 +143,21 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SimpleUI 配置
+SIMPLEUI_CONFIG = {
+    'system_keep': True,
+    'menus': [
+        {
+            'name': 'Wiki知识库管理',
+            'icon': 'fas fa-brain',
+            'models': [
+                {
+                    'name': '文档摄入与检查',
+                    'icon': 'fas fa-database',
+                    'url': '/admin/home/travelinfo/wiki-manager/',
+                },
+            ],
+        },
+    ],
+}

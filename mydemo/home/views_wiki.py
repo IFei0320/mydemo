@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
@@ -11,6 +12,7 @@ def wiki_mvp_page(request):
     return render(request, "ksh/wiki_mvp.html")
 
 
+@staff_member_required
 @require_POST
 def wiki_ingest(request):
     result = ingest_all_raw()
@@ -30,6 +32,7 @@ def wiki_query(request):
     return JsonResponse({"code": 200 if result.get("ok") else 400, "message": "查询完成", "data": result})
 
 
+@staff_member_required
 @require_POST
 def wiki_lint(request):
     result = lint_wiki()

@@ -1,7 +1,9 @@
 
 from django.contrib import admin
-from .models import TravelInfo
+from django.shortcuts import render
+from django.urls import path
 
+from .models import TravelInfo
 
 
 class TravelInfoAdmin(admin.ModelAdmin):
@@ -61,6 +63,24 @@ class TravelInfoAdmin(admin.ModelAdmin):
             'fields': ('is_ad', 'image_url', 'detail_link')
         }),
     )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                'wiki-manager/',
+                self.admin_site.admin_view(self.wiki_manager_view),
+                name='wiki-manager',
+            ),
+        ]
+        return custom_urls + urls
+
+    def wiki_manager_view(self, request):
+        context = dict(
+            self.admin_site.each_context(request),
+            title='Wiki知识库管理',
+        )
+        return render(request, 'admin/wiki_manager.html', context)
 
 # 注册模型和对应的Admin类
 admin.site.register(TravelInfo, TravelInfoAdmin)

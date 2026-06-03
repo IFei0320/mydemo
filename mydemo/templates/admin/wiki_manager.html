@@ -1,0 +1,225 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .wiki-panel {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+    .wiki-card {
+        background: #fff;
+        border-radius: 6px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .wiki-card h3 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        color: #333;
+    }
+    .wiki-card .desc {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+    .wiki-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .wiki-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        color: #333;
+        cursor: pointer;
+        font-size: 13px;
+        text-decoration: none;
+        transition: all 0.15s;
+    }
+    .wiki-btn:hover {
+        border-color: #409eff;
+        color: #409eff;
+    }
+    .wiki-btn.primary {
+        background: #409eff;
+        border-color: #409eff;
+        color: #fff;
+    }
+    .wiki-btn.primary:hover {
+        background: #337ecc;
+    }
+    .wiki-btn.warning {
+        background: #e6a23c;
+        border-color: #e6a23c;
+        color: #fff;
+    }
+    .wiki-btn.warning:hover {
+        background: #cf9236;
+    }
+    .wiki-result {
+        background: #f5f7fa;
+        border: 1px solid #e4e7ed;
+        border-radius: 4px;
+        padding: 16px;
+        margin-top: 16px;
+        max-height: 500px;
+        overflow-y: auto;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-break: break-all;
+        display: none;
+    }
+    .wiki-result.show {
+        display: block;
+    }
+    .wiki-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 13px;
+    }
+    .wiki-spinner {
+        display: none;
+        width: 14px;
+        height: 14px;
+        border: 2px solid #e4e7ed;
+        border-top-color: #409eff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+    .wiki-spinner.show {
+        display: inline-block;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wiki-panel">
+
+    <div class="wiki-card">
+        <h3>文档摄入</h3>
+        <p class="desc">扫描 <code>raw/</code> 目录下的 Markdown 文件，通过 LLM 提取摘要、实体、概念和知识卡片，写入 <code>wiki/</code> 结构化知识库。已摄入且未修改的文件会自动跳过。</p>
+        <div class="wiki-actions">
+            <button id="btnIngest" class="wiki-btn primary">
+                <i class="fas fa-database"></i> 执行摄入
+            </button>
+        </div>
+        <div class="wiki-status">
+            <span id="ingestSpinner" class="wiki-spinner"></span>
+            <span id="ingestStatus"></span>
+        </div>
+        <pre id="ingestResult" class="wiki-result"></pre>
+    </div>
+
+    <div class="wiki-card">
+        <h3>健康检查</h3>
+        <p class="desc">检测 Wiki 知识库的完整性：孤立页面、交叉引用断裂、摘要页面数量、LLM 异常残留等问题，给出综合健康评分。</p>
+        <div class="wiki-actions">
+            <button id="btnLint" class="wiki-btn warning">
+                <i class="fas fa-stethoscope"></i> 执行检查
+            </button>
+        </div>
+        <div class="wiki-status">
+            <span id="lintSpinner" class="wiki-spinner"></span>
+            <span id="lintStatus"></span>
+        </div>
+        <pre id="lintResult" class="wiki-result"></pre>
+    </div>
+
+</div>
+
+<script>
+    function formatJSON(obj) {
+        try {
+            return JSON.stringify(obj, null, 2);
+        } catch (e) {
+            return String(obj);
+        }
+    }
+
+    function showResult(el, text) {
+        el.textContent = text;
+        el.classList.add('show');
+    }
+
+    document.getElementById('btnIngest').addEventListener('click', function() {
+        var btn = this;
+        var spinner = document.getElementById('ingestSpinner');
+        var status = document.getElementById('ingestStatus');
+        var result = document.getElementById('ingestResult');
+
+        btn.disabled = true;
+        spinner.classList.add('show');
+        status.textContent = '正在摄入，请稍候...';
+        result.classList.remove('show');
+
+        fetch('/mydemo/api/wiki/ingest', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            spinner.classList.remove('show');
+            status.textContent = data.code === 200 ? '摄入完成' : '摄入异常';
+            showResult(result, formatJSON(data));
+            btn.disabled = false;
+        })
+        .catch(function(err) {
+            spinner.classList.remove('show');
+            status.textContent = '请求失败';
+            showResult(result, '网络错误: ' + err.message);
+            btn.disabled = false;
+        });
+    });
+
+    document.getElementById('btnLint').addEventListener('click', function() {
+        var btn = this;
+        var spinner = document.getElementById('lintSpinner');
+        var status = document.getElementById('lintStatus');
+        var result = document.getElementById('lintResult');
+
+        btn.disabled = true;
+        spinner.classList.add('show');
+        status.textContent = '正在检查...';
+        result.classList.remove('show');
+
+        fetch('/mydemo/api/wiki/lint', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            spinner.classList.remove('show');
+            status.textContent = data.code === 200 ? '检查完成 (健康分: ' + (data.data && data.data.score) + ')' : '检查异常';
+            showResult(result, formatJSON(data));
+            btn.disabled = false;
+        })
+        .catch(function(err) {
+            spinner.classList.remove('show');
+            status.textContent = '请求失败';
+            showResult(result, '网络错误: ' + err.message);
+            btn.disabled = false;
+        });
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+{% endblock %}
