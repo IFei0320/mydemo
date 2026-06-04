@@ -33,6 +33,8 @@ def login(request):
         except Exception as e:
             return JsonResponse({'code': 500, 'msg': f'服务器错误{str(e)}'})
     else:
+        if request.session.get('uid'):
+            return redirect('/mydemo/index')
         return render(request, 'login.html')
 
 
