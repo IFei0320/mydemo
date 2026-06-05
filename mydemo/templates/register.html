@@ -13,51 +13,6 @@
 
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 
-    <style>
-        /* ====== register.html 页面特有样式 ====== */
-        .row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 4px;
-        }
-
-        .col-sm-6 {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .checkbox-fade { margin: 20px 0 24px; }
-
-        .cr { flex-shrink: 0; }
-
-        .login-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-        }
-
-        .login-text {
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .login-link {
-            color: #4c6ef5;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .login-link:hover { color: #3b5bdb; }
-
-        @media (max-width: 480px) {
-            .row {
-                flex-direction: column;
-                gap: 0;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -93,14 +48,14 @@
                     <input type="email" name="email" class="form-control" placeholder="请输入邮箱地址" required>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-6">
+                <div class="auth-row">
+                    <div class="auth-col-6">
                         <div class="form-group">
                             <label class="form-label">密码</label>
                             <input type="password" name="password" class="form-control" placeholder="设置密码" required>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="auth-col-6">
                         <div class="form-group">
                             <label class="form-label">确认密码</label>
                             <input type="password" name="confirm_password" class="form-control" placeholder="再次输入密码" required>

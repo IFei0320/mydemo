@@ -213,6 +213,9 @@ body {
     user-select: none;
 }
 
+/* register.html: 独立 checkbox 需要额外间距 */
+.card-block > .checkbox-fade { margin: 20px 0 24px; }
+
 .checkbox-fade input[type="checkbox"] { display: none; }
 
 .cr {
@@ -225,6 +228,7 @@ body {
     justify-content: center;
     transition: all 0.3s ease;
     background: rgba(255,255,255,0.6);
+    flex-shrink: 0;
 }
 
 .checkbox-fade input[type="checkbox"]:checked + .cr {
@@ -352,6 +356,78 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ---- login.html 特有 ---- */
+.remember-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 22px 0;
+}
+
+.forgot-password {
+    color: #4c6ef5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.forgot-password:hover { color: #3b5bdb; }
+
+.register-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.register-text {
+    color: #718096;
+    font-size: 14px;
+}
+
+.register-link {
+    color: #4c6ef5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.register-link:hover { color: #3b5bdb; }
+
+/* ---- register.html 特有 ---- */
+.auth-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 4px;
+}
+
+.auth-col-6 {
+    flex: 1;
+    min-width: 0;
+}
+
+.login-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.login-text {
+    color: #718096;
+    font-size: 14px;
+}
+
+.login-link {
+    color: #4c6ef5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.login-link:hover { color: #3b5bdb; }
+
 /* ---- 响应式 ---- */
 @media (max-width: 480px) {
     .glass-container { padding: 16px; }
@@ -359,4 +435,13 @@ body {
     .logo-text { font-size: 22px; }
     .toast-msg { left: 16px; right: 16px; transform: translateX(0) translateY(-120px); }
     .toast-msg.show { transform: translateX(0) translateY(0); }
+    .remember-section {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    .auth-row {
+        flex-direction: column;
+        gap: 0;
+    }
 }
