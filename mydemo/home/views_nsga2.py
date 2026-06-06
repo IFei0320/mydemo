@@ -204,7 +204,7 @@ def generate_ai_nsga2_route(request):
                 }
             )
 
-    pareto_set, route_len = run_nsga2(spots=candidates, days=days, budget=budget, per_day=3)
+    pareto_set, route_len = run_nsga2(spots=candidates, days=days, budget=budget, per_day=3, pop_size=40, generations=50)
     if not pareto_set:
         return JsonResponse({"code": 400, "message": "未找到满足预算的可行路线，请提高预算或减少天数", "data": None})
 

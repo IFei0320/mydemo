@@ -95,9 +95,10 @@ def _route_distance_km(route_indices: List[int], spots: List[ScenicSpot], per_da
     total = 0.0
     for i, idx in enumerate(route_indices):
         cur = spots[idx]
-        total += cur.center_distance_km
         is_new_day = i % per_day == 0
-        if i > 0 and not is_new_day:
+        if is_new_day:
+            total += cur.center_distance_km
+        elif i > 0:
             prev = spots[route_indices[i - 1]]
             total += _haversine_km(prev.lon, prev.lat, cur.lon, cur.lat)
     return total
@@ -182,8 +183,7 @@ def _crowding_distance(population: List[Dict], front: List[int]) -> None:
 
 
 def _tournament(population: List[Dict]) -> Dict:
-    a = random.choice(population)
-    b = random.choice(population)
+    a, b = random.sample(population, 2)
     if a["rank"] < b["rank"]:
         return a
     if b["rank"] < a["rank"]:
@@ -303,7 +303,6 @@ def run_nsga2(
         _evaluate_population(offspring, spots, per_day, budget)
         combined = population + offspring
         population = _next_generation(combined, pop_size)
-        _evaluate_population(population, spots, per_day, budget)
 
     final_fronts = _fast_non_dominated_sort(population)
     first_front = [population[idx] for idx in final_fronts[0]] if final_fronts else []
