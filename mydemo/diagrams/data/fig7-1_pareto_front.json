@@ -1,0 +1,215 @@
+{
+  "total_points": 33,
+  "cost_range": [
+    207.8,
+    273.9
+  ],
+  "rating_range": [
+    4.633,
+    4.722
+  ],
+  "distance_range": [
+    68.8,
+    248.2
+  ],
+  "points": [
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 207.8,
+      "rating": 4.633,
+      "distance": 138.0,
+      "hotness": 6.089
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 273.9,
+      "rating": 4.722,
+      "distance": 120.2,
+      "hotness": 6.856
+    },
+    {
+      "cost": 217.8,
+      "rating": 4.656,
+      "distance": 115.4,
+      "hotness": 6.456
+    },
+    {
+      "cost": 207.8,
+      "rating": 4.633,
+      "distance": 138.0,
+      "hotness": 6.089
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 217.8,
+      "rating": 4.656,
+      "distance": 115.4,
+      "hotness": 6.456
+    },
+    {
+      "cost": 268.9,
+      "rating": 4.7,
+      "distance": 92.4,
+      "hotness": 6.9
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 243.9,
+      "rating": 4.7,
+      "distance": 95.4,
+      "hotness": 7.011
+    },
+    {
+      "cost": 253.8,
+      "rating": 4.711,
+      "distance": 120.9,
+      "hotness": 6.578
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 260.9,
+      "rating": 4.722,
+      "distance": 150.1,
+      "hotness": 6.722
+    },
+    {
+      "cost": 242.9,
+      "rating": 4.689,
+      "distance": 142.0,
+      "hotness": 6.667
+    },
+    {
+      "cost": 223.8,
+      "rating": 4.689,
+      "distance": 148.6,
+      "hotness": 6.733
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 232.9,
+      "rating": 4.678,
+      "distance": 248.2,
+      "hotness": 6.756
+    },
+    {
+      "cost": 222.8,
+      "rating": 4.678,
+      "distance": 136.4,
+      "hotness": 6.411
+    },
+    {
+      "cost": 248.9,
+      "rating": 4.689,
+      "distance": 82.1,
+      "hotness": 6.989
+    },
+    {
+      "cost": 207.8,
+      "rating": 4.633,
+      "distance": 138.0,
+      "hotness": 6.089
+    },
+    {
+      "cost": 228.8,
+      "rating": 4.678,
+      "distance": 83.3,
+      "hotness": 6.711
+    },
+    {
+      "cost": 253.8,
+      "rating": 4.711,
+      "distance": 120.9,
+      "hotness": 6.578
+    },
+    {
+      "cost": 207.8,
+      "rating": 4.633,
+      "distance": 138.0,
+      "hotness": 6.089
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 243.8,
+      "rating": 4.7,
+      "distance": 129.7,
+      "hotness": 6.667
+    },
+    {
+      "cost": 263.9,
+      "rating": 4.711,
+      "distance": 95.3,
+      "hotness": 6.944
+    },
+    {
+      "cost": 218.8,
+      "rating": 4.667,
+      "distance": 68.8,
+      "hotness": 6.8
+    },
+    {
+      "cost": 212.8,
+      "rating": 4.667,
+      "distance": 163.6,
+      "hotness": 6.478
+    },
+    {
+      "cost": 273.9,
+      "rating": 4.722,
+      "distance": 120.2,
+      "hotness": 6.856
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "generations": 1,
+    "avg_hv": 0.0,
+    "feasible_rate": 0.0,
+    "avg_best_cost": null
+  },
+  {
+    "generations": 2,
+    "avg_hv": 0.0,
+    "feasible_rate": 0.0,
+    "avg_best_cost": null
+  },
+  {
+    "generations": 5,
+    "avg_hv": 0.0,
+    "feasible_rate": 0.0,
+    "avg_best_cost": null
+  },
+  {
+    "generations": 10,
+    "avg_hv": 0.07099911991199122,
+    "feasible_rate": 0.3,
+    "avg_best_cost": 261.06666666666666
+  },
+  {
+    "generations": 15,
+    "avg_hv": 0.28962277260601765,
+    "feasible_rate": 0.8,
+    "avg_best_cost": 257.65
+  },
+  {
+    "generations": 20,
+    "avg_hv": 0.6005811982394199,
+    "feasible_rate": 1.0,
+    "avg_best_cost": 235.35
+  },
+  {
+    "generations": 25,
+    "avg_hv": 0.5445237292234304,
+    "feasible_rate": 1.0,
+    "avg_best_cost": 222.24
+  },
+  {
+    "generations": 30,
+    "avg_hv": 0.5882593893261084,
+    "feasible_rate": 1.0,
+    "avg_best_cost": 212.03
+  },
+  {
+    "generations": 40,
+    "avg_hv": 0.5988048259468445,
+    "feasible_rate": 1.0,
+    "avg_best_cost": 199.64
+  },
+  {
+    "generations": 50,
+    "avg_hv": 0.5837538571387587,
+    "feasible_rate": 1.0,
+    "avg_best_cost": 190.81
+  }
+]

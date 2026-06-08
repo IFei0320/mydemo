@@ -31,7 +31,9 @@ from home.nsga2_trip_planner import (
 
 def db_spots(city="上海", limit=200):
     """从数据库加载真实景点数据构造 ScenicSpot 列表（仅收费+有效坐标）。"""
+    import os
     import django
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mydemo.settings')
     django.setup()
     from home.models import TravelInfo
     queryset = TravelInfo.objects.filter(city__icontains=city).exclude(
@@ -160,7 +162,7 @@ def _collector_base(spots, days, budget, per_day, pop_size, generations, runs, s
 
 
 def greedy_baseline(spots, route_len, budget, per_day=3):
-    """贪心基线：按评分降序选择，超预算时回退。"""
+    """贪心基线：按评分降序，在预算内选择 route_len 个景点。"""
     ranked = sorted(
         range(len(spots)),
         key=lambda idx: (-spots[idx].rating, -spots[idx].hotness, spots[idx].cost),
@@ -169,24 +171,11 @@ def greedy_baseline(spots, route_len, budget, per_day=3):
     for idx in ranked:
         if len(selected) >= route_len:
             break
-        if total_cost + spots[idx].cost > budget:
-            continue
-        selected.append(idx)
-        total_cost += spots[idx].cost
-    # 回退：如果超预算，尝试用更便宜的替换
-    while total_cost > budget and len(selected) > 1:
-        # 移除成本最高的
-        worst_idx = max(selected, key=lambda i: spots[i].cost)
-        selected.remove(worst_idx)
-        total_cost -= spots[worst_idx].cost
-    # 填满
-    while len(selected) < route_len:
-        for idx in ranked:
-            if idx not in selected:
-                selected.append(idx)
-                break
+        if total_cost + spots[idx].cost <= budget:
+            selected.append(idx)
+            total_cost += spots[idx].cost
     metrics = _evaluate_route(selected, spots, per_day=per_day)
-    return {"route": selected, "metrics": metrics, "feasible": metrics["cost"] <= budget}
+    return {"route": selected, "metrics": metrics, "feasible": total_cost <= budget}
 
 
 def random_baseline(spots, route_len, budget, per_day=3, trials=1000, seed=0):
@@ -417,7 +406,10 @@ def plot_algorithm_comparison(results, output_path):
         ("avg_runtime", "运行时间", "秒"),
     ]
 
-    fig, axes = plt.subplots(1, 5, figsize=(20, 4.5))
+    fig = plt.figure(figsize=(16, 9))
+    gs = fig.add_gridspec(2, 3, hspace=0.3, wspace=0.3)
+    axes = [fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1]), fig.add_subplot(gs[0, 2]),
+            fig.add_subplot(gs[1, 0]), fig.add_subplot(gs[1, 1])]
     colors = [_COLORS["nsga2"], _COLORS["greedy"], _COLORS["random"]]
 
     for idx, (key, title, unit) in enumerate(metrics_def):
@@ -516,55 +508,64 @@ def plot_convergence_curve(results, output_path):
 def plot_pareto_front(results, output_path):
     costs = [item["cost"] for item in results]
     ratings = [item["rating"] for item in results]
+    distances = [item["distance"] for item in results]
 
     if len(results) < 3:
-        fig, ax = plt.subplots(figsize=(8, 6))
-        ax.scatter(costs, ratings, s=70, color="#43A047", edgecolors="#1B5E20", alpha=0.85)
-        ax.set_title("Pareto 前沿散点图 (可行解不足3个)", fontsize=12)
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        axes[0].scatter(costs, ratings, s=70, color="#43A047", edgecolors="#1B5E20", alpha=0.85)
+        axes[0].set_title("(a) 成本-评分 Pareto前沿", fontsize=11)
+        axes[1].scatter(costs, distances, s=70, color="#1E88E5", edgecolors="#0D47A1", alpha=0.85)
+        axes[1].set_title("(b) 成本-路程权衡", fontsize=11)
         fig.savefig(output_path, format="svg", bbox_inches="tight")
         plt.close(fig)
         return
 
-    pairs = list(zip(costs, ratings))
-    # economy: 最低成本
-    econ_idx = min(range(len(pairs)), key=lambda i: pairs[i][0])
-    # experience: 最高评分
-    exp_idx = max(range(len(pairs)), key=lambda i: pairs[i][1])
-    # balanced: 距 economy-experience 连线最远
-    e1, e2 = pairs[econ_idx], pairs[exp_idx]
+    pairs_rating = list(zip(costs, ratings))
+    econ_idx = min(range(len(pairs_rating)), key=lambda i: pairs_rating[i][0])
+    exp_idx = max(range(len(pairs_rating)), key=lambda i: pairs_rating[i][1])
+    e1, e2 = pairs_rating[econ_idx], pairs_rating[exp_idx]
     bal_idx = econ_idx
     max_dist = 0.0
     if abs(e2[0] - e1[0]) > 1e-6:
-        for i, (c, r) in enumerate(pairs):
+        for i, (c, r) in enumerate(pairs_rating):
             d = abs((e2[1] - e1[1]) * c - (e2[0] - e1[0]) * r + e2[0] * e1[1] - e2[1] * e1[0]) / \
                 ((e2[1] - e1[1]) ** 2 + (e2[0] - e1[0]) ** 2) ** 0.5
             if d > max_dist:
                 max_dist = d
                 bal_idx = i
 
-    fig, ax = plt.subplots(figsize=(9, 6.5))
-    ax.scatter(costs, ratings, s=60, color="#BDBDBD", edgecolors="#757575", alpha=0.6)
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
+    axes[0].scatter(costs, ratings, s=60, color="#BDBDBD", edgecolors="#757575", alpha=0.6)
     special = [(econ_idx, "economy", "省钱型"), (bal_idx, "balanced", "均衡型"), (exp_idx, "experience", "体验型")]
     for idx, style, label in special:
-        c, r = pairs[idx]
-        ax.scatter([c], [r], s=180, color=_COLORS[style], edgecolors="white", linewidth=2, zorder=5)
-        ax.annotate(f"{label}\n({c:.0f}元, {r:.2f}分)", xy=(c, r),
+        c, r = pairs_rating[idx]
+        axes[0].scatter([c], [r], s=180, color=_COLORS[style], edgecolors="white", linewidth=2, zorder=5)
+        axes[0].annotate(f"{label}\n({c:.0f}元, {r:.2f}分)", xy=(c, r),
                     xytext=(15, 10 if style != "economy" else -20),
-                    textcoords="offset points", fontsize=10, fontweight="bold",
+                    textcoords="offset points", fontsize=9, fontweight="bold",
                     color=_COLORS[style],
-                    arrowprops=dict(arrowstyle="->", color=_COLORS[style], lw=1.5),
+                    arrowprops=dict(arrowstyle="->", color=_COLORS[style], lw=1.2),
                     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.85))
-
-    ax.set_xlabel("总成本（元）", fontsize=11)
-    ax.set_ylabel("平均评分", fontsize=11)
-    ax.set_title("NSGA-II Pareto 前沿散点图", fontsize=12, fontweight="bold")
-    ax.grid(True, alpha=0.3)
-    
+    axes[0].set_xlabel("总成本（元）", fontsize=10)
+    axes[0].set_ylabel("平均评分", fontsize=10)
+    axes[0].set_title("(a) 成本-评分 Pareto前沿", fontsize=11, fontweight="bold")
+    axes[0].grid(True, alpha=0.3)
     if ratings:
         y_margin = (max(ratings) - min(ratings)) * 0.15
-        ax.set_ylim(min(ratings) - y_margin, max(ratings) + y_margin)
+        axes[0].set_ylim(min(ratings) - y_margin, max(ratings) + y_margin)
 
+    axes[1].scatter(costs, distances, s=60, color="#BDBDBD", edgecolors="#757575", alpha=0.6)
+    for idx, style, label in special:
+        c = pairs_rating[idx][0]
+        d = distances[idx]
+        axes[1].scatter([c], [d], s=180, color=_COLORS[style], edgecolors="white", linewidth=2, zorder=5)
+    axes[1].set_xlabel("总成本（元）", fontsize=10)
+    axes[1].set_ylabel("总路程（km）", fontsize=10)
+    axes[1].set_title("(b) 成本-路程权衡", fontsize=11, fontweight="bold")
+    axes[1].grid(True, alpha=0.3)
+
+    fig.suptitle("NSGA-II Pareto 前沿分析", fontsize=13, fontweight="bold")
     fig.tight_layout()
     fig.savefig(output_path, format="svg", bbox_inches="tight")
     plt.close(fig)
@@ -654,5 +655,109 @@ def plot_budget_cost_plateau(results, output_path):
     ax.legend(fontsize=9, loc="upper left")
 
     fig.tight_layout()
+    fig.savefig(output_path, format="svg", bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_sensitivity_grid(pop_results, gen_results, budget_results, output_path):
+    """2x2 参数敏感性分析组合图"""
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    fig.suptitle("NSGA-II 参数敏感性分析", fontsize=14, fontweight="bold")
+
+    # (a) 种群大小敏感性
+    ax_a = axes[0, 0]
+    ax_a2 = ax_a.twinx()
+    pop_sizes = [r["pop_size"] for r in pop_results]
+    hv_pop = [r["avg_hv"] for r in pop_results]
+    rt_pop = [r["avg_runtime"] for r in pop_results]
+    ax_a.plot(pop_sizes, hv_pop, marker="o", color="#1565C0", linewidth=2, markersize=7, label="HV")
+    ax_a2.plot(pop_sizes, rt_pop, marker="s", color="#E53935", linewidth=2, markersize=6,
+               linestyle="--", label="运行时间")
+    if 40 in pop_sizes:
+        idx40 = pop_sizes.index(40)
+        ax_a.axvline(x=40, color="gray", linestyle=":", linewidth=1.2, alpha=0.7)
+        ax_a.annotate(
+            f"pop=40\nHV={hv_pop[idx40]:.3f}",
+            xy=(40, hv_pop[idx40]), xytext=(44, hv_pop[idx40] - 0.04),
+            fontsize=8, color="#1565C0",
+            arrowprops=dict(arrowstyle="->", color="#1565C0", lw=1),
+        )
+    ax_a.set_xlabel("种群大小", fontsize=10)
+    ax_a.set_ylabel("超体积 (HV)", fontsize=10, color="#1565C0")
+    ax_a2.set_ylabel("运行时间 (s)", fontsize=10, color="#E53935")
+    ax_a.set_title("(a) 种群大小对求解质量与效率的影响", fontsize=10, fontweight="bold")
+    ax_a.grid(True, alpha=0.3)
+    if hv_pop:
+        ax_a.set_ylim(0, max(hv_pop) * 1.15)
+    lines_a = ax_a.get_lines() + ax_a2.get_lines()
+    ax_a.legend(lines_a, [l.get_label() for l in lines_a], fontsize=8, loc="lower right")
+
+    # (b) 进化代数敏感性
+    ax_b = axes[0, 1]
+    ax_b2 = ax_b.twinx()
+    gen_steps = [r["generations"] for r in gen_results]
+    hv_gen = [r["avg_hv"] for r in gen_results]
+    feas_gen = [r["feasible_rate"] * 100 for r in gen_results]
+    ax_b.plot(gen_steps, hv_gen, marker="o", color="#1565C0", linewidth=1.5, markersize=5, alpha=0.6)
+    if len(hv_gen) >= 3:
+        try:
+            from scipy.ndimage import gaussian_filter1d
+            smoothed = gaussian_filter1d(hv_gen, sigma=1.0)
+            ax_b.plot(gen_steps, smoothed, color="#0D47A1", linewidth=2.5, label="HV趋势")
+        except Exception:
+            ax_b.plot(gen_steps, hv_gen, color="#0D47A1", linewidth=2.5, label="HV")
+    ax_b2.plot(gen_steps, feas_gen, marker="s", color="#2E7D32", linewidth=2, markersize=6,
+               linestyle="--", label="可行解比例")
+    if 50 in gen_steps:
+        ax_b.axvline(x=50, color="gray", linestyle=":", linewidth=1.2, alpha=0.7)
+    ax_b.set_xlabel("进化代数", fontsize=10)
+    ax_b.set_ylabel("超体积 (HV)", fontsize=10, color="#1565C0")
+    ax_b2.set_ylabel("可行解比例 (%)", fontsize=10, color="#2E7D32")
+    ax_b.set_title("(b) 进化代数对收敛性与可行性的影响", fontsize=10, fontweight="bold")
+    ax_b.grid(True, alpha=0.3)
+    if hv_gen:
+        ax_b.set_ylim(0, max(hv_gen) * 1.15)
+    ax_b2.set_ylim(0, 105)
+
+    # (c) 预算对可行性与多样性的影响
+    ax_c = axes[1, 0]
+    ax_c2 = ax_c.twinx()
+    budgets = [r["budget"] for r in budget_results]
+    feas_b = [r["feasible_rate"] * 100 for r in budget_results]
+    pareto_b = [r["avg_pareto_count"] for r in budget_results]
+    ax_c.plot(budgets, feas_b, marker="o", color="#43A047", linewidth=2, markersize=7, label="可行解比例")
+    ax_c2.plot(budgets, pareto_b, marker="D", color="#FB8C00", linewidth=2, markersize=6,
+               linestyle="--", label="Pareto解数")
+    ax_c.set_xlabel("预算（元）", fontsize=10)
+    ax_c.set_ylabel("可行解比例 (%)", fontsize=10, color="#43A047")
+    ax_c2.set_ylabel("平均 Pareto 解数", fontsize=10, color="#FB8C00")
+    ax_c.set_title("(c) 预算约束对可行性与多样性的影响", fontsize=10, fontweight="bold")
+    ax_c.grid(True, alpha=0.3)
+    ax_c.set_ylim(0, 105)
+    lines_c = ax_c.get_lines() + ax_c2.get_lines()
+    ax_c.legend(lines_c, [l.get_label() for l in lines_c], fontsize=8, loc="center right")
+
+    # (d) 预算与实际成本的匹配关系
+    ax_d = axes[1, 1]
+    avg_costs = [
+        r["avg_best_cost"] if not np.isnan(r["avg_best_cost"]) else None
+        for r in budget_results
+    ]
+    valid_b = [b for b, c in zip(budgets, avg_costs) if c is not None]
+    valid_c = [c for c in avg_costs if c is not None]
+    ax_d.plot(valid_b, valid_c, marker="s", color="#1E88E5", linewidth=2, markersize=7, label="实际成本")
+    if valid_b:
+        ax_d.plot(
+            [min(valid_b), max(valid_b)],
+            [min(valid_b), max(valid_b)],
+            "k--", alpha=0.25, linewidth=1, label="预算线",
+        )
+    ax_d.set_xlabel("预算（元）", fontsize=10)
+    ax_d.set_ylabel("路线平均成本（元）", fontsize=10)
+    ax_d.set_title("(d) 预算与实际成本的匹配关系", fontsize=10, fontweight="bold")
+    ax_d.grid(True, alpha=0.3)
+    ax_d.legend(fontsize=8, loc="upper left")
+
+    plt.tight_layout()
     fig.savefig(output_path, format="svg", bbox_inches="tight")
     plt.close(fig)

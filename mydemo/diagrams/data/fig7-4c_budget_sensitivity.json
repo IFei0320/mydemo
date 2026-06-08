@@ -1,0 +1,107 @@
+[
+  {
+    "budget": 130,
+    "feasible_rate": 0.0,
+    "avg_pareto_count": 0,
+    "avg_best_cost": null,
+    "avg_hv": 0.0
+  },
+  {
+    "budget": 164,
+    "feasible_rate": 0.0,
+    "avg_pareto_count": 0,
+    "avg_best_cost": null,
+    "avg_hv": 0.0
+  },
+  {
+    "budget": 198,
+    "feasible_rate": 0.3,
+    "avg_pareto_count": 1.9,
+    "avg_best_cost": 186.4,
+    "avg_hv": 0.23155555555555624
+  },
+  {
+    "budget": 232,
+    "feasible_rate": 0.5,
+    "avg_pareto_count": 7,
+    "avg_best_cost": 216.14,
+    "avg_hv": 0.23951590566296455
+  },
+  {
+    "budget": 266,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 21.2,
+    "avg_best_cost": 226.53,
+    "avg_hv": 0.495067103692893
+  },
+  {
+    "budget": 300,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 25.4,
+    "avg_best_cost": 249.28,
+    "avg_hv": 0.5498168079250638
+  },
+  {
+    "budget": 334,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 26.8,
+    "avg_best_cost": 268.36,
+    "avg_hv": 0.5359899780905149
+  },
+  {
+    "budget": 368,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 29.5,
+    "avg_best_cost": 279.82,
+    "avg_hv": 0.5777997902668885
+  },
+  {
+    "budget": 402,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 30,
+    "avg_best_cost": 284.76,
+    "avg_hv": 0.6031492816331465
+  },
+  {
+    "budget": 436,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 30,
+    "avg_best_cost": 307.46999999999997,
+    "avg_hv": 0.5424039369024964
+  },
+  {
+    "budget": 470,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 30,
+    "avg_best_cost": 298.88,
+    "avg_hv": 0.5709213963385102
+  },
+  {
+    "budget": 504,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 29.8,
+    "avg_best_cost": 306.91999999999996,
+    "avg_hv": 0.5324184716947504
+  },
+  {
+    "budget": 538,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 30,
+    "avg_best_cost": 343.09,
+    "avg_hv": 0.5588199408594918
+  },
+  {
+    "budget": 572,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 29.9,
+    "avg_best_cost": 379.63,
+    "avg_hv": 0.5947379038235789
+  },
+  {
+    "budget": 606,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 29.8,
+    "avg_best_cost": 337.02,
+    "avg_hv": 0.5751004474203566
+  }
+]

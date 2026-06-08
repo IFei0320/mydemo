@@ -175,7 +175,7 @@ def get_ai_travelRoute(request):
             source_rows = primary if len(primary) >= 9 else city_rows
 
             map_spots = []
-            for t in source_rows[:120]:
+            for t in source_rows:
                 lon, lat = _normalize_coord_pair(t.longitude, t.latitude)
                 if not lon or not lat:
                     continue
