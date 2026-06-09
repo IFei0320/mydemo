@@ -12,4 +12,5 @@ urlpatterns = [
 
     path('upload_avatar',views.upload_avatar,name='upload_avatar'),
     path('logout',views.logout,name='logout'),
+    path('reset_password',views.reset_password,name='reset_password'),
     ]

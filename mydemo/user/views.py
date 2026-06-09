@@ -29,6 +29,11 @@ def login(request):
             request.session['uname'] = user.username
             request.session['avatar'] = user.avatar
 
+            if request.POST.get('remember_me'):
+                request.session.set_expiry(30 * 24 * 60 * 60)
+            else:
+                request.session.set_expiry(0)
+
             return JsonResponse({'code': 200, 'msg': '登录成功'})
         except Exception as e:
             return JsonResponse({'code': 500, 'msg': f'服务器错误{str(e)}'})
@@ -202,6 +207,27 @@ def upload_avatar(request):
             return JsonResponse({'code': 500, 'msg': '服务器错误：' + str(e)})
 
     return JsonResponse({'code': 400, 'msg': '请求方法错误'})
+
+
+def reset_password(request):
+    if request.method == 'POST':
+        username = (request.POST.get('username') or '').strip()
+        email = (request.POST.get('email') or '').strip()
+        new_password = request.POST.get('new_password', '')
+
+        try:
+            user = UserInfo.objects.get(username=username, uemail=email)
+        except UserInfo.DoesNotExist:
+            return JsonResponse({'code': 400, 'msg': '用户名与邮箱不匹配'})
+
+        if len(new_password) < 6:
+            return JsonResponse({'code': 400, 'msg': '密码至少需要6位'})
+
+        user.password = make_password(new_password)
+        user.save()
+        return JsonResponse({'code': 200, 'msg': '密码重置成功，请重新登录'})
+    else:
+        return render(request, 'reset_password.html')
 
 
 def logout(request):
