@@ -8,6 +8,7 @@ from pathlib import Path
 
 from django.template.loader import render_to_string
 
+from home.config import AI_MAX_TOKENS, AI_MODEL
 from home.data_utils import (
     _safe_float,
     assess_feasibility,
@@ -18,7 +19,7 @@ from home.data_utils import (
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
-def call_ai_refiner(
+def generate_ai_summary(
     city: str,
     season: str,
     days: int,
@@ -77,12 +78,12 @@ def call_ai_refiner(
             base_url=os.getenv('LLM_BASE_URL', 'https://api.deepseek.com'),
         )
         response = client.chat.completions.create(
-            model="deepseek-chat",
+            model=AI_MODEL,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": str(user_content)},
             ],
-            max_tokens=3200,
+            max_tokens=AI_MAX_TOKENS,
             stream=False,
             extra_body={"thinking": {"type": "disabled"}},
         )
@@ -100,7 +101,7 @@ def call_ai_refiner(
         return f"AI润色暂时不可用。{hint} 原始错误：{err}"
 
 
-def call_ai_html_report(
+def generate_html_report(
     city: str,
     season: str,
     days: int,

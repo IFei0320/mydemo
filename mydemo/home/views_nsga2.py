@@ -6,8 +6,16 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
+from home.config import (
+    BUDGET_TARGET_RATIO,
+    CROWD_SCALE,
+    PLAN_CACHE_TTL,
+    RECENT_PLAN_LIMIT,
+    SPOTS_PER_DAY,
+    STYLE_LABELS,
+)
 from home.nsga2_knowledge import retrieve_knowledge_cards
-from home.nsga2_report import call_ai_html_report, call_ai_refiner
+from home.nsga2_report import generate_ai_summary, generate_html_report
 from home.nsga2_trip_planner import (
     build_candidates,
     build_route_payload,
@@ -15,7 +23,6 @@ from home.nsga2_trip_planner import (
     run_nsga2,
 )
 from home.data_utils import (
-    _safe_float,
     assess_feasibility,
     compute_living_budget,
     get_city_tier,
@@ -23,10 +30,8 @@ from home.data_utils import (
 from home.wiki_service import retrieve_wiki_knowledge_cards
 from utils.decorators import login_required_custom
 
-PLAN_CACHE_TTL_SECONDS = 600
 PLAN_CACHE = {}
 RECENT_PLANS = []
-RECENT_PLAN_LIMIT = 12
 
 
 @login_required_custom
@@ -49,17 +54,11 @@ def _cleanup_plan_cache():
 
 
 def _calc_advantage_label(option):
-    style = option.get("style")
-    if style == "economy":
-        return "省钱型：花费最低，预算压力最小"
-    if style == "experience":
-        return "体验型：评分与热度表现更高"
-    return "均衡型：成本、路程与体验更平衡"
+    return STYLE_LABELS.get(option.get("style"), STYLE_LABELS["balanced"])
 
 
-def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
-    if not pareto_set:
-        return []
+def _pick_three_styles(pareto_set, sensitivities, budget):
+    """从 Pareto 前沿选出省钱型、均衡型、体验型三种方案，去重后返回最多 3 个"""
     economy = min(pareto_set, key=lambda x: x["metrics"]["cost"])
     experience = max(
         pareto_set,
@@ -81,7 +80,7 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
         seen.add(route_key)
         unique.append(item)
 
-    # 去重后不足 3 个时，从 Pareto 前沿补选其他路线
+    # 不足 3 个时从 Pareto 前沿补选
     fallback_styles = ["balanced", "experience", "economy"]
     fallback_idx = 0
     for sol in pareto_set:
@@ -92,14 +91,21 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
             seen.add(route_key)
             unique.append({"style": fallback_styles[fallback_idx % 3], "solution": sol})
             fallback_idx += 1
+    return unique
+
+
+def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
+    if not pareto_set:
+        return []
+    diverse = _pick_three_styles(pareto_set, sensitivities, budget)
 
     options = []
-    for idx, item in enumerate(unique, start=1):
+    for idx, item in enumerate(diverse, start=1):
         solution = item["solution"]
         metrics = solution.get("metrics", {})
-        route_data = build_route_payload(solution, spots=spots, days=days, per_day=3)
+        route_data = build_route_payload(solution, spots=spots, days=days)
         budget_ratio = (metrics.get("cost", 0) / budget * 100) if budget > 0 else 0.0
-        crowd_score = max(0.0, 100.0 - min(100.0, metrics.get("hotness", 0) * 10))
+        crowd_score = max(0.0, 100.0 - min(100.0, metrics.get("hotness", 0) * CROWD_SCALE))
         pref_match = max(
             0.0,
             min(
@@ -123,7 +129,6 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
                     "preference_match_pct": round(pref_match, 1),
                     "crowd_avoid_score": round(crowd_score, 1),
                 },
-                # 预算可行性数据（trip_type 选方案时再结合计算）
                 "ticket_cost": round(metrics.get("cost", 0)),
                 "remaining": round(max(0.0, budget - metrics.get("cost", 0))),
             }
@@ -212,7 +217,7 @@ def generate_ai_nsga2_route(request):
                 }
             )
 
-    pareto_set, route_len = run_nsga2(spots=candidates, days=days, budget=budget, per_day=3, pop_size=40, generations=50)
+    pareto_set, route_len = run_nsga2(spots=candidates, days=days, budget=budget)
     if not pareto_set:
         return JsonResponse({"code": 400, "message": "未找到满足预算的可行路线，请提高预算或减少天数", "data": None})
 
@@ -223,7 +228,7 @@ def generate_ai_nsga2_route(request):
     token = str(uuid.uuid4())
     PLAN_CACHE[token] = {
         "cache_key": cache_key,
-        "expires_at": now + PLAN_CACHE_TTL_SECONDS,
+        "expires_at": now + PLAN_CACHE_TTL,
         "city": city,
         "season": season,
         "days": days,
@@ -347,7 +352,7 @@ def select_ai_nsga2_plan(request):
             budget=float(cache_item.get("budget", 0) or 0),
         )
         knowledge_cards.extend(wiki_cards)
-    ai_text = call_ai_refiner(
+    ai_text = generate_ai_summary(
         city=cache_item["city"],
         season=cache_item["season"],
         days=cache_item["days"],
@@ -355,7 +360,7 @@ def select_ai_nsga2_plan(request):
         route_data=route_data,
         knowledge_cards=knowledge_cards,
     )
-    ai_html = call_ai_html_report(
+    ai_html = generate_html_report(
         city=cache_item["city"],
         season=cache_item["season"],
         days=cache_item["days"],

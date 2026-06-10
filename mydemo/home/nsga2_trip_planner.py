@@ -4,6 +4,12 @@ import re
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
+from home.config import (
+    GENERATIONS,
+    MUTATION_RATE,
+    POPULATION_SIZE,
+    SPOTS_PER_DAY,
+)
 from home.data_utils import _haversine_km, _season_bonus
 
 # import family
@@ -204,7 +210,7 @@ def _ordered_crossover(parent_a: List[int], parent_b: List[int]) -> List[int]:
     return child
 
 
-def _mutate(route_indices: List[int], candidate_count: int, mutation_rate: float = 0.2) -> List[int]:
+def _mutate(route_indices: List[int], candidate_count: int, mutation_rate: float = MUTATION_RATE) -> List[int]:
     result = route_indices[:]
     if random.random() < mutation_rate and len(result) > 1:
         i, j = random.sample(range(len(result)), 2)
@@ -265,9 +271,9 @@ def run_nsga2(
     spots: List[ScenicSpot],
     days: int,
     budget: float,
-    per_day: int = 3,
-    pop_size: int = 40,
-    generations: int = 50,
+    per_day: int = SPOTS_PER_DAY,
+    pop_size: int = POPULATION_SIZE,
+    generations: int = GENERATIONS,
 ) -> Tuple[List[Dict], int]:
     route_len = min(days * per_day, len(spots))
     if route_len <= 1:
@@ -330,7 +336,7 @@ def choose_solution(pareto_set: List[Dict], sensitivities: Dict[str, float], bud
     return pareto_set[best_idx]
 
 
-def build_route_payload(best_solution: Dict, spots: List[ScenicSpot], days: int, per_day: int = 3) -> List[Dict]:
+def build_route_payload(best_solution: Dict, spots: List[ScenicSpot], days: int, per_day: int = SPOTS_PER_DAY) -> List[Dict]:
     if not best_solution:
         return []
     route = best_solution["route"]

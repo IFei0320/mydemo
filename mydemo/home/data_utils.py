@@ -27,9 +27,9 @@ _CITY_TIER_TABLE: Dict[str, str] = {
 }
 
 _TIER_PARAMS = {
-    "H": {"meal": 35, "hotel": 250, "transport": 30},   # 日合计约 350
-    "M": {"meal": 25, "hotel": 150, "transport": 20},   # 日合计约 220
-    "L": {"meal": 15, "hotel": 80,  "transport": 15},   # 日合计约 130
+    "H": {"meal": 35, "hotel": 250, "transport": 30},
+    "M": {"meal": 25, "hotel": 150, "transport": 20},
+    "L": {"meal": 15, "hotel": 80,  "transport": 15},
 }
 
 
@@ -40,27 +40,40 @@ def get_city_tier(city: str) -> str:
 
 
 def compute_living_budget(tier: str, days: int, trip_type: str = "overnight") -> Dict:
-    """计算每日生活参考预算。trip_type: overnight(过夜游) / daytrip(当日往返) / local(本地)"""
+    """按城市档位和行程类型估算单人每日生活成本（餐饮+住宿+交通）。
+
+    Args:
+        tier: 城市消费档位，H(高)/M(中)/L(低)
+        days: 行程天数
+        trip_type: overnight(过夜游含住宿) / daytrip(当日往返) / local(本地已有住处)
+
+    Returns:
+        tier_label: 档位中文名
+        meal_per_meal: 每顿正餐参考价(元)
+        hotel_per_night: 每晚住宿参考价(元)
+        transport_per_day: 每日市内交通参考价(元)
+        daily_living: 日均生活成本(元)
+        total_living: 全程生活成本合计(元)
+        hotel_nights: 住宿晚数
+    """
+    from home.config import MEALS_PER_DAY, TIER_LABELS
+
     params = _TIER_PARAMS.get(tier, _TIER_PARAMS["M"])
-    meal_per_day = params["meal"] * 2.5    # 一日 2.5 顿正餐
+    meal_per_day = params["meal"] * MEALS_PER_DAY
     transport_per_day = params["transport"]
 
-    if trip_type == "daytrip":
+    if trip_type in ("daytrip", "local"):
+        hotel_nights = 0
         daily = meal_per_day + transport_per_day
         total = daily * days
-        hotel_nights = 0
-    elif trip_type == "local":
-        daily = meal_per_day + transport_per_day
-        total = daily * days
-        hotel_nights = 0
-    else:  # overnight（默认）
-        hotel_nights = max(0, days - 1)     # 首日不需要前一晚住宿
+    else:
+        hotel_nights = max(0, days - 1)
         daily = meal_per_day + transport_per_day
         total = daily * days + params["hotel"] * hotel_nights
 
     return {
         "tier": tier,
-        "tier_label": {"H": "高消费", "M": "中等消费", "L": "低消费"}.get(tier, "中等消费"),
+        "tier_label": TIER_LABELS.get(tier, "中等消费"),
         "meal_per_meal": params["meal"],
         "hotel_per_night": params["hotel"],
         "transport_per_day": transport_per_day,
@@ -70,30 +83,41 @@ def compute_living_budget(tier: str, days: int, trip_type: str = "overnight") ->
     }
 
 
-def assess_feasibility(remaining: float, total_living: float) -> Dict:
-    """根据剩余预算和生活参考预算判定可行性"""
-    if total_living <= 0:
+def assess_feasibility(budget: float, total_estimate: float) -> Dict:
+    """判定门票预算能否覆盖全程预估（门票 + 食宿交通）。
+
+    Args:
+        budget: 用户输入的门票预算
+        total_estimate: 门票实际 + 食宿交通预估的合计
+
+    Returns:
+        level: insufficient(不足) / tight(偏紧) / sufficient(充裕)
+        label: 中文标签
+        css_class: 前端样式类
+        ratio: 覆盖率(budget / total_estimate)
+        gap: 缺口(负数为不足金额，正数为余量)
+    """
+    from home.config import FEASIBILITY_MAP
+
+    if total_estimate <= 0:
         ratio = 1.0
     else:
-        ratio = remaining / total_living
+        ratio = budget / total_estimate
+
     if ratio < 0.6:
         level = "insufficient"
-        label = "预算不足"
-        css_class = "badge-red"
     elif ratio < 1.0:
         level = "tight"
-        label = "预算偏紧"
-        css_class = "badge-orange"
     else:
         level = "sufficient"
-        label = "预算充裕"
-        css_class = "badge-green"
+
+    info = FEASIBILITY_MAP[level]
     return {
         "level": level,
-        "label": label,
-        "css_class": css_class,
+        "label": info["label"],
+        "css_class": info["css_class"],
         "ratio": round(ratio, 2),
-        "gap": round(remaining - total_living),
+        "gap": round(budget - total_estimate),
     }
 
 SEASON_KEYWORDS = {
@@ -178,6 +202,17 @@ def _normalize_coord_pair(lon_raw, lat_raw) -> Tuple[float, float]:
         return lat, lon
     
     return 0.0, 0.0
+
+
+def dedup_by_name(queryset):
+    """按 name 去重，保留排在前面的那条（先 order_by 再调用）"""
+    seen = set()
+    result = []
+    for obj in queryset:
+        if obj.name not in seen:
+            seen.add(obj.name)
+            result.append(obj)
+    return result
 
 
 def _season_bonus(tags: str, season: str) -> float:
