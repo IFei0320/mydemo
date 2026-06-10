@@ -8,7 +8,6 @@ MUTATION_RATE = 0.2       # 变异概率
 PLAN_CACHE_TTL = 600      # 方案缓存有效期（秒）
 RECENT_PLAN_LIMIT = 12    # 最近方案记录上限
 BUDGET_TARGET_RATIO = 0.75  # 均衡型方案的目标预算利用率
-CROWD_SCALE = 10          # 热度 → 拥挤度的缩放因子
 
 # ── AI 调用参数 ────────────────────────────────────────────────────
 AI_MODEL = "deepseek-v4-flash"

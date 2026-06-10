@@ -1,65 +1,65 @@
 [
   {
     "generations": 5,
-    "avg_hv": 0.02981085526315794,
+    "avg_hv": 0.0422727272727273,
     "feasible_rate": 0.125,
-    "avg_pareto_count": 0.75,
-    "avg_runtime": 0.08453116249984305
+    "avg_pareto_count": 0.625,
+    "avg_runtime": 0.08445241249864921
   },
   {
     "generations": 10,
-    "avg_hv": 0.319662291933419,
+    "avg_hv": 0.35976277372262805,
     "feasible_rate": 0.375,
-    "avg_pareto_count": 1.125,
-    "avg_runtime": 0.1711071500030812
+    "avg_pareto_count": 1,
+    "avg_runtime": 0.17000471249957627
   },
   {
     "generations": 15,
-    "avg_hv": 0.5108590707138025,
+    "avg_hv": 0.5123331916028443,
     "feasible_rate": 0.875,
-    "avg_pareto_count": 9.625,
-    "avg_runtime": 0.24680888749935548
+    "avg_pareto_count": 8.125,
+    "avg_runtime": 0.29095362500083866
   },
   {
     "generations": 20,
-    "avg_hv": 0.5419400008802576,
+    "avg_hv": 0.5170938822352455,
     "feasible_rate": 1.0,
-    "avg_pareto_count": 24,
-    "avg_runtime": 0.3494817500031786
+    "avg_pareto_count": 14.5,
+    "avg_runtime": 0.351832349999313
   },
   {
     "generations": 30,
-    "avg_hv": 0.6491426855000307,
+    "avg_hv": 0.5890306570041768,
     "feasible_rate": 1.0,
-    "avg_pareto_count": 33.25,
-    "avg_runtime": 0.5475942250013759
+    "avg_pareto_count": 25.875,
+    "avg_runtime": 0.5852208499945846
   },
   {
     "generations": 40,
-    "avg_hv": 0.5174264001672074,
+    "avg_hv": 0.6455416865916359,
     "feasible_rate": 1.0,
-    "avg_pareto_count": 34.25,
-    "avg_runtime": 0.7281180250029138
+    "avg_pareto_count": 24,
+    "avg_runtime": 0.7908155499990244
   },
   {
     "generations": 50,
-    "avg_hv": 0.579849475287406,
+    "avg_hv": 0.4887036760454711,
     "feasible_rate": 1.0,
-    "avg_pareto_count": 39.75,
-    "avg_runtime": 0.9623401624994585
+    "avg_pareto_count": 36.25,
+    "avg_runtime": 1.017477700002928
   },
   {
     "generations": 70,
-    "avg_hv": 0.5612945389667319,
+    "avg_hv": 0.5901638241357995,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 1.384893775002638
+    "avg_runtime": 1.46831223749723
   },
   {
     "generations": 100,
-    "avg_hv": 0.5938618258775309,
+    "avg_hv": 0.5968972503745495,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 2.0068531000015355
+    "avg_runtime": 2.1290614624995214
   }
 ]

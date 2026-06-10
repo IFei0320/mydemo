@@ -8,7 +8,6 @@ from django.views.decorators.http import require_POST
 
 from home.config import (
     BUDGET_TARGET_RATIO,
-    CROWD_SCALE,
     PLAN_CACHE_TTL,
     RECENT_PLAN_LIMIT,
     SPOTS_PER_DAY,
@@ -105,7 +104,6 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
         metrics = solution.get("metrics", {})
         route_data = build_route_payload(solution, spots=spots, days=days)
         budget_ratio = (metrics.get("cost", 0) / budget * 100) if budget > 0 else 0.0
-        crowd_score = max(0.0, 100.0 - min(100.0, metrics.get("hotness", 0) * CROWD_SCALE))
         pref_match = max(
             0.0,
             min(
@@ -127,7 +125,6 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
                 "explain": {
                     "budget_usage_pct": round(budget_ratio, 1),
                     "preference_match_pct": round(pref_match, 1),
-                    "crowd_avoid_score": round(crowd_score, 1),
                 },
                 "ticket_cost": round(metrics.get("cost", 0)),
                 "remaining": round(max(0.0, budget - metrics.get("cost", 0))),
@@ -189,7 +186,6 @@ def generate_ai_nsga2_route(request):
         "distance": float(data.get("distance_sensitivity", 50)) / 100.0,
         "hotness": float(data.get("hotness_preference", 50)) / 100.0,
         "rating": float(data.get("rating_preference", 50)) / 100.0,
-        "crowd_avoid": float(data.get("crowd_avoidance", 50)) / 100.0,
     }
 
     candidates = build_candidates(city=city, season=season)
@@ -263,7 +259,6 @@ def generate_ai_nsga2_route(request):
             "distance_sensitivity": int(sensitivities["distance"] * 100),
             "hotness_preference": int(sensitivities["hotness"] * 100),
             "rating_preference": int(sensitivities["rating"] * 100),
-            "crowd_avoidance": int(sensitivities["crowd_avoid"] * 100),
             "created_at": int(now),
             "options_preview": PLAN_CACHE[token]["options_preview"],
         },

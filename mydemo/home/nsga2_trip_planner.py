@@ -100,13 +100,11 @@ def _evaluate_route(route_indices: List[int], spots: List[ScenicSpot], per_day: 
     costs = [spots[idx].cost for idx in route_indices]
     ratings = [spots[idx].rating for idx in route_indices]
     hotness = [spots[idx].hotness for idx in route_indices]
-    reviews = [math.log1p(spots[idx].reviews) for idx in route_indices]
     return {
         "cost": sum(costs),
         "distance": _route_distance_km(route_indices, spots, per_day),
         "rating": sum(ratings) / len(ratings),
         "hotness": sum(hotness) / len(hotness),
-        "reviews": sum(reviews) / len(reviews),
     }
 
 
@@ -238,15 +236,15 @@ def _evaluate_population(population: List[Dict], spots: List[ScenicSpot], per_da
         metrics = _evaluate_route(item["route"], spots, per_day)
         feasible = metrics["cost"] <= budget if budget > 0 else True
         if feasible:
+            experience = 0.6 * metrics["rating"] + 0.4 * metrics["hotness"]
             objectives = [
                 metrics["cost"],
                 metrics["distance"],
-                -metrics["rating"],
-                -metrics["hotness"],
+                -experience,
             ]
         else:
             penalty = metrics["cost"] - budget if budget > 0 else metrics["cost"]
-            objectives = [1e9 + penalty, 1e9, 1e9, 1e9]
+            objectives = [1e9 + penalty, 1e9, 1e9]
         item["metrics"] = metrics
         item["feasible"] = feasible
         item["objectives"] = objectives
@@ -314,7 +312,6 @@ def choose_solution(pareto_set: List[Dict], sensitivities: Dict[str, float], bud
     n_distance = _normalize(distances)
     n_hot = _normalize(hotness)
     n_rating = _normalize(ratings)
-    n_crowd = n_hot[:]  # 热度越高，人流越大
     spend_target = 0.75 if budget > 0 else 0.0
 
     best_idx = 0
@@ -327,7 +324,6 @@ def choose_solution(pareto_set: List[Dict], sensitivities: Dict[str, float], bud
             + sensitivities["distance"] * n_distance[i]
             - sensitivities["hotness"] * n_hot[i]
             - sensitivities["rating"] * n_rating[i]
-            + sensitivities["crowd_avoid"] * n_crowd[i]
             + 0.15 * spend_gap
         )
         if utility < best_score:

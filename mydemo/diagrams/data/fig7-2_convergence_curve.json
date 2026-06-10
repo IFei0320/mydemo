@@ -25,38 +25,38 @@
   },
   {
     "generations": 15,
-    "avg_hv": 0.28962277260601765,
+    "avg_hv": 0.28997334682468845,
     "feasible_rate": 0.8,
-    "avg_best_cost": 257.65
+    "avg_best_cost": 257.3875
   },
   {
     "generations": 20,
-    "avg_hv": 0.6005811982394199,
+    "avg_hv": 0.6014980100946242,
     "feasible_rate": 1.0,
-    "avg_best_cost": 235.35
+    "avg_best_cost": 238.13
   },
   {
     "generations": 25,
-    "avg_hv": 0.5445237292234304,
+    "avg_hv": 0.5680029217961842,
     "feasible_rate": 1.0,
-    "avg_best_cost": 222.24
+    "avg_best_cost": 219.5
   },
   {
     "generations": 30,
-    "avg_hv": 0.5882593893261084,
+    "avg_hv": 0.508713795420992,
     "feasible_rate": 1.0,
-    "avg_best_cost": 212.03
+    "avg_best_cost": 213.74
   },
   {
     "generations": 40,
-    "avg_hv": 0.5988048259468445,
+    "avg_hv": 0.5294732430715148,
     "feasible_rate": 1.0,
-    "avg_best_cost": 199.64
+    "avg_best_cost": 203.08
   },
   {
     "generations": 50,
-    "avg_hv": 0.5837538571387587,
+    "avg_hv": 0.5323362791920448,
     "feasible_rate": 1.0,
-    "avg_best_cost": 190.81
+    "avg_best_cost": 199.68
   }
 ]

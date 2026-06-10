@@ -3,7 +3,6 @@ const sliderPairs = [
     ["distanceSensitivity", "distanceVal"],
     ["hotnessPreference", "hotnessVal"],
     ["ratingPreference", "ratingVal"],
-    ["crowdAvoidance", "crowdVal"],
 ];
 sliderPairs.forEach(([sliderId, labelId]) => {
     const slider = document.getElementById(sliderId);
@@ -355,8 +354,6 @@ function renderRecent(recentPlans) {
                 $("#hotnessVal").text(p.hotness_preference);
                 $("#ratingPreference").val(p.rating_preference);
                 $("#ratingVal").text(p.rating_preference);
-                $("#crowdAvoidance").val(p.crowd_avoidance);
-                $("#crowdVal").text(p.crowd_avoidance);
             }
             $("#resultPanel").hide();
             $("#top3Panel").hide();
@@ -419,10 +416,6 @@ function renderTop3(options) {
                         <small>偏好匹配度</small>
                         <span class="plan-badge badge-green">${metricValue(e.preference_match_pct,1)}%</span>
                     </div>
-                    <div class="plan-metric">
-                        <small>拥挤规避分</small>
-                        <span class="plan-badge badge-purple">${metricValue(e.crowd_avoid_score,1)}</span>
-                    </div>
                     <button class="glass-btn glass-btn-primary select-plan-btn" data-option-id="${option.option_id}" style="width: 100%; margin-top: 12px;">
                         <i class="fas fa-check-circle mr-1"></i>选择此方案并生成地图/AI报告
                     </button>
@@ -451,7 +444,6 @@ function renderSelectedPlan(data, payload) {
     $("#selectedAdvantage").text(data.advantage || "-");
     $("#budgetUsagePct").text(metricValue((data.explain || {}).budget_usage_pct, 1) + "%");
     $("#prefMatchPct").text(metricValue((data.explain || {}).preference_match_pct, 1) + "%");
-    $("#crowdAvoidScore").text(metricValue((data.explain || {}).crowd_avoid_score, 1));
     $("#aiSummary").text((data.ai_summary || "暂无 AI 攻略").replace(/\*/g, ""));
     const kb = data.knowledge_breakdown || {};
     const useWiki = !!kb.use_wiki_knowledge;
@@ -539,7 +531,6 @@ $("#generateBtn").on("click", function () {
         distance_sensitivity: parseInt($("#distanceSensitivity").val(), 10),
         hotness_preference: parseInt($("#hotnessPreference").val(), 10),
         rating_preference: parseInt($("#ratingPreference").val(), 10),
-        crowd_avoidance: parseInt($("#crowdAvoidance").val(), 10),
     };
 
     $.ajax({
