@@ -1,11 +1,100 @@
 """
 数据解析和处理工具函数
 
-包含景点数据解析、坐标处理、距离计算等通用工具函数。
+包含景点数据解析、坐标处理、距离计算、城市消费档位等通用工具函数。
 """
 import math
 import re
-from typing import Tuple
+from typing import Dict, Tuple
+
+# ── 城市消费档位参数表 ──────────────────────────────────────────────
+# 档位由城市经济发展水平、旅游消费指数综合判定，用于估算每日生活成本。
+# 餐费按每顿正餐估算，住宿按经济型单人每晚，交通按市内日均。
+
+_CITY_TIER_TABLE: Dict[str, str] = {
+    # H 档：一线/超一线城市，消费较高
+    "北京": "H", "上海": "H", "深圳": "H", "广州": "H",
+    # M 档：新一线/省会/热门旅游城市
+    "杭州": "M", "南京": "M", "成都": "M", "重庆": "M",
+    "武汉": "M", "西安": "M", "长沙": "M", "厦门": "M",
+    "苏州": "M", "天津": "M", "青岛": "M", "大连": "M",
+    "三亚": "M", "丽江": "M", "昆明": "M", "哈尔滨": "M",
+    # L 档：二三线城市，消费较低
+    "济南": "L", "洛阳": "L", "开封": "L", "南昌": "L",
+    "贵阳": "L", "兰州": "L", "银川": "L", "桂林": "L",
+    "镇江": "L", "扬州": "L", "绍兴": "L", "九江": "L",
+    "黄山": "L", "张家界": "L", "拉萨": "L", "呼和浩特": "L",
+}
+
+_TIER_PARAMS = {
+    "H": {"meal": 35, "hotel": 250, "transport": 30},   # 日合计约 350
+    "M": {"meal": 25, "hotel": 150, "transport": 20},   # 日合计约 220
+    "L": {"meal": 15, "hotel": 80,  "transport": 15},   # 日合计约 130
+}
+
+
+def get_city_tier(city: str) -> str:
+    """根据城市名返回消费档位 H/M/L，未收录城市默认 M"""
+    key = (city or "").replace("市", "").strip()
+    return _CITY_TIER_TABLE.get(key, "M")
+
+
+def compute_living_budget(tier: str, days: int, trip_type: str = "overnight") -> Dict:
+    """计算每日生活参考预算。trip_type: overnight(过夜游) / daytrip(当日往返) / local(本地)"""
+    params = _TIER_PARAMS.get(tier, _TIER_PARAMS["M"])
+    meal_per_day = params["meal"] * 2.5    # 一日 2.5 顿正餐
+    transport_per_day = params["transport"]
+
+    if trip_type == "daytrip":
+        daily = meal_per_day + transport_per_day
+        total = daily * days
+        hotel_nights = 0
+    elif trip_type == "local":
+        daily = meal_per_day + transport_per_day
+        total = daily * days
+        hotel_nights = 0
+    else:  # overnight（默认）
+        hotel_nights = max(0, days - 1)     # 首日不需要前一晚住宿
+        daily = meal_per_day + transport_per_day
+        total = daily * days + params["hotel"] * hotel_nights
+
+    return {
+        "tier": tier,
+        "tier_label": {"H": "高消费", "M": "中等消费", "L": "低消费"}.get(tier, "中等消费"),
+        "meal_per_meal": params["meal"],
+        "hotel_per_night": params["hotel"],
+        "transport_per_day": transport_per_day,
+        "daily_living": round(total / days) if days > 0 else 0,
+        "total_living": round(total),
+        "hotel_nights": hotel_nights,
+    }
+
+
+def assess_feasibility(remaining: float, total_living: float) -> Dict:
+    """根据剩余预算和生活参考预算判定可行性"""
+    if total_living <= 0:
+        ratio = 1.0
+    else:
+        ratio = remaining / total_living
+    if ratio < 0.6:
+        level = "insufficient"
+        label = "预算不足"
+        css_class = "badge-red"
+    elif ratio < 1.0:
+        level = "tight"
+        label = "预算偏紧"
+        css_class = "badge-orange"
+    else:
+        level = "sufficient"
+        label = "预算充裕"
+        css_class = "badge-green"
+    return {
+        "level": level,
+        "label": label,
+        "css_class": css_class,
+        "ratio": round(ratio, 2),
+        "gap": round(remaining - total_living),
+    }
 
 SEASON_KEYWORDS = {
     "spring": ["花", "樱", "桃", "杜鹃", "踏青"],

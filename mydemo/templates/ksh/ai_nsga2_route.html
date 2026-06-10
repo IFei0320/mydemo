@@ -20,8 +20,8 @@
         <div class="glass-page-header">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <h5><i class="fas fa-dna" style="color: #8b7fd4;"></i>NSGA-II 算法 + AI 智能路线</h5>
-                    <p><i class="fas fa-robot mr-1"></i>多目标优化生成路线，并由 AI 生成详细攻略</p>
+                    <h5><i class="fas fa-route" style="color: #8b7fd4;"></i>AI 智能路线规划</h5>
+                    <p><i class="fas fa-robot mr-1"></i>设置偏好，自动生成行程方案与详细攻略</p>
                 </div>
                 <ul class="glass-breadcrumb">
                     <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i></a></li>
@@ -36,7 +36,7 @@
                 <div class="glass-card-header">
                     <div>
                         <h5><i class="fas fa-history" style="color: #a0aec0;"></i>最近方案记录</h5>
-                        <small>10分钟缓存可复现，点击直接恢复</small>
+                        <small>近期生成过的方案，点击可直接查看</small>
                     </div>
                 </div>
                 <div class="glass-card-body">
@@ -50,7 +50,7 @@
             <div class="glass-card-header">
                 <div>
                     <h5><i class="fas fa-sliders-h" style="color: #4c6ef5;"></i>参数设置</h5>
-                    <small>配置城市、预算与偏好权重</small>
+                    <small>选择目的地，调整出行偏好</small>
                 </div>
             </div>
             <div class="glass-card-body">
@@ -70,7 +70,7 @@
                             </select>
                         </div>
                         <div class="input-wrapper">
-                            <label class="glass-label"><i class="fas fa-wallet mr-1" style="color: #e07a7a;"></i>预算(元)</label>
+                            <label class="glass-label"><i class="fas fa-wallet mr-1" style="color: #e07a7a;"></i>门票预算(包括出行)</label>
                             <input id="budget" type="number" min="0" value="2000" class="glass-input">
                         </div>
                         <div class="input-wrapper">
@@ -79,7 +79,7 @@
                         </div>
                         <div>
                             <button type="button" id="generateBtn" class="glass-btn glass-btn-primary" style="width: 100%;">
-                                <i class="fas fa-magic mr-1"></i>生成算法路线
+                                <i class="fas fa-magic mr-1"></i>生成路线方案
                             </button>
                         </div>
                     </div>
@@ -88,28 +88,28 @@
                         <label class="glass-check">
                             <input type="checkbox" id="useWikiKnowledge">
                             <span class="check-box"><i class="fas fa-check check-icon"></i></span>
-                            <span>启用 Wiki 知识增强（默认关闭，保持原 JSON 逻辑）</span>
+                            <span>同时参考网络攻略（勾选后信息更丰富）</span>
                         </label>
                     </div>
 
                     <div class="slider-row">
                         <div class="slider-group">
                             <div class="slider-label">
-                                <span><i class="fas fa-tag mr-1" style="color: #8b7fd4;"></i>价格敏感度</span>
+                                <span><i class="fas fa-tag mr-1" style="color: #8b7fd4;"></i>省钱优先</span>
                                 <span id="priceVal" class="slider-val">50</span>
                             </div>
                             <input id="priceSensitivity" type="range" min="0" max="100" value="50" class="glass-range">
                         </div>
                         <div class="slider-group">
                             <div class="slider-label">
-                                <span><i class="fas fa-route mr-1" style="color: #5dbea3;"></i>路程敏感度</span>
+                                <span><i class="fas fa-route mr-1" style="color: #5dbea3;"></i>少走路</span>
                                 <span id="distanceVal" class="slider-val">50</span>
                             </div>
                             <input id="distanceSensitivity" type="range" min="0" max="100" value="50" class="glass-range">
                         </div>
                         <div class="slider-group">
                             <div class="slider-label">
-                                <span><i class="fas fa-fire mr-1" style="color: #e07a7a;"></i>热度偏好</span>
+                                <span><i class="fas fa-fire mr-1" style="color: #e07a7a;"></i>热门景点</span>
                                 <span id="hotnessVal" class="slider-val">50</span>
                             </div>
                             <input id="hotnessPreference" type="range" min="0" max="100" value="50" class="glass-range">
@@ -119,14 +119,14 @@
                     <div class="slider-row-2" style="margin-top: 16px;">
                         <div class="slider-group">
                             <div class="slider-label">
-                                <span><i class="fas fa-star mr-1" style="color: #6bb3d9;"></i>评分偏好</span>
+                                <span><i class="fas fa-star mr-1" style="color: #6bb3d9;"></i>高评分优先</span>
                                 <span id="ratingVal" class="slider-val">50</span>
                             </div>
                             <input id="ratingPreference" type="range" min="0" max="100" value="50" class="glass-range">
                         </div>
                         <div class="slider-group">
                             <div class="slider-label">
-                                <span><i class="fas fa-users mr-1" style="color: #e0a96d;"></i>拥挤规避</span>
+                                <span><i class="fas fa-users mr-1" style="color: #e0a96d;"></i>避开人多</span>
                                 <span id="crowdVal" class="slider-val">50</span>
                             </div>
                             <input id="crowdAvoidance" type="range" min="0" max="100" value="50" class="glass-range">
@@ -142,8 +142,8 @@
             <div class="glass-card">
                 <div class="glass-card-header">
                     <div>
-                        <h5><i class="fas fa-trophy" style="color: #feca57;"></i>Top3 候选方案</h5>
-                        <small>先选方案，再生成地图与AI报告</small>
+                        <h5><i class="fas fa-trophy" style="color: #feca57;"></i>为你推荐三个方案</h5>
+                        <small>选择一个方案，查看地图与详细攻略</small>
                     </div>
                 </div>
                 <div class="glass-card-body">
@@ -162,7 +162,7 @@
                             <h5><i class="fas fa-map-marked-alt" style="color: #4c6ef5;"></i>路线地图</h5>
                             <small>按天分色 + 连线导航</small>
                         </div>
-                        <span class="live-badge">实时渲染</span>
+                        <span class="live-badge">实时地图</span>
                     </div>
                     <div style="padding: 0;">
                         <div id="routeMap" style="height: 520px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
@@ -173,8 +173,8 @@
                 <div class="glass-card">
                     <div class="glass-card-header">
                         <div>
-                            <h5><i class="fas fa-chart-pie" style="color: #6bb3d9;"></i>算法统计</h5>
-                            <small>NSGA-II 多目标优化指标</small>
+                            <h5><i class="fas fa-chart-pie" style="color: #6bb3d9;"></i>行程概览</h5>
+                            <small>本次行程关键数据</small>
                         </div>
                     </div>
                     <div class="glass-card-body">
@@ -189,21 +189,36 @@
                             <div class="stat-item">
                                 <div class="stat-icon stat-icon-green"><i class="fas fa-project-diagram"></i></div>
                                 <div class="stat-info">
-                                    <small>Pareto 解集规模</small>
+                                    <small>备选路线数</small>
                                     <h5 id="paretoSize">-</h5>
                                 </div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-icon stat-icon-red"><i class="fas fa-coins"></i></div>
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-ticket-alt"></i></div>
                                 <div class="stat-info">
-                                    <small>总花费</small>
-                                    <h5 id="totalCost">-</h5>
+                                    <small>门票合计</small>
+                                    <h5 id="ticketCost">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-orange"><i class="fas fa-wallet"></i></div>
+                                <div class="stat-info">
+                                    <small>食宿交通参考</small>
+                                    <h5 id="budgetRemaining">-</h5>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div class="stat-info">
+                                    <small>预算评估</small>
+                                    <h5 id="feasibilityLabel" style="font-size: 13px;">-</h5>
+                                    <small id="feasibilityDetail" style="font-size: 11px; color: #a0aec0;"></small>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-icon stat-icon-purple"><i class="fas fa-road"></i></div>
                                 <div class="stat-info">
-                                    <small>路线距离指标</small>
+                                    <small>预计总路程</small>
                                     <h5 id="totalDistance">-</h5>
                                 </div>
                             </div>
@@ -217,21 +232,21 @@
                             <div class="stat-item">
                                 <div class="stat-icon stat-icon-orange"><i class="fas fa-percentage"></i></div>
                                 <div class="stat-info">
-                                    <small>预算利用率</small>
+                                    <small>门票占比</small>
                                     <h5 id="budgetUsagePct">-</h5>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-icon stat-icon-green"><i class="fas fa-bullseye"></i></div>
                                 <div class="stat-info">
-                                    <small>偏好匹配度</small>
+                                    <small>综合匹配度</small>
                                     <h5 id="prefMatchPct">-</h5>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-icon stat-icon-red"><i class="fas fa-user-shield"></i></div>
                                 <div class="stat-info">
-                                    <small>拥挤规避分</small>
+                                    <small>舒适度</small>
                                     <h5 id="crowdAvoidScore">-</h5>
                                 </div>
                             </div>
@@ -245,14 +260,14 @@
                 <div class="glass-card-header">
                     <div>
                         <h5><i class="fas fa-robot" style="color: #4c6ef5;"></i>AI 详细攻略</h5>
-                        <small>基于大模型的智能行程分析与建议</small>
+                        <small>每日详细安排与出行建议</small>
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <button id="previewHtmlReportBtn" type="button" class="glass-btn glass-btn-sm" disabled>
-                            <i class="fas fa-eye mr-1"></i>预览HTML报告
+                            <i class="fas fa-eye mr-1"></i>预览完整报告
                         </button>
                         <button id="downloadHtmlReportBtn" type="button" class="glass-btn glass-btn-sm glass-btn-primary" disabled>
-                            <i class="fas fa-download mr-1"></i>下载HTML报告
+                            <i class="fas fa-download mr-1"></i>下载完整报告
                         </button>
                         <button id="exportDidaBtn" type="button" class="glass-btn glass-btn-sm" style="background: #feca57; color: #744210;" disabled>
                             <i class="fas fa-list-check mr-1"></i>添加到滴答清单
@@ -269,13 +284,13 @@
                 <div class="glass-card-header">
                     <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                         <div>
-                            <h5><i class="fas fa-database" style="color: #5dbea3;"></i>RAG本地知识卡命中</h5>
-                            <small>本地知识增强生成（JSON基线 + Wiki可选增强）</small>
+                            <h5><i class="fas fa-lightbulb" style="color: #5dbea3;"></i>实用贴士</h5>
+                            <small>根据你的行程匹配的出行提醒</small>
                         </div>
-                        <span id="wikiModeBadge" class="plan-badge badge-gray">Wiki: 关闭</span>
-                        <span id="jsonHitBadge" class="plan-badge badge-blue">JSON 0</span>
-                        <span id="wikiHitBadge" class="plan-badge badge-green">Wiki 0</span>
-                        <span class="plan-badge badge-purple">命中 <b id="knowledgeCount">0</b> 条</span>
+                        <span id="wikiModeBadge" class="plan-badge badge-gray">网络攻略: 关</span>
+                        <span id="jsonHitBadge" class="plan-badge badge-blue">基础贴士 0</span>
+                        <span id="wikiHitBadge" class="plan-badge badge-green">补充贴士 0</span>
+                        <span class="plan-badge badge-purple">共 <b id="knowledgeCount">0</b> 条</span>
                     </div>
                 </div>
                 <div class="glass-card-body">
@@ -287,8 +302,8 @@
             <div class="glass-card" style="margin-top: 24px;">
                 <div class="glass-card-header">
                     <div>
-                        <h5><i class="fas fa-list-ol" style="color: #6bb3d9;"></i>路线明细</h5>
-                        <small>逐景点详细行程数据</small>
+                        <h5><i class="fas fa-list-ol" style="color: #6bb3d9;"></i>行程明细</h5>
+                        <small>每日景点安排与花费</small>
                     </div>
                 </div>
                 <div class="glass-table-wrap">
@@ -314,7 +329,7 @@
 <!-- 状态提示 -->
 <div id="loading" class="glass-alert alert-info" style="display:none; margin-top: 24px;">
     <div class="spinner-border spinner-border-sm" role="status" style="border-color: currentColor; border-right-color: transparent;"></div>
-    <span><i class="fas fa-cog fa-spin mr-2"></i>正在执行 NSGA-II 进化与 AI 润色，请稍候...</span>
+    <span><i class="fas fa-cog fa-spin mr-2"></i>正在为你规划路线，请稍候...</span>
 </div>
 <div id="error" class="glass-alert alert-danger" style="display:none; margin-top: 24px;">
     <i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span>

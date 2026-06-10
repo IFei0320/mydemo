@@ -8,7 +8,12 @@ from pathlib import Path
 
 from django.template.loader import render_to_string
 
-from home.data_utils import _safe_float
+from home.data_utils import (
+    _safe_float,
+    assess_feasibility,
+    compute_living_budget,
+    get_city_tier,
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -21,18 +26,47 @@ def call_ai_refiner(
     route_data: List[Dict],
     knowledge_cards: List[Dict],
 ) -> str:
-    prompt = (
+    # 计算：门票预算 vs（门票实际 + 食宿交通预估）
+    ticket_cost = 0.0
+    for item in (route_data or []):
+        ticket_cost += _safe_float(item.get("estimated_cost", "免费"), 0.0)
+    tier = get_city_tier(city)
+    living = compute_living_budget(tier, days)
+    total_estimate = ticket_cost + living["total_living"]
+    feasibility = assess_feasibility(budget, total_estimate)
+
+    system_prompt = (
         "你是资深旅游策划师。请基于给定的结构化行程，输出详细攻略。"
         "要求：1) 按天分段；2) 每个景点说明亮点与游玩建议；3) 给出交通衔接建议；"
-        "4) 给出预算提醒和避坑建议；5) 用中文，结构清晰；"
-        "6) 只输出纯文本，不要 Markdown，不要星号，不要表格线；"
-        "7) 优先使用我提供的“本地知识卡（RAG）”，把最佳时段、预约提示、避坑点融入内容。"
+        "4) 根据提供的预算数据给出食宿交通花费提醒——直接引用我给你的数字，不要自己编造；"
+        "5) 当 feasibility 为 insufficient 时，明确指出：门票预算不足以覆盖全程（门票+食宿），"
+        "需额外预留食宿交通费用，给出具体建议（默认过夜游含住宿）；"
+        "6) 用中文，结构清晰，纯文本，不要 Markdown/星号/表格线；"
+        "7) 优先融入本地知识卡（RAG）中的最佳时段、预约提示、避坑点。"
     )
     user_content = {
         "city": city,
         "season": season,
         "days": days,
-        "budget": budget,
+        "门票预算": f"{budget:.0f} 元（用户只规划了门票开支）",
+        "门票实际": f"{ticket_cost:.0f} 元（NSGA-II 算法优化结果）",
+        "城市消费档位": f"{tier}档（{living['tier_label']}）",
+        "食宿交通参考": (
+            f"约 {living['total_living']:.0f} 元（{days}天过夜游，"
+            f"餐 {living['meal_per_meal']}元/顿×2.5顿 + 行 {living['transport_per_day']}元/天"
+            + (f" + 住 {living['hotel_per_night']}元/晚×{living['hotel_nights']}晚" if living['hotel_nights'] > 0 else "")
+            + "）"
+        ),
+        "全程预估合计": f"约 {total_estimate:.0f} 元（门票 + 食宿交通）",
+        "可行性": feasibility["label"],
+        "差距": f"{feasibility['gap']:.0f} 元" if feasibility["gap"] < 0 else "门票预算内可覆盖",
+        "提示": (
+            "全程预估已超出门票预算，请提醒用户：门票之外还需预留食宿交通费用。"
+            if feasibility["level"] == "insufficient" else
+            "门票预算偏紧，食宿交通需精打细算。"
+            if feasibility["level"] == "tight" else
+            "门票预算较充裕，食宿交通可按正常水平安排。"
+        ),
         "route": route_data,
         "local_knowledge_cards": knowledge_cards,
     }
@@ -45,7 +79,7 @@ def call_ai_refiner(
         response = client.chat.completions.create(
             model="deepseek-chat",
             messages=[
-                {"role": "system", "content": prompt},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": str(user_content)},
             ],
             max_tokens=3200,
@@ -54,7 +88,16 @@ def call_ai_refiner(
         )
         return response.choices[0].message.content or ""
     except Exception as exc:
-        return f"AI润色暂时不可用，已返回算法行程结果。错误信息：{exc}"
+        err = str(exc)
+        if "Connection" in err or "timeout" in err or "connect" in err.lower():
+            hint = "（网络不通：请检查 VPN 是否已开启，或 DeepSeek API 是否可达）"
+        elif "api_key" in err.lower() or "auth" in err.lower() or "401" in err or "403" in err:
+            hint = "（API 密钥无效或过期，请检查 .env 中 LLM_API_KEY）"
+        elif "insufficient" in err.lower() or "balance" in err.lower() or "402" in err:
+            hint = "（API 余额不足，请充值）"
+        else:
+            hint = "（请检查网络连接，若已开启 VPN 请确认节点可用）"
+        return f"AI润色暂时不可用。{hint} 原始错误：{err}"
 
 
 def call_ai_html_report(
@@ -69,6 +112,15 @@ def call_ai_html_report(
     route_data = route_data or []
     metrics = metrics or {}
     knowledge_cards = knowledge_cards or []
+
+    # 计算预算可行性：门票预算 vs（门票实际 + 食宿交通预估）
+    ticket_cost = 0.0
+    for item in route_data:
+        ticket_cost += _safe_float(item.get("estimated_cost", "免费"), 0.0)
+    tier = get_city_tier(city)
+    living = compute_living_budget(tier, days)
+    total_estimate = ticket_cost + living["total_living"]
+    feasibility = assess_feasibility(budget, total_estimate)
 
     day_groups: Dict[int, List[Dict]] = {}
     for row in route_data:
@@ -140,6 +192,7 @@ def call_ai_html_report(
         "days": days,
         "budget": budget,
         "total_cost": total_cost,
+        "ticket_cost": round(ticket_cost),
         "spot_count": len(route_data),
         "day_cards_html": "".join(day_cards_html),
         "traffic_html": traffic_html,
@@ -149,5 +202,16 @@ def call_ai_html_report(
         "budget_usage": budget_usage,
         "risk_class": risk_class,
         "risk_text": risk_text,
+        # 预算可行性数据
+        "tier": tier,
+        "tier_label": living["tier_label"],
+        "daily_living": living["daily_living"],
+        "total_living": living["total_living"],
+        "hotel_nights": living["hotel_nights"],
+        "meal_per_meal": living["meal_per_meal"],
+        "hotel_per_night": living["hotel_per_night"],
+        "transport_per_day": living["transport_per_day"],
+        "feasibility": feasibility,
+        "total_estimate": round(total_estimate),
     }
     return render_to_string("ksh/nsga2_report.html", context)

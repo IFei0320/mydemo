@@ -43,15 +43,47 @@
   <div class="wrap">
     <div class="header">
       <h1>{{ city }} {{ season }}出行报告</h1>
-      <p class="sub">基于NSGA-II多目标优化 + 本地知识库RAG增强，适合答辩展示与落地执行。</p>
+      <p class="sub">基于多目标优化算法自动生成，融合本地出行知识库，行程可落地执行。</p>
       <div class="grid">
         <div class="card"><div class="k">城市</div><div class="v">{{ city }}</div></div>
         <div class="card"><div class="k">季节</div><div class="v">{{ season }}</div></div>
         <div class="card"><div class="k">天数</div><div class="v">{{ days }} 天</div></div>
-        <div class="card"><div class="k">预算</div><div class="v">{{ budget|floatformat:2 }} 元</div></div>
-        <div class="card"><div class="k">预计花费</div><div class="v">{{ total_cost|floatformat:2 }} 元</div></div>
+        <div class="card"><div class="k">门票预算</div><div class="v">{{ budget|floatformat:0 }} 元</div></div>
+        <div class="card"><div class="k">门票实际</div><div class="v">{{ ticket_cost|floatformat:0 }} 元</div></div>
         <div class="card"><div class="k">景点数</div><div class="v">{{ spot_count }} 个</div></div>
+        <div class="card"><div class="k">城市档位</div><div class="v">{{ tier }}档 · {{ tier_label }}</div></div>
+        <div class="card"><div class="k">食宿交通参考</div><div class="v">{{ total_living|floatformat:0 }} 元</div></div>
+        <div class="card"><div class="k">全程预估</div><div class="v" style="color: {% if feasibility.level == 'insufficient' %}#dc2626{% elif feasibility.level == 'tight' %}#c05621{% else %}#16a34a{% endif %};">
+          {{ total_estimate|floatformat:0 }} 元
+        </div></div>
       </div>
+    </div>
+
+    <div class="section">
+      <h2>预算可行性分析</h2>
+      <table>
+        <thead><tr><th>项目</th><th>金额</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>门票预算</td><td>{{ budget|floatformat:0 }} 元</td><td>用户输入的景点门票预算上限</td></tr>
+          <tr><td>门票实际</td><td>{{ ticket_cost|floatformat:0 }} 元</td><td>系统自动优选后的景点门票总花费</td></tr>
+          <tr style="border-top: 2px solid #e5e7eb;"><td><b>城市消费参考</b></td><td colspan="2">{{ tier }}档 · {{ tier_label }}：餐 {{ meal_per_meal }} 元/顿，住 {{ hotel_per_night }} 元/晚，行 {{ transport_per_day }} 元/天</td></tr>
+          <tr><td>每日生活参考</td><td>约 {{ daily_living|floatformat:0 }} 元/天</td><td>含 2.5 顿正餐 + 市内交通{% if hotel_nights > 0 %} + 住宿{% endif %}（单人经济型）</td></tr>
+          <tr><td>{{ days }} 天食宿交通</td><td>约 {{ total_living|floatformat:0 }} 元</td><td>{% if hotel_nights > 0 %}{{ days }} 天{{ hotel_nights }} 晚住宿{% else %}不含住宿{% endif %}</td></tr>
+          <tr style="font-weight:700; background:#f3f4f6;"><td>全程预估合计</td><td>约 {{ total_estimate|floatformat:0 }} 元</td><td>门票 {{ ticket_cost }} + 食宿交通 {{ total_living }}</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 12px; padding: 10px 14px; border-radius: 8px; background: {% if feasibility.level == 'insufficient' %}#fef2f2{% elif feasibility.level == 'tight' %}#fffbeb{% else %}#f0fdf4{% endif %};">
+        <b>判定：</b><span style="color: {% if feasibility.level == 'insufficient' %}#dc2626{% elif feasibility.level == 'tight' %}#c05621{% else %}#16a34a{% endif %};">
+          {% if feasibility.gap < 0 %}
+            门票预算不足 —— 全程预估 {{ total_estimate }} 元，超出门票预算 {{ feasibility.gap|stringformat:"d"|cut:"-" }} 元，还需额外预留食宿交通费用
+          {% elif feasibility.gap > 0 %}
+            {{ feasibility.label }} —— 全程预估 {{ total_estimate }} 元，在门票预算 {{ budget }} 元以内
+          {% else %}
+            {{ feasibility.label }} —— 全程预估与门票预算基本持平
+          {% endif %}
+        </span>
+        <br><small style="color:#6b7280;">以上为单人经济型估算，不构成精确报价。实际花费因个人消费习惯而异。</small>
+      </p>
     </div>
 
     <div class="section">
@@ -66,7 +98,7 @@
     </div>
 
     <div class="section">
-      <h2>RAG本地知识卡（命中 {{ knowledge_count }} 条）</h2>
+      <h2>出行实用贴士（共 {{ knowledge_count }} 条）</h2>
       {{ knowledge_section|safe }}
     </div>
 
@@ -84,13 +116,26 @@
     <div class="section">
       <h2>预算明细</h2>
       <table>
-        <thead><tr><th>日期</th><th>预计花费</th></tr></thead>
+        <thead><tr><th>日期</th><th>门票花费</th></tr></thead>
         <tbody>{{ day_budget_rows|safe }}</tbody>
+        <tfoot>
+          <tr style="font-weight:700; background:#f3f4f6;">
+            <td>门票合计</td><td>{{ ticket_cost|floatformat:0 }} 元</td>
+          </tr>
+          <tr>
+            <td>生活参考（{{ days }}天）</td><td>约 {{ total_living|floatformat:0 }} 元</td>
+          </tr>
+          <tr style="font-weight:700; {% if feasibility.level == 'insufficient' %}color:#dc2626;{% endif %}">
+            <td>预估总花费</td><td>约 {{ total_estimate|floatformat:0 }} 元</td>
+          </tr>
+        </tfoot>
       </table>
       <p style="margin-top:10px;">
-        总计：<b>{{ total_cost|floatformat:2 }} 元</b>，
-        预算利用率：<b>{{ budget_usage|floatformat:1 }}%</b>，
-        风险评估：<span class="{{ risk_class }}">{{ risk_text }}</span>
+        门票预算利用率：<b>{{ budget_usage|floatformat:1 }}%</b>（门票实际 / 门票预算），
+        全程预估 <b>{{ total_estimate|floatformat:0 }} 元</b> = 门票 {{ ticket_cost }} + 食宿交通 {{ total_living }}
+      </p>
+      <p style="color:#6b7280; font-size:13px;">
+        注：门票为系统自动计算结果；餐饮/住宿/交通为城市{{ tier }}档（{{ tier_label }}）单人经济型参考，不含往返大交通。
       </p>
     </div>
 

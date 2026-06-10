@@ -317,7 +317,7 @@ function renderRecent(recentPlans) {
     const list = $("#recentList");
     list.empty();
     if (!recentPlans || !recentPlans.length) {
-        list.append('<p style="color: #a0aec0; width: 100%;"><i class="fas fa-inbox mr-2"></i>暂无缓存记录</p>');
+        list.append('<p style="color: #a0aec0; width: 100%;"><i class="fas fa-inbox mr-2"></i>暂无历史记录</p>');
         return;
     }
     recentPlans.forEach(item => {
@@ -327,7 +327,7 @@ function renderRecent(recentPlans) {
         tag.on("click", function() {
             const p = $(this).data("plan");
             if (!p.token) {
-                showToast("缓存记录不完整，请重新生成", "error");
+                showToast("历史记录不完整，请重新生成", "error");
                 return;
             }
             $("#loading").show();
@@ -348,8 +348,8 @@ function renderRecent(recentPlans) {
                         $("#resultPanel").hide();
                         showToast(`已恢复：${p.city} · ${p.season} · ${p.days}天`, "success");
                     } else {
-                        // 缓存过期，填表让用户重新生成
-                        showToast("缓存已过期，请手动点\"生成路线\"", "error");
+                        // 记录已过期，填表让用户重新生成
+                        showToast("记录已过期，请手动点击\"生成路线方案\"", "error");
                         fillFormFromPlan(p);
                     }
                 },
@@ -399,8 +399,12 @@ function renderTop3(options) {
                         <p style="margin: 4px 0 0; font-weight: 700; color: #1a202c; font-size: 14px;">${option.advantage || "-"}</p>
                     </div>
                     <div class="plan-metric">
-                        <small>总花费</small>
+                        <small>门票合计</small>
                         <span style="color: #e53e3e;">${metricValue(m.cost)} 元</span>
+                    </div>
+                    <div class="plan-metric">
+                        <small>预算剩余</small>
+                        <span style="color: ${(option.remaining || 0) < 0 ? '#e53e3e' : '#38a169'};">${metricValue(option.remaining || 0)} 元</span>
                     </div>
                     <div class="plan-metric">
                         <small>总路程</small>
@@ -437,10 +441,20 @@ function renderTop3(options) {
 
 function renderSelectedPlan(data, payload) {
     latestSelectedData = data || null;
+    const feas = data.feasibility || {};
+    const tier = data.tier || "M";
     $("#usedDays").text(data.used_days);
     $("#paretoSize").text(data.pareto_size);
-    $("#totalCost").text(metricValue(data.metrics.cost) + " 元");
+    $("#ticketCost").text(metricValue(data.ticket_cost) + " 元");
     $("#totalDistance").text(metricValue(data.metrics.distance));
+    $("#budgetRemaining").text("+" + metricValue(data.total_estimate - data.ticket_cost) + " 元（食宿交通）");
+    $("#feasibilityLabel").text("[" + tier + "档] " + (feas.label || "-"))
+        .removeClass("badge-red badge-orange badge-green")
+        .addClass(feas.css_class || "badge-gray");
+    $("#feasibilityDetail").text(
+        "全程预估约" + metricValue(data.total_estimate) + "元（门票" + metricValue(data.ticket_cost) + " + 食宿交通" + metricValue(data.total_living) + "）" +
+        (feas.gap < 0 ? "，超出门票预算" + Math.abs(feas.gap) + "元" : feas.gap > 0 ? "，门票预算内可覆盖" : "")
+    );
     $("#selectedAdvantage").text(data.advantage || "-");
     $("#budgetUsagePct").text(metricValue((data.explain || {}).budget_usage_pct, 1) + "%");
     $("#prefMatchPct").text(metricValue((data.explain || {}).preference_match_pct, 1) + "%");
@@ -449,11 +463,11 @@ function renderSelectedPlan(data, payload) {
     const kb = data.knowledge_breakdown || {};
     const useWiki = !!kb.use_wiki_knowledge;
     $("#wikiModeBadge")
-        .text(useWiki ? "Wiki: 开启" : "Wiki: 关闭")
+        .text(useWiki ? "网络攻略: 开" : "网络攻略: 关")
         .removeClass("badge-gray badge-green")
         .addClass(useWiki ? "badge-green" : "badge-gray");
-    $("#jsonHitBadge").text("JSON " + metricValue(kb.json_count || 0));
-    $("#wikiHitBadge").text("Wiki " + metricValue(kb.wiki_count || 0));
+    $("#jsonHitBadge").text("基础贴士 " + metricValue(kb.json_count || 0));
+    $("#wikiHitBadge").text("补充贴士 " + metricValue(kb.wiki_count || 0));
     latestHtmlReport = data.ai_html_report || "";
     $("#previewHtmlReportBtn").prop("disabled", !latestHtmlReport);
     $("#downloadHtmlReportBtn").prop("disabled", !latestHtmlReport);
@@ -475,7 +489,7 @@ $(document).on("click", ".select-plan-btn", function () {
     $("#loading").html(`
         <div class="d-flex align-items-center">
             <div class="spinner-border spinner-border-sm text-white mr-3" role="status"></div>
-            <span><i class="fas fa-cog fa-spin mr-2"></i>正在生成地图与 AI 报告，请稍候...</span>
+            <span><i class="fas fa-cog fa-spin mr-2"></i>正在生成地图与详细攻略，请稍候...</span>
         </div>
     `).show();
     $.ajax({
@@ -513,7 +527,7 @@ $("#generateBtn").on("click", function () {
     $("#loading").html(`
         <div class="d-flex align-items-center">
             <div class="spinner-border spinner-border-sm text-white mr-3" role="status"></div>
-            <span><i class="fas fa-dna fa-spin mr-2"></i>正在执行 NSGA-II 进化，生成Top3候选方案...</span>
+            <span><i class="fas fa-cog fa-spin mr-2"></i>正在生成路线方案，请稍候...</span>
         </div>
     `).show();
     latestHtmlReport = "";

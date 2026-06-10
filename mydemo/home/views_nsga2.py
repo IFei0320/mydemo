@@ -15,6 +15,12 @@ from home.nsga2_trip_planner import (
     choose_solution,
     run_nsga2,
 )
+from home.data_utils import (
+    _safe_float,
+    assess_feasibility,
+    compute_living_budget,
+    get_city_tier,
+)
 from home.wiki_service import retrieve_wiki_knowledge_cards
 from utils.decorators import login_required_custom
 
@@ -118,6 +124,9 @@ def _build_top3_options(pareto_set, spots, days, budget, sensitivities):
                     "preference_match_pct": round(pref_match, 1),
                     "crowd_avoid_score": round(crowd_score, 1),
                 },
+                # 预算可行性数据（trip_type 选方案时再结合计算）
+                "ticket_cost": round(metrics.get("cost", 0)),
+                "remaining": round(max(0.0, budget - metrics.get("cost", 0))),
             }
         )
     return options
@@ -190,7 +199,7 @@ def generate_ai_nsga2_route(request):
             return JsonResponse(
                 {
                     "code": 200,
-                    "message": "命中缓存，已返回Top3方案",
+                    "message": "已找到相同方案，直接查看结果",
                     "data": {
                         "request_token": token,
                         "city": city,
@@ -229,6 +238,8 @@ def generate_ai_nsga2_route(request):
                 "advantage": item["advantage"],
                 "metrics": item["metrics"],
                 "explain": item["explain"],
+                "ticket_cost": item.get("ticket_cost", 0),
+                "remaining": item.get("remaining", 0),
             }
             for item in options
         ],
@@ -258,7 +269,7 @@ def generate_ai_nsga2_route(request):
     return JsonResponse(
         {
             "code": 200,
-            "message": "Top3方案生成成功，请先选择方案",
+            "message": "方案生成成功，请选择一个方案继续",
             "data": {
                 "request_token": token,
                 "city": city,
@@ -287,10 +298,10 @@ def recall_ai_nsga2_plan(request):
         return JsonResponse({"code": 400, "message": "token 缺失", "data": None})
     cache_item = PLAN_CACHE.get(token)
     if not cache_item:
-        return JsonResponse({"code": 410, "message": "缓存已过期，请重新生成", "data": None})
+        return JsonResponse({"code": 410, "message": "记录已过期，请重新生成", "data": None})
     return JsonResponse({
         "code": 200,
-        "message": "命中缓存，直接恢复方案",
+        "message": "已恢复之前的方案",
         "data": {
             "request_token": token,
             "options": cache_item.get("options_preview", []),
@@ -354,6 +365,12 @@ def select_ai_nsga2_plan(request):
         knowledge_cards=knowledge_cards,
     )
     used_days = (len(route_data) + 2) // 3 if route_data else 0
+    # 计算预算可行性：门票预算 vs (门票实际 + 食宿交通预估)
+    ticket_cost = round(metrics.get("cost", 0))
+    tier = get_city_tier(cache_item["city"])
+    living = compute_living_budget(tier, cache_item["days"])
+    total_estimate = ticket_cost + living["total_living"]
+    feasibility = assess_feasibility(cache_item["budget"], total_estimate)
     return JsonResponse(
         {
             "code": 200,
@@ -377,6 +394,14 @@ def select_ai_nsga2_plan(request):
                     "wiki_count": len(wiki_cards),
                     "use_wiki_knowledge": use_wiki_knowledge,
                 },
+                # 预算可行性数据
+                "ticket_cost": ticket_cost,
+                "tier": tier,
+                "tier_label": living["tier_label"],
+                "daily_living": living["daily_living"],
+                "total_living": living["total_living"],
+                "total_estimate": total_estimate,
+                "feasibility": feasibility,
             },
         }
     )
