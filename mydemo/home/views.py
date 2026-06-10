@@ -96,12 +96,9 @@ def get_ai_travelRoute(request):
     if request.method == 'POST':
         try:
             # 解析请求数据
-            if hasattr(request, 'data'):
-                data = request.data
-            else:
-                try:
-                    data = json.loads(request.body.decode('utf-8'))
-                except json.JSONDecodeError:
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+            except json.JSONDecodeError:
                     return JsonResponse({
                         'code': 400,
                         'message': '无效的 json 数据',

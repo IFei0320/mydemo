@@ -24,7 +24,7 @@ class WikiLLM:
     - 对 Wiki 页面进行深度健康检查（lint_pages）
     """
 
-    def __init__(self, model: str = "deepseek-chat"):
+    def __init__(self, model: str = "deepseek-v4-flash"):
         self.model = model
         self.client = None
         if OpenAI is not None:

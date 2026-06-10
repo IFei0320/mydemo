@@ -78,7 +78,7 @@ class Get_DeepSeek:
                 "请只返回 JSON，键为 city_summary、what_to_see、watchouts、regions。"
             )
             response = self.client.chat.completions.create(
-                model="deepseek-chat",
+                model=self.model,
                 messages=[
                     {"role": "system", "content": self._overview_system_prompt},
                     {"role": "user", "content": user_msg},
@@ -161,7 +161,7 @@ class Get_DeepSeek:
             {"role": "user", "content": content},
         ]
         response = self.client.chat.completions.create(
-            model="deepseek-chat",
+            model=self.model,
             messages=messages,
             stream=False,
             max_tokens=1024,
@@ -219,15 +219,11 @@ class Get_DeepSeek:
     def _process_data(self, df: pd.DataFrame) -> list:
         """处理数据并转换为英文字段名"""
         print("原始DataFrame:")
-        print(df)
-        print("列名:", df.columns.tolist())
-
         # 修复字段映射逻辑 - 使用精确匹配
         field_mapping = {}
         for col in df.columns:
             col_clean = re.sub(r'[\s\u3000]', '', col)
             print(f"处理列: {col} -> {col_clean}")
-
             # 使用精确匹配而不是部分匹配
             if col_clean == '景点名称':
                 field_mapping[col] = 'name'
@@ -243,7 +239,6 @@ class Get_DeepSeek:
                 field_mapping[col] = 'estimated_cost'
 
         print("字段映射:", field_mapping)
-
         # 重命名字段
         df.rename(columns=field_mapping, inplace=True)
 
@@ -280,7 +275,4 @@ class Get_DeepSeek:
                 df[field] = df[field].astype(str).replace('nan', '').replace('None', '')
 
         print("处理后的DataFrame:")
-        print(df)
-        print("最终数据:", df.to_dict(orient='records'))
-
         return df.to_dict(orient='records')

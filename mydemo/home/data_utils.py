@@ -26,13 +26,6 @@ _CITY_TIER_TABLE: Dict[str, str] = {
     "黄山": "L", "张家界": "L", "拉萨": "L", "呼和浩特": "L",
 }
 
-_TIER_PARAMS = {
-    "H": {"meal": 35, "hotel": 250, "transport": 30},
-    "M": {"meal": 25, "hotel": 150, "transport": 20},
-    "L": {"meal": 15, "hotel": 80,  "transport": 15},
-}
-
-
 def get_city_tier(city: str) -> str:
     """根据城市名返回消费档位 H/M/L，未收录城市默认 M"""
     key = (city or "").replace("市", "").strip()
@@ -56,9 +49,9 @@ def compute_living_budget(tier: str, days: int, trip_type: str = "overnight") ->
         total_living: 全程生活成本合计(元)
         hotel_nights: 住宿晚数
     """
-    from home.config import MEALS_PER_DAY, TIER_LABELS
+    from home.config import MEALS_PER_DAY, TIER_LABELS, TIER_PARAMS
 
-    params = _TIER_PARAMS.get(tier, _TIER_PARAMS["M"])
+    params = TIER_PARAMS.get(tier, TIER_PARAMS["M"])
     meal_per_day = params["meal"] * MEALS_PER_DAY
     transport_per_day = params["transport"]
 
