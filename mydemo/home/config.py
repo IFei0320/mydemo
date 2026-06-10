@@ -3,7 +3,7 @@
 # ── NSGA-II 算法参数 ──────────────────────────────────────────────
 SPOTS_PER_DAY = 3        # 每天景点数量（上午/中午/下午）
 POPULATION_SIZE = 40      # 种群规模
-GENERATIONS = 50          # 进化代数
+GENERATIONS = 30          # 进化代数
 MUTATION_RATE = 0.2       # 变异概率
 PLAN_CACHE_TTL = 600      # 方案缓存有效期（秒）
 RECENT_PLAN_LIMIT = 12    # 最近方案记录上限

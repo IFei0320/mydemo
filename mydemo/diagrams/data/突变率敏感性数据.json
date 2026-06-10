@@ -1,0 +1,44 @@
+[
+  {
+    "mutation_rate": 0.05,
+    "avg_hv": 0.461035,
+    "feasible_rate": 0.8,
+    "avg_pareto_count": 32,
+    "avg_runtime": 0.5719
+  },
+  {
+    "mutation_rate": 0.1,
+    "avg_hv": 0.536857,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 36.2,
+    "avg_runtime": 0.5377
+  },
+  {
+    "mutation_rate": 0.2,
+    "avg_hv": 0.61329,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 40,
+    "avg_runtime": 0.6041
+  },
+  {
+    "mutation_rate": 0.3,
+    "avg_hv": 0.584575,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 40,
+    "avg_runtime": 0.5743
+  },
+  {
+    "mutation_rate": 0.4,
+    "avg_hv": 0.524213,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 40,
+    "avg_runtime": 0.5777
+  },
+  {
+    "mutation_rate": 0.5,
+    "avg_hv": 0.52665,
+    "feasible_rate": 1.0,
+    "avg_pareto_count": 40,
+    "avg_runtime": 0.5736
+  }
+]

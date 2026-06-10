@@ -7,12 +7,13 @@
             "name": "Python 调试程序: Django",
             "type": "debugpy",
             "request": "launch",
+            "program": "${workspaceFolder}\\manage.py",
+            "python": "${workspaceFolder}\\venv\\Scripts\\python.exe",
             "args": [
                 "runserver"
             ],
             "django": true,
-            "autoStartBrowser": false,
-            "program": "${workspaceFolder}\\manage.py"
+            "console": "integratedTerminal"
         }
     ]
 }
