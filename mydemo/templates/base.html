@@ -10,7 +10,7 @@
     <style>
         body, * { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; }
 
-        /* 页面切换优雅过渡 */
+        /* 页面切换过渡 */
         .pcoded-main-container {
             animation: pageFadeIn 0.25s ease-out;
         }
@@ -265,7 +265,7 @@
             }
         })();
 
-        // 侧边栏 data-url 跳转（带优雅过渡）
+        // 侧边栏 data-url 跳转
         document.querySelector('.pcoded-navbar').addEventListener('click', function(e) {
             const link = e.target.closest('a[data-url]');
             if (link) {

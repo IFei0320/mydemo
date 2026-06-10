@@ -136,21 +136,13 @@ def part3(request):
     return render(request, "ksh/part3.html", content)
 
 
-# def part4(request):
-#     sql = 'select * from part4'
-#
-#     res = util.query(sql)
-#     data_list = [{"name": i[1], "value": i[2]} for i in res]
-#     content = {
-#         'data_list': data_list
-#     }
-#     return render(request, 'ksh/part4.html', content)
+
 
 @login_required_custom
 def part4(request):
     """
     区域分布：优先用 TravelInfo 聚合。
-    若「所在区域」在库中过细（大量一区一条），按区域汇总会几乎全是 count=1，
+    若「所在区域」在库中过细（大量一区一条），按区域汇总会全是 count=1，
     占比在局部视图里也会像「全是 100%」。此时自动改为「按城市」或「从区域文本抽取区县」再汇总。
     """
     from collections import defaultdict

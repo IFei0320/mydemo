@@ -4,62 +4,62 @@
     "avg_hv": 0.02981085526315794,
     "feasible_rate": 0.125,
     "avg_pareto_count": 0.75,
-    "avg_runtime": 0.08803474999876926
+    "avg_runtime": 0.08453116249984305
   },
   {
     "generations": 10,
     "avg_hv": 0.319662291933419,
     "feasible_rate": 0.375,
     "avg_pareto_count": 1.125,
-    "avg_runtime": 0.1726874499981932
+    "avg_runtime": 0.1711071500030812
   },
   {
     "generations": 15,
     "avg_hv": 0.5108590707138025,
     "feasible_rate": 0.875,
     "avg_pareto_count": 9.625,
-    "avg_runtime": 0.2639749749978364
+    "avg_runtime": 0.24680888749935548
   },
   {
     "generations": 20,
     "avg_hv": 0.5419400008802576,
     "feasible_rate": 1.0,
     "avg_pareto_count": 24,
-    "avg_runtime": 0.36211956250554067
+    "avg_runtime": 0.3494817500031786
   },
   {
     "generations": 30,
     "avg_hv": 0.6491426855000307,
     "feasible_rate": 1.0,
     "avg_pareto_count": 33.25,
-    "avg_runtime": 0.5812171999932616
+    "avg_runtime": 0.5475942250013759
   },
   {
     "generations": 40,
     "avg_hv": 0.5174264001672074,
     "feasible_rate": 1.0,
     "avg_pareto_count": 34.25,
-    "avg_runtime": 0.7790259124958538
+    "avg_runtime": 0.7281180250029138
   },
   {
     "generations": 50,
     "avg_hv": 0.579849475287406,
     "feasible_rate": 1.0,
     "avg_pareto_count": 39.75,
-    "avg_runtime": 1.0090515749943734
+    "avg_runtime": 0.9623401624994585
   },
   {
     "generations": 70,
     "avg_hv": 0.5612945389667319,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 1.4500292249904305
+    "avg_runtime": 1.384893775002638
   },
   {
     "generations": 100,
     "avg_hv": 0.5938618258775309,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 2.108079187506519
+    "avg_runtime": 2.0068531000015355
   }
 ]

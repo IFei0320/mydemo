@@ -4,48 +4,48 @@
     "avg_hv": 0.4414624707380127,
     "feasible_rate": 0.6666666666666666,
     "avg_pareto_count": 6.666666666666667,
-    "avg_runtime": 0.07433016666618641
+    "avg_runtime": 0.06407420000080795
   },
   {
     "pop_size": 20,
     "avg_hv": 0.45339837797794985,
     "feasible_rate": 1.0,
     "avg_pareto_count": 19.666666666666668,
-    "avg_runtime": 0.26788598332980956
+    "avg_runtime": 0.25017088333212695
   },
   {
     "pop_size": 30,
     "avg_hv": 0.6056113958295458,
     "feasible_rate": 1.0,
     "avg_pareto_count": 30,
-    "avg_runtime": 0.5781854499946348
+    "avg_runtime": 0.5314238166683936
   },
   {
     "pop_size": 40,
     "avg_hv": 0.6085441815650405,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 1.0084070833351386
+    "avg_runtime": 0.9456563499988988
   },
   {
     "pop_size": 60,
     "avg_hv": 0.5879631667364774,
     "feasible_rate": 1.0,
     "avg_pareto_count": 57,
-    "avg_runtime": 2.294881483336212
+    "avg_runtime": 2.5041194500008714
   },
   {
     "pop_size": 80,
     "avg_hv": 0.6352330753121427,
     "feasible_rate": 1.0,
     "avg_pareto_count": 75.5,
-    "avg_runtime": 4.032321866659913
+    "avg_runtime": 4.219508550003714
   },
   {
     "pop_size": 100,
     "avg_hv": 0.6555130456882722,
     "feasible_rate": 1.0,
     "avg_pareto_count": 99.5,
-    "avg_runtime": 6.2282519333336195
+    "avg_runtime": 6.444585466665255
   }
 ]

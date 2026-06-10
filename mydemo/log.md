@@ -93,3 +93,4 @@
 - [2026-05-20 11:10:55] [QUERY] 古镇 (city=上海) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md
 - [2026-05-20 11:17:15] [QUERY] 古镇 (city=上海) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md
 - [2026-06-03 22:14:25] [QUERY] 古镇 (city=上海) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md
+- [2026-06-10 10:20:48] [QUERY] 古镇 (city=-) -> wiki/entity/七宝古镇.md, wiki/entity/朱家角古镇.md, wiki/summary/上海热门旅游景点11个.md

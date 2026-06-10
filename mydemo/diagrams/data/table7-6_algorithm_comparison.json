@@ -4,7 +4,7 @@
     "avg_distance": 126.7,
     "avg_rating": 4.7,
     "avg_hotness": 6.49,
-    "avg_runtime_s": 0.9734,
+    "avg_runtime_s": 1.0547,
     "avg_pareto_count": 38.8,
     "feasible_rate_pct": 100.0,
     "raw_costs": [
@@ -48,14 +48,14 @@
       6.211
     ],
     "raw_runtimes": [
-      0.9771,
-      0.9666,
-      0.9307,
-      1.0008,
-      0.9804,
-      0.9682,
-      0.9923,
-      0.9713
+      1.091,
+      1.0763,
+      1.0447,
+      1.1221,
+      1.0929,
+      1.0717,
+      0.9947,
+      0.944
     ],
     "raw_pareto_counts": [
       40,
@@ -142,7 +142,7 @@
     "avg_distance": 251.0,
     "avg_rating": 4.51,
     "avg_hotness": 5.95,
-    "avg_runtime_s": 0.0133,
+    "avg_runtime_s": 0.0123,
     "avg_pareto_count": 1,
     "feasible_rate_pct": 0.0,
     "raw_costs": [
@@ -186,14 +186,14 @@
       5.644
     ],
     "raw_runtimes": [
-      0.0133,
-      0.0132,
-      0.0134,
-      0.0137,
-      0.0134,
-      0.013,
-      0.0134,
-      0.0127
+      0.0124,
+      0.0122,
+      0.0122,
+      0.0123,
+      0.0122,
+      0.0123,
+      0.0122,
+      0.0124
     ],
     "raw_pareto_counts": [
       1,
