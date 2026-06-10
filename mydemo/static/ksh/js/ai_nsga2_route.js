@@ -326,45 +326,38 @@ function renderRecent(recentPlans) {
         tag.data("plan", item);
         tag.on("click", function() {
             const p = $(this).data("plan");
-            if (!p.token) {
-                showToast("历史记录不完整，请重新生成", "error");
-                return;
+            fillFormFromPlan(p);
+            const preview = p.options_preview;
+            if (preview && preview.length > 0) {
+                currentRequestToken = p.token;
+                renderTop3(preview);
+                $("#top3Panel").show();
+                $("#resultPanel").hide();
+                showToast(`已恢复：${p.city} · ${p.season} · ${p.days}天`, "success");
+            } else {
+                $("#top3Panel").hide();
+                $("#resultPanel").hide();
+                showToast("参数已填回，请点击\"生成路线方案\"重新计算", "success");
             }
-            $("#loading").show();
-            $.ajax({
-                url: window.nsga2RouteConfig.urls.recall,
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ token: p.token }),
-                headers: { "X-CSRFToken": window.nsga2RouteConfig.csrfToken },
-                success: function(res) {
-                    $("#loading").hide();
-                    if (res.code === 200 && res.data && res.data.options && res.data.options.length > 0) {
-                        currentRequestToken = res.data.request_token || p.token;
-                        renderTop3(res.data.options);
-                        renderRecent(res.data.recent_plans || []);
-                        $("#top3Panel").show();
-                        $("#recentPanel").show();
-                        $("#resultPanel").hide();
-                        showToast(`已恢复：${p.city} · ${p.season} · ${p.days}天`, "success");
-                    } else {
-                        // 记录已过期，填表让用户重新生成
-                        showToast("记录已过期，请手动点击\"生成路线方案\"", "error");
-                        fillFormFromPlan(p);
-                    }
-                },
-                error: function() {
-                    $("#loading").hide();
-                    showToast("网络异常，请重试", "error");
-                }
-            });
         });
 
         function fillFormFromPlan(p) {
-            $("#city").val(p.city);
-            $("#season").val(p.season);
-            $("#days").val(p.days);
-            $("#budget").val(p.budget);
+            $("#city").val(p.city || "");
+            $("#season").val(p.season || "spring");
+            $("#days").val(p.days || 3);
+            $("#budget").val(p.budget || 2000);
+            if (p.price_sensitivity !== undefined) {
+                $("#priceSensitivity").val(p.price_sensitivity);
+                $("#priceVal").text(p.price_sensitivity);
+                $("#distanceSensitivity").val(p.distance_sensitivity);
+                $("#distanceVal").text(p.distance_sensitivity);
+                $("#hotnessPreference").val(p.hotness_preference);
+                $("#hotnessVal").text(p.hotness_preference);
+                $("#ratingPreference").val(p.rating_preference);
+                $("#ratingVal").text(p.rating_preference);
+                $("#crowdAvoidance").val(p.crowd_avoidance);
+                $("#crowdVal").text(p.crowd_avoidance);
+            }
             $("#resultPanel").hide();
             $("#top3Panel").hide();
         }

@@ -261,6 +261,7 @@ def generate_ai_nsga2_route(request):
             "rating_preference": int(sensitivities["rating"] * 100),
             "crowd_avoidance": int(sensitivities["crowd_avoid"] * 100),
             "created_at": int(now),
+            "options_preview": PLAN_CACHE[token]["options_preview"],
         },
     )
     if len(RECENT_PLANS) > RECENT_PLAN_LIMIT:
