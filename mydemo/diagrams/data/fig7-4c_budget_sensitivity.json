@@ -3,105 +3,150 @@
     "budget": 130,
     "feasible_rate": 0.0,
     "avg_pareto_count": 0,
+    "std_pareto_count": 0.0,
     "avg_best_cost": null,
-    "avg_hv": 0.0
+    "std_best_cost": 0.0,
+    "avg_hv": 0.0,
+    "std_hv": 0.0
   },
   {
     "budget": 164,
     "feasible_rate": 0.0,
     "avg_pareto_count": 0,
+    "std_pareto_count": 0.0,
     "avg_best_cost": null,
-    "avg_hv": 0.0
+    "std_best_cost": 0.0,
+    "avg_hv": 0.0,
+    "std_hv": 0.0
   },
   {
     "budget": 198,
     "feasible_rate": 0.3,
     "avg_pareto_count": 0.8,
+    "std_pareto_count": 1.4000000000000001,
     "avg_best_cost": 186.36666666666667,
-    "avg_hv": 0.23600000000000038
+    "std_best_cost": 6.284548954026489,
+    "avg_hv": 0.239485,
+    "std_hv": 0.3977908835368151
   },
   {
     "budget": 232,
     "feasible_rate": 0.5,
     "avg_pareto_count": 5.1,
+    "std_pareto_count": 7.8160092118676525,
     "avg_best_cost": 218.34,
-    "avg_hv": 0.2628709302637664
+    "std_best_cost": 5.6993332943424235,
+    "avg_hv": 0.23437,
+    "std_hv": 0.3027108795534115
   },
   {
     "budget": 266,
     "feasible_rate": 1.0,
     "avg_pareto_count": 19.2,
+    "std_pareto_count": 9.389355675444401,
     "avg_best_cost": 223.4,
-    "avg_hv": 0.5111020119356117
+    "std_best_cost": 19.94221652675549,
+    "avg_hv": 0.396045,
+    "std_hv": 0.18283967628772482
   },
   {
     "budget": 300,
     "feasible_rate": 1.0,
     "avg_pareto_count": 21.3,
+    "std_pareto_count": 7.321885003194191,
     "avg_best_cost": 261.17,
-    "avg_hv": 0.5923086678053021
+    "std_best_cost": 25.177134467607708,
+    "avg_hv": 0.588645,
+    "std_hv": 0.08746570885209815
   },
   {
     "budget": 334,
     "feasible_rate": 1.0,
     "avg_pareto_count": 21.7,
+    "std_pareto_count": 5.292447448959697,
     "avg_best_cost": 259.63,
-    "avg_hv": 0.5296725249383152
+    "std_best_cost": 24.77252712179361,
+    "avg_hv": 0.547815,
+    "std_hv": 0.11812651279454583
   },
   {
     "budget": 368,
     "feasible_rate": 1.0,
     "avg_pareto_count": 26.8,
+    "std_pareto_count": 3.9446165846632044,
     "avg_best_cost": 261.06,
-    "avg_hv": 0.5812229266325287
+    "std_best_cost": 23.507879530063956,
+    "avg_hv": 0.530395,
+    "std_hv": 0.10306466040792062
   },
   {
     "budget": 402,
     "feasible_rate": 1.0,
     "avg_pareto_count": 26.5,
+    "std_pareto_count": 4.364630568559039,
     "avg_best_cost": 270.61,
-    "avg_hv": 0.5209231952131722
+    "std_best_cost": 27.39819154615866,
+    "avg_hv": 0.583255,
+    "std_hv": 0.06448229388754713
   },
   {
     "budget": 436,
     "feasible_rate": 1.0,
     "avg_pareto_count": 28.2,
+    "std_pareto_count": 3.8418745424597094,
     "avg_best_cost": 289.28999999999996,
-    "avg_hv": 0.5863074943533174
+    "std_best_cost": 36.44328333177459,
+    "avg_hv": 0.60151,
+    "std_hv": 0.08106807879800779
   },
   {
     "budget": 470,
     "feasible_rate": 1.0,
     "avg_pareto_count": 29.3,
+    "std_pareto_count": 2.1,
     "avg_best_cost": 317.62,
-    "avg_hv": 0.501618512089356
+    "std_best_cost": 38.11676271668411,
+    "avg_hv": 0.59239,
+    "std_hv": 0.08603421935485903
   },
   {
     "budget": 504,
     "feasible_rate": 1.0,
     "avg_pareto_count": 29.7,
+    "std_pareto_count": 0.6403124237432849,
     "avg_best_cost": 275.53,
-    "avg_hv": 0.5274603029277259
+    "std_best_cost": 24.26734637326462,
+    "avg_hv": 0.57036,
+    "std_hv": 0.08235144139600714
   },
   {
     "budget": 538,
     "feasible_rate": 1.0,
     "avg_pareto_count": 29,
+    "std_pareto_count": 2.3664319132398464,
     "avg_best_cost": 339.2,
-    "avg_hv": 0.5040212485660908
+    "std_best_cost": 44.66889297934302,
+    "avg_hv": 0.549495,
+    "std_hv": 0.09689356389874407
   },
   {
     "budget": 572,
     "feasible_rate": 1.0,
     "avg_pareto_count": 29.5,
+    "std_pareto_count": 1.2041594578792296,
     "avg_best_cost": 316.34,
-    "avg_hv": 0.5224912568686609
+    "std_best_cost": 22.63975264882548,
+    "avg_hv": 0.599785,
+    "std_hv": 0.1249285997079932
   },
   {
     "budget": 606,
     "feasible_rate": 1.0,
     "avg_pareto_count": 30,
+    "std_pareto_count": 0.0,
     "avg_best_cost": 344.64,
-    "avg_hv": 0.5951151009728003
+    "std_best_cost": 66.14933408583944,
+    "avg_hv": 0.671965,
+    "std_hv": 0.09816506264960054
   }
 ]

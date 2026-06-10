@@ -1,51 +1,72 @@
 [
   {
     "pop_size": 10,
-    "avg_hv": 0.4605306634267615,
+    "avg_hv": 0.191775,
+    "std_hv": 0.21534664255180141,
     "feasible_rate": 0.6666666666666666,
     "avg_pareto_count": 6.666666666666667,
-    "avg_runtime": 0.06647503333321463
+    "std_pareto_count": 4.714045207910317,
+    "avg_runtime": 0.06510748333433487,
+    "std_runtime": 0.0022755794213196803
   },
   {
     "pop_size": 20,
-    "avg_hv": 0.4889095858931422,
+    "avg_hv": 0.3510083333333333,
+    "std_hv": 0.16758622262551562,
     "feasible_rate": 1.0,
     "avg_pareto_count": 14.333333333333334,
-    "avg_runtime": 0.2582516333350213
+    "std_pareto_count": 4.268749491621899,
+    "avg_runtime": 0.24778645000090668,
+    "std_runtime": 0.01665146828255655
   },
   {
     "pop_size": 30,
-    "avg_hv": 0.5701087057301728,
+    "avg_hv": 0.4473083333333333,
+    "std_hv": 0.08150715416793518,
     "feasible_rate": 1.0,
     "avg_pareto_count": 25.666666666666668,
-    "avg_runtime": 0.5717092499956683
+    "std_pareto_count": 4.4969125210773475,
+    "avg_runtime": 0.5480255000002217,
+    "std_runtime": 0.019434297283058285
   },
   {
     "pop_size": 40,
-    "avg_hv": 0.5715878549658185,
+    "avg_hv": 0.5904916666666666,
+    "std_hv": 0.10247726746562978,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 1.0604871000008036
+    "std_pareto_count": 0.0,
+    "avg_runtime": 0.9894968000032046,
+    "std_runtime": 0.028320341271211222
   },
   {
     "pop_size": 60,
-    "avg_hv": 0.6080111181469058,
+    "avg_hv": 0.6064083333333333,
+    "std_hv": 0.07064321987203648,
     "feasible_rate": 1.0,
     "avg_pareto_count": 44.333333333333336,
-    "avg_runtime": 2.4589327000042736
+    "std_pareto_count": 13.324997394204456,
+    "avg_runtime": 2.2602497999954116,
+    "std_runtime": 0.025765998616136102
   },
   {
     "pop_size": 80,
-    "avg_hv": 0.5865189975085255,
+    "avg_hv": 0.638325,
+    "std_hv": 0.06507895685242657,
     "feasible_rate": 1.0,
     "avg_pareto_count": 66.16666666666667,
-    "avg_runtime": 4.242799549996562
+    "std_pareto_count": 12.928220638931286,
+    "avg_runtime": 3.9911945666681277,
+    "std_runtime": 0.04547700222428436
   },
   {
     "pop_size": 100,
-    "avg_hv": 0.5981305425724084,
+    "avg_hv": 0.6015083333333333,
+    "std_hv": 0.036527197819646064,
     "feasible_rate": 1.0,
     "avg_pareto_count": 76,
-    "avg_runtime": 6.564886733336607
+    "std_pareto_count": 20.207259421636902,
+    "avg_runtime": 6.184536466663606,
+    "std_runtime": 0.046168176827104404
   }
 ]

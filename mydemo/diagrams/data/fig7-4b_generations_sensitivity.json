@@ -1,65 +1,92 @@
 [
   {
     "generations": 5,
-    "avg_hv": 0.0422727272727273,
+    "avg_hv": 0.00714375,
+    "std_hv": 0.01890058592841767,
     "feasible_rate": 0.125,
     "avg_pareto_count": 0.625,
-    "avg_runtime": 0.08445241249864921
+    "std_pareto_count": 1.653594569415369,
+    "avg_runtime": 0.08460571250361681,
+    "std_runtime": 0.001301470666607968
   },
   {
     "generations": 10,
-    "avg_hv": 0.35976277372262805,
+    "avg_hv": 0.34061874999999997,
+    "std_hv": 0.4468477704553728,
     "feasible_rate": 0.375,
     "avg_pareto_count": 1,
-    "avg_runtime": 0.17000471249957627
+    "std_pareto_count": 1.9364916731037085,
+    "avg_runtime": 0.167299937498683,
+    "std_runtime": 0.0022322702863859277
   },
   {
     "generations": 15,
-    "avg_hv": 0.5123331916028443,
+    "avg_hv": 0.45075625,
+    "std_hv": 0.36973962243508274,
     "feasible_rate": 0.875,
     "avg_pareto_count": 8.125,
-    "avg_runtime": 0.29095362500083866
+    "std_pareto_count": 7.769129616630167,
+    "avg_runtime": 0.2559527499961405,
+    "std_runtime": 0.005630841159126295
   },
   {
     "generations": 20,
-    "avg_hv": 0.5170938822352455,
+    "avg_hv": 0.40053125,
+    "std_hv": 0.11340335901523156,
     "feasible_rate": 1.0,
     "avg_pareto_count": 14.5,
-    "avg_runtime": 0.351832349999313
+    "std_pareto_count": 8.231038816577165,
+    "avg_runtime": 0.35661755000000994,
+    "std_runtime": 0.01695305726977234
   },
   {
     "generations": 30,
-    "avg_hv": 0.5890306570041768,
+    "avg_hv": 0.57286875,
+    "std_hv": 0.1175412293024771,
     "feasible_rate": 1.0,
     "avg_pareto_count": 25.875,
-    "avg_runtime": 0.5852208499945846
+    "std_pareto_count": 8.358192089202067,
+    "avg_runtime": 0.5641361375019187,
+    "std_runtime": 0.010239794370395093
   },
   {
     "generations": 40,
-    "avg_hv": 0.6455416865916359,
+    "avg_hv": 0.5588875,
+    "std_hv": 0.11934077192539856,
     "feasible_rate": 1.0,
     "avg_pareto_count": 24,
-    "avg_runtime": 0.7908155499990244
+    "std_pareto_count": 9.233092656309694,
+    "avg_runtime": 0.7624572999993688,
+    "std_runtime": 0.03218014870357739
   },
   {
     "generations": 50,
-    "avg_hv": 0.4887036760454711,
+    "avg_hv": 0.50265625,
+    "std_hv": 0.18044398617974913,
     "feasible_rate": 1.0,
     "avg_pareto_count": 36.25,
-    "avg_runtime": 1.017477700002928
+    "std_pareto_count": 8.511022265274601,
+    "avg_runtime": 0.9911811374968238,
+    "std_runtime": 0.010991251048202031
   },
   {
     "generations": 70,
-    "avg_hv": 0.5901638241357995,
+    "avg_hv": 0.621375,
+    "std_hv": 0.08767709578333444,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 1.46831223749723
+    "std_pareto_count": 0.0,
+    "avg_runtime": 1.4302836374990875,
+    "std_runtime": 0.02105881456622473
   },
   {
     "generations": 100,
-    "avg_hv": 0.5968972503745495,
+    "avg_hv": 0.57104375,
+    "std_hv": 0.06806218864712993,
     "feasible_rate": 1.0,
     "avg_pareto_count": 40,
-    "avg_runtime": 2.1290614624995214
+    "std_pareto_count": 0.0,
+    "avg_runtime": 2.099195412500194,
+    "std_runtime": 0.031971232492683306
   }
 ]

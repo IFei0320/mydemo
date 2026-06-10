@@ -78,33 +78,23 @@ _COLORS = {"nsga2": "#43A047", "greedy": "#1E88E5", "random": "#FB8C00",
            "economy": "#43A047", "balanced": "#1E88E5", "experience": "#E53935"}
 
 
-def _compute_hv(costs, neg_ratings):
-    """归一化二维超体积。cost(最小化), neg_rating(最小化=最高评分)。参考点(1,1)。"""
-    points = sorted(zip(costs, neg_ratings), key=lambda p: p[0])
-    hv = 0.0
-    prev_f2 = 1.0
-    for f1, f2 in points:
-        if 0.0 <= f1 <= 1.0 and 0.0 <= f2 <= 1.0:
-            hv += (1.0 - f1) * (prev_f2 - f2)
-            prev_f2 = f2
-    return max(0.0, min(1.0, hv))
+def _compute_hv_3d(costs, neg_ratings, distances, n_samples=20000):
+    """Monte Carlo 估算 3D 超体积。参考点 (1,1,1)。固定种子保证可复现。"""
+    if len(costs) == 0:
+        return 0.0
+    points = np.column_stack([costs, neg_ratings, distances])
+    rng = np.random.RandomState(42)
+    samples = rng.uniform(0, 1, (n_samples, 3))
+    dominated = np.any(np.all(samples[:, None, :] >= points[None, :, :], axis=2), axis=1)
+    return float(dominated.mean())
 
 
-def _normalize_metrics(costs, neg_ratings, cost_ref, rating_ref):
-    """归一化：0=最好，1=最差。"""
-    cost_min, cost_max = min(costs), max(costs)
-    if cost_max <= cost_min:
-        norm_costs = [0.0 for _ in costs]
-    else:
-        norm_costs = [(c - cost_min) / (cost_max - cost_min) for c in costs]
-
-    nr_min, nr_max = min(neg_ratings), max(neg_ratings)
-    if nr_max <= nr_min:
-        norm_nrs = [0.0 for _ in neg_ratings]
-    else:
-        norm_nrs = [(nr - nr_min) / (nr_max - nr_min) for nr in neg_ratings]
-
-    return norm_costs, norm_nrs
+def _normalize_3d(values):
+    """归一化到 [0,1]，0=最好，1=最差。"""
+    v_min, v_max = min(values), max(values)
+    if v_max <= v_min:
+        return [0.0 for _ in values]
+    return [(v - v_min) / (v_max - v_min) for v in values]
 
 
 def _collector_base(spots, days, budget, per_day, pop_size, generations, runs, seed_base):
@@ -129,13 +119,12 @@ def _collector_base(spots, days, budget, per_day, pop_size, generations, runs, s
         if feasible:
             costs = [item["metrics"]["cost"] for item in feasible]
             ratings = [item["metrics"]["rating"] for item in feasible]
+            distances = [item["metrics"]["distance"] for item in feasible]
             neg_ratings = [-r for r in ratings]
-            c_ref = max(costs) * 1.1 if costs else budget * 1.1
-            r_min = min(ratings) if ratings else 0
-            nrs = [-r for r in ratings]
-
-            norm_c, norm_nr = _normalize_metrics(costs, nrs, c_ref, -r_min)
-            hv = _compute_hv(norm_c, norm_nr)
+            norm_c = _normalize_3d(costs)
+            norm_nr = _normalize_3d(neg_ratings)
+            norm_d = _normalize_3d(distances)
+            hv = _compute_hv_3d(norm_c, norm_nr, norm_d)
             hv_list.append(hv)
 
             best_idx = max(range(len(ratings)), key=lambda j: ratings[j] * 10 - costs[j] / 100)
@@ -272,8 +261,11 @@ def collect_budget_sensitivity(budgets=None, spots=None, days=3, per_day=3, pop_
             "budget": budget,
             "feasible_rate": feasible_rate,
             "avg_pareto_count": avg_pareto,
-            "avg_best_cost": mean(valid_costs) if valid_costs else np.nan,
+            "std_pareto_count": float(np.std(data["feasible_counts"])) if len(data["feasible_counts"]) > 1 else 0.0,
+            "avg_best_cost": mean(valid_costs) if valid_costs else None,
+            "std_best_cost": float(np.std(valid_costs)) if len(valid_costs) > 1 else 0.0,
             "avg_hv": mean(data["hv_list"]),
+            "std_hv": float(np.std(data["hv_list"])) if len(data["hv_list"]) > 1 else 0.0,
         })
     return results
 
@@ -291,9 +283,12 @@ def collect_generations_sensitivity(spots=None, gen_steps=None, budget=800, days
         results.append({
             "generations": generations,
             "avg_hv": mean(data["hv_list"]),
+            "std_hv": float(np.std(data["hv_list"])) if len(data["hv_list"]) > 1 else 0.0,
             "feasible_rate": feasible_rate,
             "avg_pareto_count": avg_pareto,
+            "std_pareto_count": float(np.std(data["feasible_counts"])) if len(data["feasible_counts"]) > 1 else 0.0,
             "avg_runtime": mean(data["runtimes"]),
+            "std_runtime": float(np.std(data["runtimes"])) if len(data["runtimes"]) > 1 else 0.0,
         })
     return results
 
@@ -310,9 +305,12 @@ def collect_population_sensitivity(pop_sizes=None, spots=None, budget=800, days=
         results.append({
             "pop_size": pop_size,
             "avg_hv": mean(data["hv_list"]),
+            "std_hv": float(np.std(data["hv_list"])) if len(data["hv_list"]) > 1 else 0.0,
             "feasible_rate": feasible_rate,
             "avg_pareto_count": mean(data["feasible_counts"]),
+            "std_pareto_count": float(np.std(data["feasible_counts"])) if len(data["feasible_counts"]) > 1 else 0.0,
             "avg_runtime": mean(data["runtimes"]),
+            "std_runtime": float(np.std(data["runtimes"])) if len(data["runtimes"]) > 1 else 0.0,
         })
     return results
 
@@ -353,10 +351,12 @@ def collect_convergence_curve(spots=None, days=3, budget=800, per_day=3, pop_siz
                 if feasible:
                     fc = [it["metrics"]["cost"] for it in feasible]
                     fr = [it["metrics"]["rating"] for it in feasible]
+                    fd = [it["metrics"]["distance"] for it in feasible]
                     nrs = [-r for r in fr]
-                    c_ref = max(fc) * 1.1 if fc else budget * 1.1
-                    norm_c, norm_nr = _normalize_metrics(fc, nrs, c_ref, -min(fr) if fr else 0)
-                    all_snapshots[gen]["hv"].append(_compute_hv(norm_c, norm_nr))
+                    norm_c = _normalize_3d(fc)
+                    norm_nr = _normalize_3d(nrs)
+                    norm_d = _normalize_3d(fd)
+                    all_snapshots[gen]["hv"].append(_compute_hv_3d(norm_c, norm_nr, norm_d))
                     all_snapshots[gen]["min_cost"].append(min(fc))
                     all_snapshots[gen]["feasible"] += 1
                 else:
@@ -367,11 +367,14 @@ def collect_convergence_curve(spots=None, days=3, budget=800, per_day=3, pop_siz
     for generations in generation_steps:
         snap = all_snapshots[generations]
         valid_costs = [c for c in snap["min_cost"] if c < float("inf")]
+        hvs = snap["hv"]
         results.append({
             "generations": generations,
-            "avg_hv": mean(snap["hv"]) if snap["hv"] else 0.0,
+            "avg_hv": mean(hvs) if hvs else 0.0,
+            "std_hv": float(np.std(hvs)) if len(hvs) > 1 else 0.0,
             "feasible_rate": snap["feasible"] / runs,
-            "avg_best_cost": mean(valid_costs) if valid_costs else np.nan,
+            "avg_best_cost": mean(valid_costs) if valid_costs else None,
+            "std_best_cost": float(np.std(valid_costs)) if len(valid_costs) > 1 else 0.0,
         })
     return results
 
@@ -458,7 +461,7 @@ def plot_convergence_curve(results, output_path):
     generations = [item["generations"] for item in results]
     hv_vals = [item["avg_hv"] for item in results]
     feasible_rates = [item["feasible_rate"] * 100 for item in results]
-    best_costs = [item["avg_best_cost"] if not np.isnan(item["avg_best_cost"]) else None for item in results]
+    best_costs = [item["avg_best_cost"] if item["avg_best_cost"] is not None else None for item in results]
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -636,7 +639,7 @@ def plot_budget_sensitivity(results, output_path):
 
 def plot_budget_cost_plateau(results, output_path):
     budgets = [item["budget"] for item in results]
-    avg_costs = [item["avg_best_cost"] if not np.isnan(item["avg_best_cost"]) else None for item in results]
+    avg_costs = [item["avg_best_cost"] if item["avg_best_cost"] is not None else None for item in results]
     valid_budgets = [b for i, b in enumerate(budgets) if avg_costs[i] is not None]
     valid_costs = [c for c in avg_costs if c is not None]
 
@@ -740,7 +743,7 @@ def plot_sensitivity_grid(pop_results, gen_results, budget_results, output_path)
     # (d) 预算与实际成本的匹配关系
     ax_d = axes[1, 1]
     avg_costs = [
-        r["avg_best_cost"] if not np.isnan(r["avg_best_cost"]) else None
+        r["avg_best_cost"] if r["avg_best_cost"] is not None else None
         for r in budget_results
     ]
     valid_b = [b for b, c in zip(budgets, avg_costs) if c is not None]

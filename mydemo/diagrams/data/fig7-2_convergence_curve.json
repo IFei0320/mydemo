@@ -2,61 +2,81 @@
   {
     "generations": 1,
     "avg_hv": 0.0,
+    "std_hv": 0.0,
     "feasible_rate": 0.0,
-    "avg_best_cost": null
+    "avg_best_cost": null,
+    "std_best_cost": 0.0
   },
   {
     "generations": 2,
     "avg_hv": 0.0,
+    "std_hv": 0.0,
     "feasible_rate": 0.0,
-    "avg_best_cost": null
+    "avg_best_cost": null,
+    "std_best_cost": 0.0
   },
   {
     "generations": 5,
     "avg_hv": 0.0,
+    "std_hv": 0.0,
     "feasible_rate": 0.0,
-    "avg_best_cost": null
+    "avg_best_cost": null,
+    "std_best_cost": 0.0
   },
   {
     "generations": 10,
-    "avg_hv": 0.07099911991199122,
+    "avg_hv": 0.08122,
+    "std_hv": 0.1624834317707501,
     "feasible_rate": 0.3,
-    "avg_best_cost": 261.06666666666666
+    "avg_best_cost": 261.06666666666666,
+    "std_best_cost": 6.208238254305509
   },
   {
     "generations": 15,
-    "avg_hv": 0.28997334682468845,
+    "avg_hv": 0.3066,
+    "std_hv": 0.3277995118971351,
     "feasible_rate": 0.8,
-    "avg_best_cost": 257.3875
+    "avg_best_cost": 257.3875,
+    "std_best_cost": 14.998786409239912
   },
   {
     "generations": 20,
-    "avg_hv": 0.6014980100946242,
+    "avg_hv": 0.5081100000000001,
+    "std_hv": 0.19029078774339026,
     "feasible_rate": 1.0,
-    "avg_best_cost": 238.13
+    "avg_best_cost": 238.13,
+    "std_best_cost": 14.61923732620823
   },
   {
     "generations": 25,
-    "avg_hv": 0.5680029217961842,
+    "avg_hv": 0.57584,
+    "std_hv": 0.08153374700085847,
     "feasible_rate": 1.0,
-    "avg_best_cost": 219.5
+    "avg_best_cost": 219.5,
+    "std_best_cost": 13.697737039379897
   },
   {
     "generations": 30,
-    "avg_hv": 0.508713795420992,
+    "avg_hv": 0.617835,
+    "std_hv": 0.10069240053251288,
     "feasible_rate": 1.0,
-    "avg_best_cost": 213.74
+    "avg_best_cost": 213.74,
+    "std_best_cost": 12.326735171974773
   },
   {
     "generations": 40,
-    "avg_hv": 0.5294732430715148,
+    "avg_hv": 0.60028,
+    "std_hv": 0.1344154905507546,
     "feasible_rate": 1.0,
-    "avg_best_cost": 203.08
+    "avg_best_cost": 203.08,
+    "std_best_cost": 13.965228247329149
   },
   {
     "generations": 50,
-    "avg_hv": 0.5323362791920448,
+    "avg_hv": 0.56735,
+    "std_hv": 0.10940340716814992,
     "feasible_rate": 1.0,
-    "avg_best_cost": 199.68
+    "avg_best_cost": 199.68,
+    "std_best_cost": 13.787371032941701
   }
 ]

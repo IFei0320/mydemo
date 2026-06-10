@@ -12,15 +12,21 @@ from home.nsga2_trip_planner import (
 )
 
 
-def _compute_hv(costs, neg_ratings):
-    points = sorted(zip(costs, neg_ratings), key=lambda p: p[0])
-    hv = 0.0
-    prev_f2 = 1.0
-    for f1, f2 in points:
-        if 0.0 <= f1 <= 1.0 and 0.0 <= f2 <= 1.0:
-            hv += (1.0 - f1) * (prev_f2 - f2)
-            prev_f2 = f2
-    return max(0.0, min(1.0, hv))
+def _normalize_3d(values):
+    v_min, v_max = min(values), max(values)
+    if v_max <= v_min:
+        return [0.0 for _ in values]
+    return [(v - v_min) / (v_max - v_min) for v in values]
+
+
+def _compute_hv_3d(costs, neg_ratings, distances, n_samples=20000):
+    if len(costs) == 0:
+        return 0.0
+    points = np.column_stack([costs, neg_ratings, distances])
+    rng = np.random.RandomState(42)
+    samples = rng.uniform(0, 1, (n_samples, 3))
+    dominated = np.any(np.all(samples[:, None, :] >= points[None, :, :], axis=2), axis=1)
+    return float(dominated.mean())
 
 
 def _collector(spots, days, budget, per_day, pop_size, generations, runs, seed_base):
@@ -48,14 +54,15 @@ def _collector(spots, days, budget, per_day, pop_size, generations, runs, seed_b
             feasible += 1
             fc = [it["metrics"]["cost"] for it in fea_items]
             nrs = [-it["metrics"]["rating"] for it in fea_items]
-            c_min, c_max = min(fc), max(fc)
-            nc = [(c - c_min) / (c_max - c_min) for c in fc] if c_max > c_min else [0.0] * len(fc)
-            nr_min, nr_max = min(nrs), max(nrs)
-            nn = [(n - nr_min) / (nr_max - nr_min) for n in nrs] if nr_max > nr_min else [0.0] * len(nrs)
-            hv_list.append(_compute_hv(nc, nn))
+            fd = [it["metrics"]["distance"] for it in fea_items]
+            nc = _normalize_3d(fc)
+            nn = _normalize_3d(nrs)
+            nd = _normalize_3d(fd)
+            hv_list.append(_compute_hv_3d(nc, nn, nd))
         else:
             hv_list.append(0.0)
-    return {"hv": mean(hv_list), "runtime": mean(rt_list), "feasible_rate": feasible / runs}
+    return {"hv": mean(hv_list), "hv_list": hv_list, "runtime": mean(rt_list),
+            "rt_list": rt_list, "feasible_rate": feasible / runs}
 
 
 def collect_gen_sensitivity(spots, budget=280, days=3, per_day=3, gen_steps=None, runs=3):
@@ -66,7 +73,9 @@ def collect_gen_sensitivity(spots, budget=280, days=3, per_day=3, gen_steps=None
         print(f"   代数={gen} ...")
         d = _collector(spots, days, budget, per_day, 40, gen, runs, 600 + gen)
         results.append({"generations": gen, "avg_hv": d["hv"], "feasible_rate": d["feasible_rate"],
-                        "avg_runtime": d["runtime"]})
+                        "avg_runtime": d["runtime"],
+                        "std_hv": float(np.std(d["hv_list"])) if len(d["hv_list"]) > 1 else 0.0,
+                        "std_runtime": float(np.std(d["rt_list"])) if len(d["rt_list"]) > 1 else 0.0})
     return results
 
 
