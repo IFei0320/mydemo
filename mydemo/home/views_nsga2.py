@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
-from home.models import TravelInfo
 from home.nsga2_knowledge import retrieve_knowledge_cards
 from home.nsga2_report import call_ai_html_report, call_ai_refiner
 from home.nsga2_trip_planner import (
@@ -188,7 +187,7 @@ def generate_ai_nsga2_route(request):
         "crowd_avoid": float(data.get("crowd_avoidance", 50)) / 100.0,
     }
 
-    candidates = build_candidates(TravelInfo.objects.all(), city=city, season=season)
+    candidates = build_candidates(city=city, season=season)
     if len(candidates) < 3:
         return JsonResponse({"code": 400, "message": "该城市可用景点不足，请更换城市或放宽条件", "data": None})
 

@@ -6,10 +6,7 @@ from django.shortcuts import render
 # from numpy.core.multiarray import item
 from home.models import Part6, TravelInfo
 from ai.Get_Message import Get_DeepSeek
-from home.nsga2_trip_planner import (
-    _normalize_coord_pair,
-   
-)
+from home.data_utils import _normalize_coord_pair
 # from home.wiki_service import retrieve_wiki_knowledge_cards
 from django.db.models import Q, Sum, Count
 from django.db.models.functions import TruncDate

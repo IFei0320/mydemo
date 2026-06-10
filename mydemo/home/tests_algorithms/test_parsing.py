@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 
-from home.nsga2_trip_planner import _normalize_coord_pair, _parse_distance_km, _parse_price
+from home.data_utils import _normalize_coord_pair, _parse_distance_km, _parse_price
 
 
 class NSGA2ParsingTests(SimpleTestCase):

@@ -35,6 +35,37 @@ class TravelInfo(models.Model):
         db_table = 'home_travelinfo'
 
 
+class CleanedAttraction(models.Model):
+    """清洗后的景点数据表——字段类型正确，算法直接使用，不从 TravelInfo 反复解析"""
+    source = models.OneToOneField(
+        TravelInfo, on_delete=models.CASCADE, null=True, blank=True,
+        verbose_name='原始数据', related_name='cleaned'
+    )
+    name = models.CharField(max_length=255, db_index=True, verbose_name='景点名称')
+    city = models.CharField(max_length=50, db_index=True, verbose_name='城市')
+    area = models.CharField(max_length=255, null=True, blank=True, verbose_name='区域')
+    tags = models.CharField(max_length=255, null=True, blank=True, verbose_name='标签')
+    rating = models.FloatField(default=0.0, verbose_name='评分')
+    hotness = models.FloatField(default=0.0, verbose_name='热度')
+    review_count = models.IntegerField(default=0, verbose_name='评论数')
+    cost = models.FloatField(default=0.0, verbose_name='门票价格(元)')
+    longitude = models.FloatField(default=0.0, verbose_name='经度')
+    latitude = models.FloatField(default=0.0, verbose_name='纬度')
+    center_distance_km = models.FloatField(default=0.0, verbose_name='距市中心(km)')
+    is_coord_valid = models.BooleanField(default=False, verbose_name='坐标是否有效')
+
+    class Meta:
+        verbose_name_plural = '清洗后景点数据'
+        db_table = 'home_cleaned_attraction'
+        indexes = [
+            models.Index(fields=['city', 'is_coord_valid']),
+            models.Index(fields=['name']),
+        ]
+
+    def __str__(self):
+        return f"{self.city}·{self.name}"
+
+
 class Part1(models.Model):
     """评分分布统计表"""
     score = models.FloatField(null=True, verbose_name='评分')

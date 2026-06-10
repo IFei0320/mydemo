@@ -9,7 +9,7 @@ from utils.decorators import login_required_custom
 from home.models import (
     Part1, Part2, Part3, Part4, Part5, Part6, Part7, Part8, TravelInfo,
 )
-from home.nsga2_trip_planner import _parse_price
+from home.data_utils import _parse_price
 
 
 @login_required_custom

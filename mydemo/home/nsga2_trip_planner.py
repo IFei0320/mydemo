@@ -4,20 +4,7 @@ import re
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
-from home.data_utils import (
-    SEASON_KEYWORDS,
-    CHINA_LON_MIN,
-    CHINA_LON_MAX,
-    CHINA_LAT_MIN,
-    CHINA_LAT_MAX,
-    _safe_float,
-    _parse_price,
-    _parse_distance_km,
-    _haversine_km,
-    _is_valid_china_coord,
-    _normalize_coord_pair,
-    _season_bonus,
-)
+from home.data_utils import _haversine_km, _season_bonus
 
 # import family
 #
@@ -52,43 +39,42 @@ def _normalize(values: List[float]) -> List[float]:
 
 
 
-def build_candidates(queryset, city: str, season: str) -> List[ScenicSpot]:
+def build_candidates(city: str, season: str, require_coord: bool = True) -> List[ScenicSpot]:
+    """从清洗表 CleanedAttraction 构建候选景点列表，按 name 去重保留 rating 最高"""
+    from home.models import CleanedAttraction
+
+    qs = CleanedAttraction.objects.filter(city__icontains=city)
+    if require_coord:
+        qs = qs.filter(is_coord_valid=True)
+
+    # 精确匹配优先，降低跨城误入
+    primary = [row for row in qs if row.city.replace("市", "") == city.replace("市", "")]
+    source_rows = primary if len(primary) >= 9 else list(qs)
+
     spots: List[ScenicSpot] = []
-    city_qs = queryset.filter(city__icontains=city)
-    # 先精确匹配“上海” vs “上海市”，再补充包含匹配，降低跨城误入概率
-    primary = [row for row in city_qs if str(row.city or "").replace("市", "") == city.replace("市", "")]
-    source_rows = primary if len(primary) >= 9 else list(city_qs)
     for row in source_rows:
-        lon, lat = _normalize_coord_pair(row.longitude, row.latitude)
-        if not lon or not lat:
-            continue
-        rating = _safe_float(row.rating, 0.0)
-        hotness = _safe_float(row.popularity_score, 0.0)
-        reviews = _safe_float(row.review_count, 0.0)
-        tags = row.tags or ""
         spots.append(
             ScenicSpot(
-                name=row.name or "未知景点",
-                city=row.city or city,
+                name=row.name,
+                city=row.city,
                 area=row.area or "",
-                tags=tags,
-                rating=rating + _season_bonus(tags, season),
-                hotness=hotness,
-                reviews=reviews,
-                cost=_parse_price(row.actual_price),
-                lon=lon,
-                lat=lat,
-                center_distance_km=_parse_distance_km(row.distance_from_center),
+                tags=row.tags or "",
+                rating=row.rating + _season_bonus(row.tags or "", season),
+                hotness=row.hotness,
+                reviews=float(row.review_count),
+                cost=row.cost,
+                lon=row.longitude,
+                lat=row.latitude,
+                center_distance_km=row.center_distance_km,
             )
         )
 
     # 按 name 去重：同名保留 rating 最高的那一条
-    seen = {}
+    seen: dict = {}
     for s in spots:
         if s.name not in seen or s.rating > seen[s.name].rating:
             seen[s.name] = s
-    spots = list(seen.values())
-    return spots
+    return list(seen.values())
 
 
 def _route_distance_km(route_indices: List[int], spots: List[ScenicSpot], per_day: int) -> float:
