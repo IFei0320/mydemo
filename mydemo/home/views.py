@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
 # from numpy.core.multiarray import item
-from home.models import TravelInfo
+from home.models import Part6, TravelInfo
 from ai.Get_Message import Get_DeepSeek
 from home.nsga2_trip_planner import (
     _normalize_coord_pair,
@@ -13,7 +13,6 @@ from home.nsga2_trip_planner import (
 # from home.wiki_service import retrieve_wiki_knowledge_cards
 from django.db.models import Q, Sum, Count
 from django.db.models.functions import TruncDate
-from utils import util
 from utils.decorators import login_required_custom
 from user.models import UserInfo
 
@@ -47,9 +46,9 @@ def index(request):
         total_reviews=Sum('review_count')
     )['total_reviews'] or 0
 
-    sql = 'select * from part6'
-    res=util.query(sql)
-    mapData = [{"name":i[0],"value":i[1]} for i in res]
+    mapData = list(
+        Part6.objects.values('name', 'value').order_by('-value')
+    )
 
     all_by_hot = TravelInfo.objects.order_by('-popularity_score', '-review_count')
     top_5_travel = _dedup_by_name(all_by_hot)[:5]

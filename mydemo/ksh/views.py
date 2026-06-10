@@ -4,25 +4,27 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
-from utils import util
 from utils.decorators import login_required_custom
 
-from home.models import TravelInfo
+from home.models import (
+    Part1, Part2, Part3, Part4, Part5, Part6, Part7, Part8, TravelInfo,
+)
 from home.nsga2_trip_planner import _parse_price
 
 
 @login_required_custom
 def part1(request):
-    sql1 = 'select * from part1'
-    res = util.query(sql1)
-    data_list = [{"value": i[2], "name": i[1]} for i in res]
+    data_list = list(
+        Part1.objects.values('score', 'value').order_by('score')
+    )
+    # 重命名为模板需要的字段名
+    for item in data_list:
+        item['name'] = item.pop('score')
 
-    sql2='select * from part8'
-    res2 = util.query(sql2)
-
-    name_list = [i[1] for i in res2]
-    travel_num_list = [i[2] for i in res2]
-    avg_score_list = [i[3] for i in res2]
+    res2 = Part8.objects.values('name', 'travel_num', 'avg_score')
+    name_list = [i['name'] for i in res2]
+    travel_num_list = [i['travel_num'] for i in res2]
+    avg_score_list = [i['avg_score'] for i in res2]
     content = {
         'data_list': data_list,
         'name_list': name_list,
@@ -33,13 +35,13 @@ def part1(request):
 
 @login_required_custom
 def part2(request):
-    sql1 = 'select * from part2'
-    res = util.query(sql1)
-    name_list = [i[1] for i in res]
-    data_list = [{"value": i[2], "name": i[1]} for i in res]
-    sql2 = 'select distinct city from part7'
-    res2 = util.query(sql2)
-    select_list = [i[0] for i in res2]
+    data_list = list(
+        Part2.objects.values('name', 'value').order_by('-value')
+    )
+    name_list = [i['name'] for i in data_list]
+    select_list = list(
+        Part7.objects.values_list('city', flat=True).distinct().order_by('city')
+    )
     content = {
         'data_list': data_list,
         'name_list': name_list,
@@ -51,17 +53,13 @@ def part2(request):
 @login_required_custom
 def get_cityData(request):
     city = request.GET.get('city', '')
-
-    res = util.query("select name,value from part7 where city=%s", (city,))
-
+    res = Part7.objects.filter(city=city).values_list('name', 'value')
     name_list = [i[0] for i in res]
     value_list = [i[1] for i in res]
-
     content = {
         'names': name_list,
         'values': value_list,
     }
-
     return JsonResponse({"data": content})
 
 
@@ -152,14 +150,9 @@ def part4(request):
 
     qs = TravelInfo.objects.all()
     if not qs.exists():
-        res = util.query("SELECT name, value FROM part4 ORDER BY value DESC")
-        data_list = [
-            {
-                "name": str(r[0]) if r[0] is not None else "未知",
-                "value": float(r[1]) if r[1] is not None else 0.0,
-            }
-            for r in (res or [])
-        ]
+        data_list = list(
+            Part4.objects.values('name', 'value').order_by('-value')
+        )
         chart_note = "当前使用离线表 part4（TravelInfo 无数据）。"
         group_mode = "legacy"
     else:

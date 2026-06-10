@@ -32,3 +32,86 @@ class TravelInfo(models.Model):
 
     class Meta:
         verbose_name_plural = '旅游信息管理'
+        db_table = 'home_travelinfo'
+
+
+class Part1(models.Model):
+    """评分分布统计表"""
+    score = models.FloatField(null=True, verbose_name='评分')
+    value = models.IntegerField(null=True, verbose_name='数量')
+
+    class Meta:
+        db_table = 'part1'
+        managed = False
+
+
+class Part2(models.Model):
+    """热门景点 Top10 表"""
+    name = models.CharField(max_length=255, null=True, verbose_name='景点名称')
+    value = models.IntegerField(null=True, verbose_name='评论数量')
+
+    class Meta:
+        db_table = 'part2'
+        managed = False
+
+
+class Part3(models.Model):
+    """价格区间分布表"""
+    name = models.CharField(max_length=50, null=True, verbose_name='价格区间')
+    value = models.IntegerField(null=True, verbose_name='景点数量')
+
+    class Meta:
+        db_table = 'part3'
+        managed = False
+
+
+class Part4(models.Model):
+    """区域分布统计表"""
+    name = models.CharField(max_length=255, null=True, verbose_name='区域名称')
+    value = models.IntegerField(null=True, verbose_name='景点数量')
+
+    class Meta:
+        db_table = 'part4'
+        managed = False
+
+
+class Part5(models.Model):
+    """热词统计表"""
+    name = models.CharField(max_length=255, null=True, verbose_name='词语')
+    value = models.IntegerField(null=True, verbose_name='出现次数')
+
+    class Meta:
+        db_table = 'part5'
+        managed = False
+
+
+class Part6(models.Model):
+    """各省份景点数量表"""
+    name = models.CharField(max_length=100, null=True, verbose_name='省份')
+    value = models.IntegerField(null=True, verbose_name='景点数量')
+
+    class Meta:
+        db_table = 'part6'
+        managed = False
+
+
+class Part7(models.Model):
+    """城市热门排名表"""
+    city = models.CharField(max_length=50, null=True, verbose_name='城市名称')
+    name = models.CharField(max_length=255, null=True, verbose_name='景点名称')
+    value = models.FloatField(null=True, verbose_name='热度评分')
+
+    class Meta:
+        db_table = 'part7'
+        managed = False
+
+
+class Part8(models.Model):
+    """省份平均评分表"""
+    name = models.CharField(max_length=100, null=True, verbose_name='省份')
+    travel_num = models.IntegerField(null=True, verbose_name='景点数量')
+    avg_score = models.FloatField(null=True, verbose_name='平均评分')
+
+    class Meta:
+        db_table = 'part8'
+        managed = False
