@@ -5,13 +5,13 @@ from user.models import UserInfo
 
 
 class UserInfoAdmin(admin.ModelAdmin):
-    list_display = ('username', 'uemail', 'uphone', 'uaddress', 'created_at', 'show_avatar')
+    list_display = ('username', 'email', 'phone', 'address', 'created_at', 'show_avatar')
 
-    list_display_links = ('username','uemail')
+    list_display_links = ('username','email')
 
     list_filter = ( 'created_at',)
 
-    search_fields = ('username', 'uemail', 'uphone')
+    search_fields = ('username', 'email', 'phone')
 
     list_per_page = 10
 
@@ -19,11 +19,11 @@ class UserInfoAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('基本信息', {
-            'fields': ('username', 'uemail', 'avatar'),
+            'fields': ('username', 'email', 'avatar'),
             'description': '用户的核心基本信息'
         }),
         ('联系信息', {
-            'fields': ('uphone', 'uaddress', 'uyoubian'),
+            'fields': ('phone', 'address'),
             'classes': ('collapse',),
             'description': '用户的联系方式'
         }),

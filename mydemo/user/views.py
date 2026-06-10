@@ -54,17 +54,16 @@ def register(request):
 
             if UserInfo.objects.filter(username=username).exists():
                 return JsonResponse({'code': 400, 'msg': '用户已存在'})
-            if UserInfo.objects.filter(uemail=email).exists():
+            if UserInfo.objects.filter(email=email).exists():
                 return JsonResponse({'code': 400, 'msg': '邮箱已存在'})
 
             UserInfo.objects.create(
                 username=username,
-                uemail=email,
+                email=email,
                 password=make_password(password),
 
-                uaddress='',
-                uphone='',
-                uyoubian='',
+                address='',
+                phone='',
                 avatar=''
             )
 
@@ -93,7 +92,6 @@ def changeInfo(request):
         email = (request.POST.get('email') or '').strip()
         phone = (request.POST.get('phone') or '').strip()
         address = (request.POST.get('address') or '').strip()
-        youbian = (request.POST.get('youbian') or '').strip()
 
         if not username or not email:
             return render(request, 'ksh/changeInfo.html', {
@@ -109,7 +107,7 @@ def changeInfo(request):
                 'error': '用户名已存在，请更换',
                 'success': None
             })
-        if UserInfo.objects.exclude(id=uid).filter(uemail=email).exists():
+        if UserInfo.objects.exclude(id=uid).filter(email=email).exists():
             return render(request, 'ksh/changeInfo.html', {
                 'user': user,
                 'error': '邮箱已被占用，请更换',
@@ -117,10 +115,9 @@ def changeInfo(request):
             })
 
         user.username = username
-        user.uemail = email
-        user.uphone = phone
-        user.uaddress = address
-        user.uyoubian = youbian
+        user.email = email
+        user.phone = phone
+        user.address = address
         user.save()
 
         # 若改了用户名，保持 session 显示一致
@@ -216,7 +213,7 @@ def reset_password(request):
         new_password = request.POST.get('new_password', '')
 
         try:
-            user = UserInfo.objects.get(username=username, uemail=email)
+            user = UserInfo.objects.get(username=username, email=email)
         except UserInfo.DoesNotExist:
             return JsonResponse({'code': 400, 'msg': '用户名与邮箱不匹配'})
 
