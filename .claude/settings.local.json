@@ -19,7 +19,34 @@
       "Bash(python -c \"print\\('hello'\\)\")",
       "Bash(cygpath -w /tmp/docx_extract/word/styles.xml)",
       "Bash(python -c \"import sys, xml.etree.ElementTree as ET; content = sys.stdin.read\\(\\); root = ET.fromstring\\(content\\); ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}; [print\\(f'Style ID: {s.get\\(\\\\\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}styleId\\\\\"\\)}, Name: {s.find\\(\\\\\"w:name\\\\\", ns\\).get\\(\\\\\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\\\\\"\\) if s.find\\(\\\\\"w:name\\\\\", ns\\) is not None else \\\\\"N/A\\\\\"}, Type: {s.get\\(\\\\\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\\\\\"\\)}'\\) for s in root.findall\\('.//w:style', ns\\)]\")",
-      "Bash(git -C d:/ass log --oneline -10)"
+      "Bash(git -C d:/ass log --oneline -10)",
+      "Bash(git push *)",
+      "Bash(curl -I -s --connect-timeout 5 https://github.com)",
+      "Bash(git config *)",
+      "Bash(ping -c 1 github.com)",
+      "Bash(ping -n 1 github.com)",
+      "Bash(ls -la \"D:/源氏物语/作者不详——应子的读本/\" 2>/dev/null || echo \"DIR_NOT_FOUND\")",
+      "Read(//d/源氏物语/作者不详——应子的读本/**)",
+      "Bash(python -c \"from home.data_utils import get_city_tier, compute_living_budget, assess_feasibility; print\\('data_utils OK'\\); print\\('Shanghai tier:', get_city_tier\\('上海'\\)\\); print\\('Jinan tier:', get_city_tier\\('济南'\\)\\); living = compute_living_budget\\('H', 3, 'overnight'\\); print\\('SH 3d overnight:', living\\); feas = assess_feasibility\\(250, living['total_living']\\); print\\('250 remaining vs', living['total_living'], 'living:', feas\\)\")",
+      "Bash(python manage.py shell -c \"from home.data_utils import get_city_tier, compute_living_budget, assess_feasibility; print\\('data_utils OK'\\); print\\('SH:', get_city_tier\\('上海'\\)\\); print\\('JN:', get_city_tier\\('济南'\\)\\); living = compute_living_budget\\('H', 3, 'overnight'\\); print\\(living\\); feas = assess_feasibility\\(250, living['total_living']\\); print\\(feas\\)\")",
+      "Bash(python manage.py shell -c \"from home.nsga2_report import call_ai_refiner, call_ai_html_report; print\\('nsga2_report imports OK'\\)\")",
+      "Bash(python -c \"line = open\\('home/nsga2_report.py', 'r', encoding='utf-8'\\).readlines\\(\\)[27]; print\\(repr\\(line\\)\\)\")",
+      "Bash(python manage.py shell -c \"from home.views_nsga2 import _build_top3_options, select_ai_nsga2_plan; print\\('views_nsga2 imports OK'\\)\")",
+      "Bash(python manage.py check)",
+      "Bash(python manage.py shell -c \"from home.views_nsga2 import select_ai_nsga2_plan; from home.nsga2_report import call_ai_refiner, call_ai_html_report; print\\('All imports OK'\\)\")",
+      "Bash(git commit -m ' *)",
+      "Bash(git --version)",
+      "Bash(git update-git-for-windows *)",
+      "Bash(python manage.py makemigrations home)",
+      "Bash(python manage.py sqlmigrate home 0002)",
+      "Bash(python manage.py migrate)",
+      "Bash(python manage.py clean_attractions)",
+      "Bash(python manage.py shell -c ' *)",
+      "Bash(python -c \"from home.tests_algorithms.run_benchmarks import main; print\\('benchmarks import OK'\\)\")",
+      "Bash(python -c \"from home.tests_algorithms.run_benchmarks import main; print\\('OK'\\)\")"
+    ],
+    "additionalDirectories": [
+      "D:\\源氏物语\\作者不详——应子的读本"
     ]
   }
 }
