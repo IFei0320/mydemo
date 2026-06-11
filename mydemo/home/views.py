@@ -3,11 +3,9 @@ import json
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
-# from numpy.core.multiarray import item
 from home.models import Part6, TravelInfo
 from ai.Get_Message import Get_DeepSeek
 from home.data_utils import _normalize_coord_pair, dedup_by_name
-# from home.wiki_service import retrieve_wiki_knowledge_cards
 from django.db.models import Q, Sum, Count
 from django.db.models.functions import TruncDate
 from utils.decorators import login_required_custom
@@ -34,7 +32,7 @@ def index(request):
     top_5_travel = dedup_by_name(all_by_hot)[:5]
 
     all_by_review = TravelInfo.objects.order_by('-review_count', '-popularity_score')
-    top_10_travel = dedup_by_name(all_by_review)[:5]
+    top_5_review = dedup_by_name(all_by_review)[:5]
 
     daily_users = UserInfo.objects.annotate(
         date=TruncDate('created_at')
@@ -52,7 +50,7 @@ def index(request):
         "total_reviews": total_reviews,
         "mapData": mapData,
         "top_5_travel": top_5_travel,
-        "top_10_travel": top_10_travel,
+        "top_10_travel": top_5_review,  # 兼容旧模板命名，实际为评论数 Top5
         "name_list": name_list,
         "value_list": value_list
 
@@ -93,105 +91,89 @@ def travel_list(request):
 
 @login_required_custom
 def get_ai_travelRoute(request):
-    if request.method == 'POST':
-        try:
-            # 解析请求数据
-            try:
-                data = json.loads(request.body.decode('utf-8'))
-            except json.JSONDecodeError:
-                    return JsonResponse({
-                        'code': 400,
-                        'message': '无效的 json 数据',
-                        'data': None
-                    })
+    if request.method != 'POST':
+        return render(request, 'ksh/get_ai_travelRoute.html')
 
-            # 验证必要字段
-            required_fields = ['city', 'season', 'days']
-            for field in required_fields:
-                if field not in data:
-                    return JsonResponse({
-                        'code': 400,
-                        'message': f'缺少必要字段：{field}',
-                        'data': None
-                    })
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except json.JSONDecodeError:
+        return JsonResponse({'code': 400, 'message': '无效的 json 数据', 'data': None})
 
-            # 处理预算参数
-            budget = data.get('budget', 0)
-            if budget == 0:
-                budget = '无预算'
+    try:
+        required_fields = ['city', 'season', 'days']
+        for field in required_fields:
+            if field not in data:
+                return JsonResponse({
+                    'code': 400,
+                    'message': f'缺少必要字段：{field}',
+                    'data': None,
+                })
 
-            dp = Get_DeepSeek()
-            result = dp.get_city_travel_overview(
-                city=data["city"],
-                season=data["season"],
-                days=str(data["days"]),
-                budget=str(budget),
-            )
+        budget = data.get('budget', 0)
+        if budget == 0:
+            budget = '无预算'
 
-            if result["code"] != 200:
-                return JsonResponse(
-                    {
-                        "code": result["code"],
-                        "message": result.get("message", "生成失败"),
-                        "data": None,
-                    }
-                )
+        dp = Get_DeepSeek()
+        result = dp.get_city_travel_overview(
+            city=data["city"],
+            season=data["season"],
+            days=str(data["days"]),
+            budget=str(budget),
+        )
 
-            city_key = str(data["city"]).strip()
-            city_rows = list(
-                TravelInfo.objects.filter(city__icontains=city_key)
-                .exclude(longitude__isnull=True)
-                .exclude(latitude__isnull=True)[:250]
-            )
-            primary = [
-                row
-                for row in city_rows
-                if str(row.city or "").replace("市", "") == city_key.replace("市", "")
-            ]
-            source_rows = primary if len(primary) >= 9 else city_rows
-
-            map_spots = []
-            for t in source_rows:
-                lon, lat = _normalize_coord_pair(t.longitude, t.latitude)
-                if not lon or not lat:
-                    continue
-                price_hint = t.actual_price or t.market_price or ""
-                map_spots.append(
-                    {
-                        "name": t.name or "",
-                        "longitude": lon,
-                        "latitude": lat,
-                        "rating": t.rating or "",
-                        "area": t.area or "",
-                        "price_hint": str(price_hint)[:120],
-                    }
-                )
-
-            return JsonResponse(
-                {
-                    "code": 200,
-                    "message": "目的地概览生成成功",
-                    "data": {
-                        "overview": result["overview"],
-                        "map_spots": map_spots,
-                        "map_spot_count": len(map_spots),
-                        "city": city_key,
-                    },
-                }
-            )
-
-        except Exception as e:
-            import traceback
-            error_detail = traceback.format_exc()
-            print(f"ERROR: 服务器异常 - {str(e)}")
-            print(f"ERROR: 详细堆栈：{error_detail}")
+        if result["code"] != 200:
             return JsonResponse({
-                "code": 500,
-                "message": f"服务器内部错误：{str(e)}",
-                "data": None
+                "code": result["code"],
+                "message": result.get("message", "生成失败"),
+                "data": None,
             })
 
+        city_key = str(data["city"]).strip()
+        city_rows = list(
+            TravelInfo.objects.filter(city__icontains=city_key)
+            .exclude(longitude__isnull=True)
+            .exclude(latitude__isnull=True)[:250]
+        )
+        primary = [
+            row
+            for row in city_rows
+            if str(row.city or "").replace("市", "") == city_key.replace("市", "")
+        ]
+        source_rows = primary if len(primary) >= 9 else city_rows
 
-    return render(request, 'ksh/get_ai_travelRoute.html')
+        map_spots = []
+        for t in source_rows:
+            lon, lat = _normalize_coord_pair(t.longitude, t.latitude)
+            if not lon or not lat:
+                continue
+            price_hint = t.actual_price or t.market_price or ""
+            map_spots.append({
+                "name": t.name or "",
+                "longitude": lon,
+                "latitude": lat,
+                "rating": t.rating or "",
+                "area": t.area or "",
+                "price_hint": str(price_hint)[:120],
+            })
+
+        return JsonResponse({
+            "code": 200,
+            "message": "目的地概览生成成功",
+            "data": {
+                "overview": result["overview"],
+                "map_spots": map_spots,
+                "map_spot_count": len(map_spots),
+                "city": city_key,
+            },
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JsonResponse({
+            "code": 500,
+            "message": f"服务器内部错误：{str(e)}",
+            "data": None,
+        })
 
 

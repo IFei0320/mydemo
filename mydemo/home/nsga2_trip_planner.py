@@ -5,9 +5,14 @@ from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
 from home.config import (
+    BUDGET_TARGET_RATIO,
+    EXPERIENCE_HOTNESS_WEIGHT,
+    EXPERIENCE_RATING_WEIGHT,
     GENERATIONS,
+    INFEASIBLE_PENALTY,
     MUTATION_RATE,
     POPULATION_SIZE,
+    SPEND_GAP_PENALTY_WEIGHT,
     SPOTS_PER_DAY,
 )
 from home.data_utils import _haversine_km, _season_bonus
@@ -236,7 +241,7 @@ def _evaluate_population(population: List[Dict], spots: List[ScenicSpot], per_da
         metrics = _evaluate_route(item["route"], spots, per_day)
         feasible = metrics["cost"] <= budget if budget > 0 else True
         if feasible:
-            experience = 0.6 * metrics["rating"] + 0.4 * metrics["hotness"]
+            experience = EXPERIENCE_RATING_WEIGHT * metrics["rating"] + EXPERIENCE_HOTNESS_WEIGHT * metrics["hotness"]
             objectives = [
                 metrics["cost"],
                 metrics["distance"],
@@ -244,7 +249,7 @@ def _evaluate_population(population: List[Dict], spots: List[ScenicSpot], per_da
             ]
         else:
             penalty = metrics["cost"] - budget if budget > 0 else metrics["cost"]
-            objectives = [1e9 + penalty, 1e9, 1e9]
+            objectives = [INFEASIBLE_PENALTY + penalty, INFEASIBLE_PENALTY, INFEASIBLE_PENALTY]
         item["metrics"] = metrics
         item["feasible"] = feasible
         item["objectives"] = objectives
@@ -312,7 +317,7 @@ def choose_solution(pareto_set: List[Dict], sensitivities: Dict[str, float], bud
     n_distance = _normalize(distances)
     n_hot = _normalize(hotness)
     n_rating = _normalize(ratings)
-    spend_target = 0.75 if budget > 0 else 0.0
+    spend_target = BUDGET_TARGET_RATIO if budget > 0 else 0.0
 
     best_idx = 0
     best_score = float("inf")
@@ -324,7 +329,7 @@ def choose_solution(pareto_set: List[Dict], sensitivities: Dict[str, float], bud
             + sensitivities["distance"] * n_distance[i]
             - sensitivities["hotness"] * n_hot[i]
             - sensitivities["rating"] * n_rating[i]
-            + 0.15 * spend_gap
+            + SPEND_GAP_PENALTY_WEIGHT * spend_gap
         )
         if utility < best_score:
             best_score = utility

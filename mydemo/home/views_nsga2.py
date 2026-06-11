@@ -7,11 +7,13 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from home.config import (
-    BUDGET_TARGET_RATIO,
+    DEFAULT_SENSITIVITY,
+    EXPERIENCE_HOTNESS_WEIGHT,
+    EXPERIENCE_RATING_WEIGHT,
     PLAN_CACHE_TTL,
     RECENT_PLAN_LIMIT,
-    SPOTS_PER_DAY,
     STYLE_LABELS,
+    VALID_SEASONS,
 )
 from home.nsga2_knowledge import retrieve_knowledge_cards
 from home.nsga2_report import generate_ai_summary, generate_html_report
@@ -61,7 +63,7 @@ def _pick_three_styles(pareto_set, sensitivities, budget):
     economy = min(pareto_set, key=lambda x: x["metrics"]["cost"])
     experience = max(
         pareto_set,
-        key=lambda x: (x["metrics"]["rating"] * 0.6 + x["metrics"]["hotness"] * 0.4),
+        key=lambda x: (x["metrics"]["rating"] * EXPERIENCE_RATING_WEIGHT + x["metrics"]["hotness"] * EXPERIENCE_HOTNESS_WEIGHT),
     )
     balanced = choose_solution(pareto_set, sensitivities, budget=budget)
 
@@ -176,16 +178,16 @@ def generate_ai_nsga2_route(request):
 
     if not city:
         return JsonResponse({"code": 400, "message": "城市不能为空", "data": None})
-    if season not in {"spring", "summer", "autumn", "winter"}:
+    if season not in VALID_SEASONS:
         return JsonResponse({"code": 400, "message": "季节参数非法", "data": None})
     if days <= 0:
         return JsonResponse({"code": 400, "message": "天数必须大于0", "data": None})
 
     sensitivities = {
-        "price": float(data.get("price_sensitivity", 50)) / 100.0,
-        "distance": float(data.get("distance_sensitivity", 50)) / 100.0,
-        "hotness": float(data.get("hotness_preference", 50)) / 100.0,
-        "rating": float(data.get("rating_preference", 50)) / 100.0,
+        "price": float(data.get("price_sensitivity", DEFAULT_SENSITIVITY)) / 100.0,
+        "distance": float(data.get("distance_sensitivity", DEFAULT_SENSITIVITY)) / 100.0,
+        "hotness": float(data.get("hotness_preference", DEFAULT_SENSITIVITY)) / 100.0,
+        "rating": float(data.get("rating_preference", DEFAULT_SENSITIVITY)) / 100.0,
     }
 
     candidates = build_candidates(city=city, season=season)

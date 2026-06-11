@@ -90,16 +90,16 @@ def assess_feasibility(budget: float, total_estimate: float) -> Dict:
         ratio: 覆盖率(budget / total_estimate)
         gap: 缺口(负数为不足金额，正数为余量)
     """
-    from home.config import FEASIBILITY_MAP
+    from home.config import FEASIBILITY_MAP, FEASIBILITY_RATIO_SUFFICIENT, FEASIBILITY_RATIO_TIGHT
 
     if total_estimate <= 0:
         ratio = 1.0
     else:
         ratio = budget / total_estimate
 
-    if ratio < 0.6:
+    if ratio < FEASIBILITY_RATIO_TIGHT:
         level = "insufficient"
-    elif ratio < 1.0:
+    elif ratio < FEASIBILITY_RATIO_SUFFICIENT:
         level = "tight"
     else:
         level = "sufficient"

@@ -15,7 +15,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
-DIDA_FIXED_ACCESS_TOKEN = os.getenv('DIDA_ACCESS_TOKEN', 'dp_edb471742d2c40f7bf40589ba2366328')
+DIDA_FIXED_ACCESS_TOKEN = os.getenv('DIDA_ACCESS_TOKEN', '')
 DIDA_FIXED_PROJECT_INPUT = os.getenv('DIDA_PROJECT_NAME', '旅游规划')
 
 

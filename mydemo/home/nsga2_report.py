@@ -8,7 +8,7 @@ from pathlib import Path
 
 from django.template.loader import render_to_string
 
-from home.config import AI_MAX_TOKENS, AI_MODEL
+from home.config import AI_BASE_URL, AI_MAX_TOKENS, AI_MODEL
 from home.data_utils import (
     _safe_float,
     assess_feasibility,
@@ -19,6 +19,25 @@ from home.data_utils import (
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
+
+def _calc_budget_context(city: str, days: int, budget: float, route_data: List[Dict]) -> Dict:
+    """统一计算预算上下文：门票实际 + 食宿交通预估 + 可行性。"""
+    ticket_cost = 0.0
+    for item in (route_data or []):
+        ticket_cost += _safe_float(item.get("estimated_cost", "免费"), 0.0)
+    tier = get_city_tier(city)
+    living = compute_living_budget(tier, days)
+    total_estimate = ticket_cost + living["total_living"]
+    feasibility = assess_feasibility(budget, total_estimate)
+    return {
+        "ticket_cost": ticket_cost,
+        "tier": tier,
+        "living": living,
+        "total_estimate": total_estimate,
+        "feasibility": feasibility,
+    }
+
+
 def generate_ai_summary(
     city: str,
     season: str,
@@ -27,14 +46,12 @@ def generate_ai_summary(
     route_data: List[Dict],
     knowledge_cards: List[Dict],
 ) -> str:
-    # 计算：门票预算 vs（门票实际 + 食宿交通预估）
-    ticket_cost = 0.0
-    for item in (route_data or []):
-        ticket_cost += _safe_float(item.get("estimated_cost", "免费"), 0.0)
-    tier = get_city_tier(city)
-    living = compute_living_budget(tier, days)
-    total_estimate = ticket_cost + living["total_living"]
-    feasibility = assess_feasibility(budget, total_estimate)
+    ctx = _calc_budget_context(city, days, budget, route_data)
+    ticket_cost = ctx["ticket_cost"]
+    tier = ctx["tier"]
+    living = ctx["living"]
+    total_estimate = ctx["total_estimate"]
+    feasibility = ctx["feasibility"]
 
     system_prompt = (
         "你是资深旅游策划师。请基于给定的结构化行程，输出详细攻略。"
@@ -75,7 +92,7 @@ def generate_ai_summary(
     try:
         client = OpenAI(
             api_key=os.getenv('LLM_API_KEY'),
-            base_url=os.getenv('LLM_BASE_URL', 'https://api.deepseek.com'),
+            base_url=os.getenv('LLM_BASE_URL', AI_BASE_URL),
         )
         response = client.chat.completions.create(
             model=AI_MODEL,
@@ -114,14 +131,11 @@ def generate_html_report(
     metrics = metrics or {}
     knowledge_cards = knowledge_cards or []
 
-    # 计算预算可行性：门票预算 vs（门票实际 + 食宿交通预估）
-    ticket_cost = 0.0
-    for item in route_data:
-        ticket_cost += _safe_float(item.get("estimated_cost", "免费"), 0.0)
-    tier = get_city_tier(city)
-    living = compute_living_budget(tier, days)
-    total_estimate = ticket_cost + living["total_living"]
-    feasibility = assess_feasibility(budget, total_estimate)
+    ctx = _calc_budget_context(city, days, budget, route_data)
+    ticket_cost = ctx["ticket_cost"]
+    living = ctx["living"]
+    total_estimate = ctx["total_estimate"]
+    feasibility = ctx["feasibility"]
 
     day_groups: Dict[int, List[Dict]] = {}
     for row in route_data:

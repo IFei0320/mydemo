@@ -8,10 +8,17 @@ MUTATION_RATE = 0.2       # 变异概率
 PLAN_CACHE_TTL = 600      # 方案缓存有效期（秒）
 RECENT_PLAN_LIMIT = 12    # 最近方案记录上限
 BUDGET_TARGET_RATIO = 0.75  # 均衡型方案的目标预算利用率
+SPEND_GAP_PENALTY_WEIGHT = 0.15  # choose_solution 中预算偏离惩罚权重
+INFEASIBLE_PENALTY = 1e9  # 不可行解的目标惩罚值
+
+# ── 体验目标融合权重 ──────────────────────────────────────────────
+EXPERIENCE_RATING_WEIGHT = 0.6  # 综合体验中评分的权重
+EXPERIENCE_HOTNESS_WEIGHT = 0.4  # 综合体验中热度的权重
 
 # ── AI 调用参数 ────────────────────────────────────────────────────
 AI_MODEL = "deepseek-v4-flash"
 AI_MAX_TOKENS = 3200
+AI_BASE_URL = "https://api.deepseek.com"  # LLM API 默认 Base URL
 
 # ── 城市消费档位参数 ──────────────────────────────────────────────
 TIER_PARAMS = {
@@ -21,6 +28,10 @@ TIER_PARAMS = {
 }
 TIER_LABELS = {"H": "高消费", "M": "中等消费", "L": "低消费"}
 MEALS_PER_DAY = 2.5  # 每日正餐顿数（用于生活成本估算）
+
+# ── 预算可行性阈值 ──────────────────────────────────────────────────
+FEASIBILITY_RATIO_TIGHT = 0.6  # insufficient / tight 分界
+FEASIBILITY_RATIO_SUFFICIENT = 1.0  # tight / sufficient 分界
 
 # ── 可行性标签 ────────────────────────────────────────────────────
 FEASIBILITY_MAP = {
@@ -35,6 +46,10 @@ STYLE_LABELS = {
     "balanced":   "均衡型：成本、路程与体验更平衡",
     "experience": "体验型：评分与热度表现更高",
 }
+
+# ── 用户偏好默认值 ──────────────────────────────────────────────────
+DEFAULT_SENSITIVITY = 50  # 价格/距离/热度/评分偏好默认值
+VALID_SEASONS = {"spring", "summer", "autumn", "winter"}
 
 # ── 地图配色 ──────────────────────────────────────────────────────
 MAP_DAY_COLORS = ["#ff4d4f", "#1890ff", "#52c41a", "#faad14", "#722ed1", "#13c2c2"]
