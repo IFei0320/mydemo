@@ -876,6 +876,29 @@
   background: rgba(255, 255, 255, 0.9);
 }
 
+/* datetime-local 原生选择器适配（浏览器日历控件的输入框部分） */
+.modal-input[type="datetime-local"] {
+  min-height: 54px;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  color-scheme: light;
+}
+
+.modal-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background: rgba(76, 110, 245, 0.1);
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  background: rgba(76, 110, 245, 0.2);
+  transform: scale(1.1);
+}
+
 .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; }
 
 .modal-btn-cancel {
