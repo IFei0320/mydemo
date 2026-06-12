@@ -49,8 +49,17 @@
                 </a>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <ul class="nav-left">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <!-- 顶部搜索框 -->
+                <form action="{% url 'home:travel_list' %}" method="get" style="margin:0;">
+                    <div class="header-search">
+                        <div class="input-group">
+                            <i class="fa fa-search" style="color:#86868b; font-size:13px; margin-right:6px;"></i>
+                            <input type="text" name="search_name" placeholder="搜索景点..." required>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav-left" style="margin:0;">
                     <li>
                         <a href="javascript:void(0)" onclick="toggleFullScreen()">
                             <i class="ti-fullscreen"></i>
@@ -85,16 +94,6 @@
                         <a href="{% url 'user:logout' %}"><i class="ti-layout-sidebar-left"></i>退出登录</a>
                     </li>
                 </ul>
-            </div>
-
-            <!-- 搜索 -->
-            <div class="p-15">
-                <form action="{% url 'home:travel_list' %}" method="get">
-                    <div class="sidebar-search">
-                        <i class="fa fa-search"></i>
-                        <input type="text" name="search_name" placeholder="搜索景点..." required>
-                    </div>
-                </form>
             </div>
 
             <!-- 布局 -->
