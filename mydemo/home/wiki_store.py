@@ -19,8 +19,8 @@ WIKI_DIR = BASE_DIR / "wiki"
 SUMMARY_DIR = WIKI_DIR / "summary"
 ENTITY_DIR = WIKI_DIR / "entity"
 CONCEPT_DIR = WIKI_DIR / "concept"
-INDEX_FILE = BASE_DIR / "index.md"
-LOG_FILE = BASE_DIR / "log.md"
+INDEX_FILE = WIKI_DIR / "index.md"
+LOG_FILE = WIKI_DIR / "log.md"
 
 
 def ensure_dirs() -> None:
