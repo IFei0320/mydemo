@@ -100,7 +100,7 @@
             <!-- 布局 -->
             <div class="pcoded-navigation-label">布局</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="active" data-menu="index">
+                <li data-menu="index">
                     <a data-url="{% url 'home:index' %}">
                         <span class="pcoded-micon"><i class="ti-home"></i></span>
                         <span class="pcoded-mtext">首页</span>
@@ -168,6 +168,41 @@
         </div>
     </nav>
 
+    <!-- 侧边栏 active（紧跟在侧边栏后，首帧即正确） -->
+    <script>
+    (function() {
+        var currentPath = window.location.pathname;
+        var menuMap = {
+            '/mydemo/index': 'index',
+            '/mydemo/': 'index',
+            '/mydemo/travel_list': 'travel_list',
+            '/ksh/part1': 'part1',
+            '/ksh/part2': 'part2',
+            '/ksh/part3': 'part3',
+            '/ksh/part4': 'part4',
+            '/mydemo/get_ai_travelRoute': 'travelRoute',
+            '/mydemo/ai_nsga2_route': 'nsga2',
+            '/mydemo/wiki_mvp': 'wiki',
+        };
+        document.querySelectorAll('.pcoded-item li').forEach(function(li) {
+            li.classList.remove('active');
+        });
+        var matched = false;
+        for (var _i = 0, _entries = Object.entries(menuMap); _i < _entries.length; _i++) {
+            var _entry = _entries[_i], path = _entry[0], menu = _entry[1];
+            if (currentPath === path || currentPath.startsWith(path + '/')) {
+                var target = document.querySelector('[data-menu="' + menu + '"]');
+                if (target) { target.classList.add('active'); matched = true; }
+                break;
+            }
+        }
+        if (!matched) {
+            var idx = document.querySelector('[data-menu="index"]');
+            if (idx) idx.classList.add('active');
+        }
+    })();
+    </script>
+
     <!-- Main Content -->
     <div class="pcoded-main-container">
         <div class="pcoded-content">
@@ -224,46 +259,6 @@
             this.classList.toggle('open');
         });
 
-        // 侧边栏选中高亮 - 根据当前 URL 自动匹配
-        (function() {
-            const currentPath = window.location.pathname;
-            const menuMap = {
-                '/mydemo/index': 'index',
-                '/mydemo/': 'index',
-                '/mydemo/travel_list': 'travel_list',
-                '/ksh/part1': 'part1',
-                '/ksh/part2': 'part2',
-                '/ksh/part3': 'part3',
-                '/ksh/part4': 'part4',
-                '/mydemo/get_ai_travelRoute': 'travelRoute',
-                '/mydemo/ai_nsga2_route': 'nsga2',
-                '/mydemo/wiki_mvp': 'wiki',
-            };
-
-            // 移除所有 active
-            document.querySelectorAll('.pcoded-item li').forEach(li => {
-                li.classList.remove('active');
-            });
-
-            // 匹配当前路径
-            let matched = false;
-            for (const [path, menu] of Object.entries(menuMap)) {
-                if (currentPath === path || currentPath.startsWith(path + '/')) {
-                    const target = document.querySelector(`[data-menu="${menu}"]`);
-                    if (target) {
-                        target.classList.add('active');
-                        matched = true;
-                    }
-                    break;
-                }
-            }
-
-            // 如果没匹配到，默认首页
-            if (!matched) {
-                const indexItem = document.querySelector('[data-menu="index"]');
-                if (indexItem) indexItem.classList.add('active');
-            }
-        })();
 
         // 侧边栏 data-url 跳转
         document.querySelector('.pcoded-navbar').addEventListener('click', function(e) {
