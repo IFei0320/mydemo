@@ -221,8 +221,6 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-glass);
   background: var(--color-bg-glass);
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
   color: var(--color-primary);
   font-weight: 600; font-size: 14px;
   cursor: pointer;
@@ -297,8 +295,7 @@
   font-size: 14px;
   color: var(--color-text-secondary);
   background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
+  /* 性能：小控件不启用毛玻璃（保留卡片级 blur） */
   outline: none; transition: all 0.3s ease;
   box-shadow: var(--shadow-inset-input), 0 1px 4px rgba(0, 0, 0, 0.04);
   font-family: inherit;
@@ -320,8 +317,7 @@
   font-size: 14px;
   color: var(--color-text-secondary);
   background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
+  /* 性能：小控件不启用毛玻璃（保留卡片级 blur） */
   outline: none; transition: all 0.3s ease;
   box-shadow: var(--shadow-inset-input), 0 1px 4px rgba(0, 0, 0, 0.04);
   font-family: inherit; cursor: pointer;
@@ -341,8 +337,7 @@
   padding: 12px 16px; font-size: 14px;
   color: var(--color-text-secondary);
   background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
+  /* 性能：小控件不启用毛玻璃（保留卡片级 blur） */
   outline: none; transition: all 0.3s ease;
   box-shadow: var(--shadow-inset-input), 0 1px 4px rgba(0, 0, 0, 0.04);
   font-family: inherit; resize: vertical;
@@ -454,8 +449,7 @@
   padding: 14px 20px; border-radius: var(--radius-md);
   display: flex; align-items: center; gap: 12px;
   margin-bottom: 20px;
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
+  /* 性能：小控件不启用毛玻璃（保留卡片级 blur） */
 }
 
 .alert-info {
@@ -472,8 +466,7 @@
 
 .glass-output {
   background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
+  /* 性能：小控件不启用毛玻璃（保留卡片级 blur） */
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 16px; padding: 20px;
   min-height: 220px;
@@ -947,8 +940,7 @@
   display: flex; align-items: center; justify-content: center;
   min-width: 36px; height: 36px; border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(var(--blur-btn));
-  -webkit-backdrop-filter: blur(var(--blur-btn));
+  /* 性能：小控件不启用毛玻璃（保留卡片级 blur） */
   border: 1px solid var(--color-border-glass);
   color: var(--color-text-secondary); font-size: 14px; font-weight: 500;
   text-decoration: none; transition: all 0.3s ease;
