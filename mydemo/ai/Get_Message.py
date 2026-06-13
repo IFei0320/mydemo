@@ -37,10 +37,10 @@ class Get_DeepSeek:
     )
 
     @staticmethod
-    def _strip_code_fence(text: str) -> str:
+    def _strip_code_fence(text: str) -> str: # text or "": 如果 text 是 None 或者空字符串，就把它变成空字符串 ""，防止报错
         t = (text or "").strip()
-        if t.startswith("```"):
-            lines = t.split("\n")
+        if t.startswith("```"):   # 检查清理后的文本 t 是否以三个反引号 ``` 开头。
+            lines = t.split("\n")     # 将文本按换行符 "\n" 分割成列表 lines。
             if lines[0].startswith("```"):
                 lines = lines[1:]
             if lines and lines[-1].strip().startswith("```"):
@@ -53,7 +53,7 @@ class Get_DeepSeek:
     ) -> dict:
         raw = ""
         try:
-            season_cn = _SEASON_CN.get(str(season).strip(), str(season))
+            season_cn = _SEASON_CN.get(str(season).strip(), str(season))   # .get(..., ...): 如果字典里有这个季节，返回中文名；如果没有，就返回原样。
             user_msg = (
                 f"目的地：{city}；季节：{season_cn}；大致行程长度：{days} 天；预算：{budget}。\n"
                 "请只返回 JSON，键为 city_summary、what_to_see、watchouts、regions。"
@@ -69,9 +69,9 @@ class Get_DeepSeek:
                 extra_body={"thinking": {"type": "disabled"}},
             )
             raw = response.choices[0].message.content or ""
-            stripped = self._strip_code_fence(raw)
-            data = json.loads(stripped)
-            overview = {
+            stripped = self._strip_code_fence(raw)     # 调用上面定义的辅助方法，去掉 raw 中的 ``` 标记。
+            data = json.loads(stripped)      # json.loads(): 尝试将清洗后的字符串解析为 Python 字典/列表。
+            overview = {       # 创建一个新字典 overview，从解析出的 data 中提取对应字段。
                 "city_summary": str(data.get("city_summary") or "").strip(),
                 "what_to_see": data.get("what_to_see") or [],
                 "watchouts": data.get("watchouts") or [],

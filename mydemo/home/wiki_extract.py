@@ -1,26 +1,26 @@
 import re
 from typing import List
 
-LLM_ERROR_MARKERS = [
+LLM_ERROR_MARKERS = [    # 定义一个列表，包含用于检测LLM调用错误的特定字符串标记
     "[LLM 调用异常:",
     "No module named 'jiter.jiter'",
     "'NoneType' object has no attribute",
 ]
 
 
-def has_llm_error(text: str) -> bool:
+def has_llm_error(text: str) -> bool:               # 函数作用：检查输入文本中是否包含任何预定义的LLM错误标记
     value = text or ""
     return any(marker in value for marker in LLM_ERROR_MARKERS)
 
 
-def clean_text(text: str) -> str:
+def clean_text(text: str) -> str:                   # 函数作用：清理文本，去除首尾空白，并移除包含LLM错误的文本
     value = (text or "").strip()
     if has_llm_error(value):
         return ""
     return value
 
 
-def normalize_entity_name(name: str) -> str:
+def normalize_entity_name(name: str) -> str:             # 函数作用：标准化实体名称，移除常见的编号前缀（如数字、中文数字、圈号）
     text = clean_text(name)
     if not text:
         return ""
@@ -30,7 +30,7 @@ def normalize_entity_name(name: str) -> str:
     return text.strip()
 
 
-def safe_list(values, limit: int = 12) -> List[str]:
+def safe_list(values, limit: int = 12) -> List[str]:       # 函数作用：将输入值转换为清理后的字符串列表，去重并限制数量
     result: List[str] = []
     for item in values or []:
         text = clean_text(str(item))
@@ -41,13 +41,13 @@ def safe_list(values, limit: int = 12) -> List[str]:
     return result
 
 
-def slugify(name: str) -> str:
+def slugify(name: str) -> str:                                # 函数作用：将名称转换为URL友好的slug格式（小写，替换特殊字符为连字符）
     value = re.sub(r"[^\w一-鿿\-]+", "-", name.strip().lower())
     value = re.sub(r"-{2,}", "-", value).strip("-")
     return value or "untitled"
 
 
-def extract_title(content: str, fallback: str) -> str:
+def extract_title(content: str, fallback: str) -> str:                  # 函数作用：从Markdown内容中提取标题（以#开头的行）
     for line in content.splitlines():
         text = line.strip()
         if text.startswith("#"):
@@ -55,7 +55,7 @@ def extract_title(content: str, fallback: str) -> str:
     return fallback
 
 
-def extract_focus_lines(content: str, limit: int = 12) -> List[str]:
+def extract_focus_lines(content: str, limit: int = 12) -> List[str]:                        # 函数作用：从内容中提取包含特定关键词的重点行
     patterns = ["交通", "门票", "开放", "预约", "避雷", "预算", "路线", "时间", "推荐"]
     selected: List[str] = []
     for line in content.splitlines():
@@ -72,7 +72,7 @@ def extract_focus_lines(content: str, limit: int = 12) -> List[str]:
     return chunks[: min(limit, len(chunks))]
 
 
-def extract_month_signals(content: str) -> List[str]:
+def extract_month_signals(content: str) -> List[str]:                       # 函数作用：从内容中提取所有提到的月份信号（如"1月"、"12月"）
     month_hits = re.findall(r"(1[0-2]|[1-9])月", content)
     unique = []
     for m in month_hits:
@@ -82,7 +82,7 @@ def extract_month_signals(content: str) -> List[str]:
     return unique[:8]
 
 
-def season_to_months(season: str) -> List[str]:
+def season_to_months(season: str) -> List[str]:                       # 函数作用：将季节名称转换为对应的月份列表
     mapping = {
         "spring": ["3月", "4月", "5月"],
         "summer": ["6月", "7月", "8月"],
@@ -92,7 +92,7 @@ def season_to_months(season: str) -> List[str]:
     return mapping.get((season or "").strip().lower(), [])
 
 
-def infer_budget_level(text: str) -> str:
+def infer_budget_level(text: str) -> str:                                # 函数作用：根据文本内容推断预算水平（low, medium, high）
     t = (text or "").lower()
     if any(k in t for k in ["免费", "低价", "便宜", "性价比"]):
         return "low"
@@ -101,7 +101,7 @@ def infer_budget_level(text: str) -> str:
     return "medium"
 
 
-def infer_transport_mode(text: str) -> str:
+def infer_transport_mode(text: str) -> str:      # 函数作用：根据文本内容推断主要交通方式
     t = text or ""
     if "地铁" in t:
         return "metro"
@@ -114,7 +114,7 @@ def infer_transport_mode(text: str) -> str:
     return "mixed"
 
 
-def infer_crowd_level(text: str) -> str:
+def infer_crowd_level(text: str) -> str:     # 函数作用：根据文本内容推断人群拥挤程度
     t = text or ""
     if "极高" in t or "人流量极大" in t or "排队" in t:
         return "high"
@@ -123,7 +123,7 @@ def infer_crowd_level(text: str) -> str:
     return "medium"
 
 
-def infer_best_time(text: str) -> str:
+def infer_best_time(text: str) -> str:                # 函数作用：根据文本内容推断最佳游览时间
     t = text or ""
     if "夜景" in t or "日落" in t or "亮灯" in t:
         return "傍晚至夜间"
@@ -132,7 +132,7 @@ def infer_best_time(text: str) -> str:
     return "白天错峰时段"
 
 
-def extract_pitfalls(text: str, limit: int = 3) -> List[str]:
+def extract_pitfalls(text: str, limit: int = 3) -> List[str]:               # 函数作用：从文本中提取避坑提示或注意事项
     lines = [ln.strip("- ").strip() for ln in (text or "").splitlines() if ln.strip()]
     result = []
     for ln in lines:
@@ -145,7 +145,7 @@ def extract_pitfalls(text: str, limit: int = 3) -> List[str]:
     return result
 
 
-def extract_spot_names(content: str, limit: int = 10) -> List[str]:
+def extract_spot_names(content: str, limit: int = 10) -> List[str]:         # 函数作用：从Markdown内容中提取景点名称
     spot_names: List[str] = []
     for line in content.splitlines():
         text = line.strip().lstrip("#").strip()
@@ -164,7 +164,7 @@ def extract_spot_names(content: str, limit: int = 10) -> List[str]:
     return spot_names
 
 
-def extract_concepts(content: str, limit: int = 6) -> List[str]:
+def extract_concepts(content: str, limit: int = 6) -> List[str]:       # 函数作用：从内容中提取相关概念或主题标签
     concept_rules = {
         "亲子出行": ["亲子", "儿童", "小朋友", "家庭"],
         "夜景路线": ["夜景", "亮灯", "日落", "晚上"],

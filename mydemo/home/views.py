@@ -100,7 +100,7 @@ def get_ai_travelRoute(request):
         return JsonResponse({'code': 400, 'message': '无效的 json 数据', 'data': None})
 
     try:
-        required_fields = ['city', 'season', 'days']
+        required_fields = ['city', 'season', 'days']   # required_fields: 定义必须有的三个字段：城市、季节、天数。
         for field in required_fields:
             if field not in data:
                 return JsonResponse({
@@ -111,7 +111,8 @@ def get_ai_travelRoute(request):
 
         budget = data.get('budget', 0)
         if budget == 0:
-            budget = '无预算'
+            budget = '无预算'    # data.get('budget', 0): 尝试获取 'budget' 字段。
+        # 如果用户没传 budget，默认值是 0。
 
         dp = Get_DeepSeek()
         result = dp.get_city_travel_overview(
@@ -128,11 +129,15 @@ def get_ai_travelRoute(request):
                 "data": None,
             })
 
-        city_key = str(data["city"]).strip()
+        city_key = str(data["city"]).strip()    # 清洗城市名，去掉首尾空格，转为字符串。
         city_rows = list(
             TravelInfo.objects.filter(city__icontains=city_key)
             .exclude(longitude__isnull=True)
             .exclude(latitude__isnull=True)[:250]
+              # .exclude(longitude__isnull=True): 排除掉经度为空的记录（没坐标的不算）。
+        # .exclude(latitude__isnull=True): 排除掉纬度为空的记录。
+        # [:250]: 最多取前 250 条，防止数据太多拖慢速度。
+        # list(...): 把查询结果集（QuerySet）转换成普通列表
         )
         primary = [
             row
@@ -140,11 +145,16 @@ def get_ai_travelRoute(request):
             if str(row.city or "").replace("市", "") == city_key.replace("市", "")
         ]
         source_rows = primary if len(primary) >= 9 else city_rows
+        # 如果精确匹配的景点数量 >= 9 个：
+        #   -> 只使用 primary（精确匹配的）。
+        # 否则（少于 9 个）：
+        #   -> 使用 city_rows（所有模糊匹配的）。
+        # 目的：保证地图上至少有 9 个核心景点，不够的话就放宽范围凑数。
 
         map_spots = []
         for t in source_rows:
             lon, lat = _normalize_coord_pair(t.longitude, t.latitude)
-            if not lon or not lat:
+            if not lon or not lat:   # 如果经度或纬度无效，跳过这条记录，不加入地图。
                 continue
             price_hint = t.actual_price or t.market_price or ""
             map_spots.append({
@@ -155,7 +165,9 @@ def get_ai_travelRoute(request):
                 "area": t.area or "",
                 "price_hint": str(price_hint)[:120],
             })
-
+ # 构造一个字典，放入 map_spots 列表。
+            # name, rating, area: 如果数据库是 None，就填空字符串。
+            # price_hint[:120]: 截取价格描述的前 120 个字，防止太长。
         return JsonResponse({
             "code": 200,
             "message": "目的地概览生成成功",

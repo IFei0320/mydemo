@@ -131,7 +131,7 @@
                 );
             });
             if (!(overview.regions || []).length) {
-                regBox.append($('<p style="color: #a0aec0; font-size: 13px;">暂无片区主题提示。</p>'));
+                regBox.append($('<p style="color: #a0aec0; font-size: 13px;">暂无片区主题提示。</p>'));  
             }
 
             if (overview.parse_note) {
@@ -175,7 +175,7 @@
                 const marker = new BMap.Marker(point);
                 map.addOverlay(marker);
                 markers.push(marker);
-
+ // --- 构建弹窗内容（利用数据库的其他字段） ---
                 const name = escapeHtml(item.name || '景点');
                 const area = escapeHtml(item.area || '');
                 const rating = escapeHtml(item.rating || '');
@@ -188,12 +188,12 @@
                     (price ? '<div>票价参考：' + price + '</div>' : '') +
                     '<div style="color:#888;font-size:11px;margin-top:6px;">景点信息</div>' +
                     '</div>';
-                const infoWindow = new BMap.InfoWindow(infoHtml, {
+                const infoWindow = new BMap.InfoWindow(infoHtml, {    //创建一个 InfoWindow（弹窗对象）
                     width: 280,
                     title: '景点',
                     enableMessage: false
                 });
-                marker.addEventListener('click', function () {
+                marker.addEventListener('click', function () {  // 绑定事件：当用户点击标记点时，打开这个弹窗
                     map.openInfoWindow(infoWindow, point);
                 });
             });
@@ -204,7 +204,7 @@
             }
             try {
                 map.checkResize();
-                const viewport = map.getViewport(points);
+                const viewport = map.getViewport(points);     // 计算一个能容纳所有点的最佳视图范围 (Viewport)
                 const zoom = Math.min(viewport.zoom - 1, 16);
                 map.centerAndZoom(viewport.center, zoom);
                 setTimeout(function () { try { map.checkResize(); } catch (e) {} }, 100);
@@ -249,9 +249,6 @@
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(requestData),
-                headers: {
-                    'X-CSRFToken': window.travelRouteConfig.csrfToken
-                },
                 success: function (response) {
                     if (response.code === 200 && response.data) {
                         const d = response.data;

@@ -17,17 +17,17 @@ df = pd.read_csv('data_pro.csv')
 
 
 def part1():
-    data = df.copy()
+    data = df.copy()                                # 1. 数据准备：复制原始DataFrame，防止修改原始数据
     data = data[data['评分'] != 0.0]
-    score_counts = data['评分'].value_counts()
+    score_counts = data['评分'].value_counts()       # 返回结果是一个Series，索引(index)是评分值，值(value)是该评分出现的次数
     print(score_counts)
 
     # 清空表
-    truncate_sql = "truncate table part1"
+    truncate_sql = "truncate table part1"           # truncate比delete速度快，且会重置自增ID，适合在重新插入数据前清理旧数据
     cursor.execute(truncate_sql)
     conn.commit()
 
-    sql = "insert into part1(score, value) values(%s, %s)"
+    sql = "insert into part1(score, value) values(%s, %s)"   # 6. 定义插入数据的SQL语句，使用%s作为占位符（防止SQL注入）
 
     # 将分析结果写入表
     for index, row in score_counts.items():
@@ -168,8 +168,6 @@ def part7():
         if pd.notna(row['城市名称']) and pd.notna(row['景点名称']) and pd.notna(row['热度评分']):
             cursor.execute(sql, (row['城市名称'], row['景点名称'], row['热度评分']))
     conn.commit()
-
-
 
 
 def part8():

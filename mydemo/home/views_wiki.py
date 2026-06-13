@@ -14,10 +14,10 @@ def wiki_mvp_page(request):
     return render(request, "ksh/wiki_mvp.html")
 
 
-@staff_member_required
+@staff_member_required     # 该函数的主要职责是处理 Wiki 数据的导入/摄入任务。主要职责是处理 Wiki 数据的导入/摄入任务。
 @require_POST
-def wiki_ingest(request):
-    result = ingest_all_raw()
+def wiki_ingest(request):          
+    result = ingest_all_raw()      # 调用外部定义的函数 ingest_all_raw()。
     return JsonResponse({"code": 200 if result.get("ok") else 500, "message": "摄入完成", "data": result})
 
 

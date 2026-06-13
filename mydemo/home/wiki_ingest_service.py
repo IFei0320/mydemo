@@ -71,10 +71,10 @@ def _manifest_entry(raw_path: Path, summary_page: str) -> Dict:
     }
 
 
-def _normalize_compile_result(raw_content: str, source_name: str, title: str) -> Dict:
-    compiled = _get_wiki_llm().compile_raw(raw_content, source_name)
+def _normalize_compile_result(raw_content: str, source_name: str, title: str) -> Dict:    # 定义一个私有函数，用于标准化和清理从 LLM (大语言模型) 编译得到的结果。
+    compiled = _get_wiki_llm().compile_raw(raw_content, source_name)      # 调用全局 LLM 实例的 compile_raw 方法，对原始内容进行初步编译/解析。
 
-    summary = clean_text(compiled.get("summary", ""))
+    summary = clean_text(compiled.get("summary", ""))    # 获取 LLM 生成的摘要并清洗文本。
     if '"summary"' in summary and '"concepts"' in summary and '"cards"' in summary:
         try:
             parsed = json.loads(summary)
@@ -82,8 +82,8 @@ def _normalize_compile_result(raw_content: str, source_name: str, title: str) ->
         except Exception:
             summary = ""
 
-    concepts = safe_list(compiled.get("concepts", []))
-    entities = []
+    concepts = safe_list(compiled.get("concepts", []))        # 获取概念列表，使用 safe_list 确保结果是列表类型，防止 None 报错
+    entities = []               # 初始化实体列表。
     for item in compiled.get("entities", []):
         name = normalize_entity_name(str(item))
         if name and name not in entities:
@@ -158,24 +158,24 @@ def _normalize_compile_result(raw_content: str, source_name: str, title: str) ->
     }
 
 
-def ingest_raw_file(raw_path: Path) -> Dict:
-    ensure_dirs()
+def ingest_raw_file(raw_path: Path) -> Dict:     # 该函数负责处理单个原始文件（.md 或 .txt）的摄入逻辑：解析内容、提取信息、生成摘要、更新概念和实体页面。
+    ensure_dirs()                                 # 再次调用 ensure_dirs()，确保在文件处理过程中所需的目录结构存在，防止写入操作失败。
     if not raw_path.exists():
         return {"ok": False, "message": f"文件不存在: {raw_path.name}"}
 
-    content = raw_path.read_text(encoding="utf-8", errors="ignore")
+    content = raw_path.read_text(encoding="utf-8", errors="ignore")       # 读取文件的全部内容。
     if not content.strip():
         return {"ok": False, "message": f"文件为空: {raw_path.name}"}
 
-    title = extract_title(content, raw_path.stem)
-    slug = slugify(raw_path.stem)
-    summary_path = SUMMARY_DIR / f"{slug}.md"
+    title = extract_title(content, raw_path.stem)     # 调用 extract_title 函数从内容中提取标题。
+    slug = slugify(raw_path.stem)                      # 使用 slugify 函数将原始文件名转换为Slug格式。
+    summary_path = SUMMARY_DIR / f"{slug}.md"          # 创建一个与原始文件同名的摘要文件路径。
 
-    compiled = _normalize_compile_result(content, raw_path.name, title)
-    summary_markdown = format_summary_markdown(compiled["summary"], raw_path.name, len(content))
+    compiled = _normalize_compile_result(content, raw_path.name, title)     # 调用私有函数 _normalize_compile_result，对原始内容进行编译/解析。
+    summary_markdown = format_summary_markdown(compiled["summary"], raw_path.name, len(content))      # 调用 format_summary_markdown，根据编译后的摘要内容格式化 Markdown 字符串
     summary_path.write_text(summary_markdown, encoding="utf-8")
 
-    concept_hits = compiled["concepts"] or extract_concepts(content)
+    concept_hits = compiled["concepts"] or extract_concepts(content)        # 优先使用编译结果中的 concepts；如果为空，则调用 extract_concepts 函数从原始内容中手动提取概念。
     upsert_dynamic_concept_pages(concept_hits, raw_path.name, title)
     for concept in ["错峰出行", "预算控制"] + concept_hits:
         append_source_links_to_concept(concept, raw_path.name, summary_path.name)
@@ -195,12 +195,12 @@ def ingest_raw_file(raw_path: Path) -> Dict:
     }
 
 
-def ingest_all_raw() -> Dict:
-    ensure_dirs()
-    ensure_default_concepts()
-    manifest = _load_ingest_manifest()
-    candidates = [p for p in RAW_DIR.glob("*") if p.is_file() and p.suffix.lower() in {".md", ".txt"}]
-
+def ingest_all_raw() -> Dict:   # 返回类型为字典 (Dict)。该函数的核心逻辑是遍历 RAW_DIR 目录下的所有有效文件（.md 或 .txt），并根据增量更新策略进行摄入处理。
+    ensure_dirs()               # 调用辅助函数 ensure_dirs()，确保程序运行所需的必要目录结构存在        
+    ensure_default_concepts()    
+    manifest = _load_ingest_manifest()     # 调用私有函数 _load_ingest_manifest() 加载当前的“摄入清单”（manifest）
+    candidates = [p for p in RAW_DIR.glob("*") if p.is_file() and p.suffix.lower() in {".md", ".txt"}]      # candidates 变量存储了所有待处理文件的 Path 对象列表。
+ # 初始化多个空列表和字典，用于分类统计处理结果：
     success = []
     failed = []
     skipped = []
@@ -209,16 +209,16 @@ def ingest_all_raw() -> Dict:
     next_manifest = dict(manifest)
 
     for path in candidates:
-        raw_hash = _compute_file_hash(path)
+        raw_hash = _compute_file_hash(path)         # 计算当前文件 path 的内容哈希值（raw_hash），用于判断文件内容是否发生变化。
         prev = manifest.get(path.name)
         if prev and prev.get("hash") == raw_hash:
-            skipped.append({
+            skipped.append({               # 将跳过信息加入 skipped 列表，并跳过本次循环，不执行后续的摄入逻辑，节省资源。
                 "source": path.name,
                 "summary_page": str(prev.get("summary_page") or f"{slugify(path.stem)}.md"),
             })
             continue
 
-        result = ingest_raw_file(path)
+        result = ingest_raw_file(path)        # 调用核心摄入函数 ingest_raw_file(path)，对当前文件进行解析、清洗、入库等操作。
         if result.get("ok"):
             success.append(result)
             next_manifest[path.name] = _manifest_entry(path, str(result.get("summary_page") or f"{slugify(path.stem)}.md"))
@@ -229,8 +229,8 @@ def ingest_all_raw() -> Dict:
         else:
             failed.append(result)
 
-    sanitize_existing_entity_pages()
-    refresh_index()
+    sanitize_existing_entity_pages()                                # 调用辅助函数 sanitize_existing_entity_pages()，对wiki/entity 目录中的文件进行清理，确保文件内容符合要求。
+    refresh_index()                                                   # 调用辅助函数 refresh_index()，更新wiki/entity 目录中的索引文件，确保索引文件内容正确。
     _save_ingest_manifest(next_manifest)
     append_log(
         "INGEST_ALL",
